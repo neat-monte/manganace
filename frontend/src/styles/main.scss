@@ -1,0 +1,24 @@
+// Base imports
+@import "./base/variables.scss";
+@import "./base/mixins.scss";
+@import "./base/colors.scss";
+@import "./base/layout.scss";
+
+// General components
+@import "./components/header.scss";
+@import "./components/footer.scss";
+@import "./components/loading.scss";
+
+// Views imports with associated components
+@import "./views/generator.scss";
+@import "./components/generator/controls.scss";
+@import "./components/generator/image.scss";
+@import "./components/generator/history.scss";
+
+@import "./views/library.scss";
+@import "./components/library/collections.scss";
+@import "./components/library/collection.scss";
+@import "./components/library/images.scss";
+
+// @import "./views/collections.scss";
+// @import "./components/collections/collection-card.scss";

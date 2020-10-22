@@ -1,0 +1,17 @@
+@mixin tablet {
+    @media all and (min-width: $tablet-width) {
+        @content;
+    }
+}
+
+@mixin sm-desktop {
+    @media all and (min-width: $sm-desktop-width) {
+        @content;
+    }
+}
+
+@mixin lg-desktop {
+    @media all and (min-width: $lg-desktop-width) {
+        @content;
+    }
+}
