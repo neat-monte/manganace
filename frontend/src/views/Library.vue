@@ -56,3 +56,10 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+#library {
+  display: flex;
+  flex-wrap: wrap;
+}
+</style>

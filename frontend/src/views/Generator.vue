@@ -20,3 +20,23 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+#generator {
+  background: lightpink;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+@include sm-desktop {
+  #generator {
+    padding: 20px $sm-generator-y-padding;
+  }
+}
+
+@include lg-desktop {
+  #generator {
+    padding: 40px $lg-generator-y-padding;
+  }
+}
+</style>

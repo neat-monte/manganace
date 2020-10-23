@@ -17,3 +17,26 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+@include sm-desktop {
+  .image-card {
+    // height: 100px;
+    // width: 100px;
+
+    .card-content {
+      .image-wrapper {
+        img {
+          object-fit: cover;
+          height: 100%;
+          width: 100%;
+          right: 0;
+        }
+      }
+
+      .content {
+      }
+    }
+  }
+}
+</style>

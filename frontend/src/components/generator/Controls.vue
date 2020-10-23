@@ -16,3 +16,23 @@ export default {
   name: "Controls",
 };
 </script>
+
+<style lang="scss" scoped>
+.controls {
+  background: deepskyblue;
+  flex: 1;
+  order: -1;
+}
+
+@include sm-desktop {
+  .controls {
+    margin-right: 10px;
+  }
+}
+
+@include lg-desktop {
+  .controls {
+    margin-right: 20px;
+  }
+}
+</style>

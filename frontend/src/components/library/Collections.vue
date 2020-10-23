@@ -3,9 +3,7 @@
     <div class="collections-header">
       <h2>Collections</h2>
       <div class="collections-controls">
-        <Button shape="circle">
-          <PlusOutlined />
-        </Button>
+        <CreateCollection />
       </div>
     </div>
 
@@ -14,7 +12,7 @@
         v-for="collection in collections"
         :key="collection.id.toString()"
         :header="collection.name"
-        v-on:click="renderImages(collection.id)"
+        @click="renderImages(collection.id)"
       >
         <Collection :collection="collection" />
       </a-collapse-panel>
@@ -24,9 +22,8 @@
 
 <script>
 import { useRouter } from "vue-router";
-import { PlusOutlined } from "@ant-design/icons-vue";
 import Collection from "@/components/library/Collection";
-import Button from "@/components/shared/Button";
+import CreateCollection from "@/components/library/CreateCollection";
 import useCollections from "@/modules/useCollections";
 
 export default {
@@ -57,8 +54,36 @@ export default {
 
   components: {
     Collection,
-    Button,
-    PlusOutlined,
+    CreateCollection,
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.collections {
+  display: none;
+}
+
+@include sm-desktop {
+  .collections {
+    display: block;
+    flex: 1 30%;
+    background: lightcoral;
+
+    .collections-header {
+      display: flex;
+
+      h2 {
+        flex: 1 80%;
+        margin: 0;
+        padding: 10px;
+      }
+
+      .collections-controls {
+        flex: 1 20%;
+        align-self: center;
+      }
+    }
+  }
+}
+</style>

@@ -1,7 +1,5 @@
 <template>
-  <div class="collection">
-    <h3>{{ collection.name }}</h3>
-  </div>
+  <div class="collection"></div>
 </template>
 
 <script>
@@ -21,3 +19,13 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.collection {
+  height: 80px;
+  border-top: 1px solid black;
+  border-bottom: 1px solid black;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+</style>

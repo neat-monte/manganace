@@ -13,3 +13,11 @@ export default {
   name: "Header",
 };
 </script>
+
+<style lang="scss" scoped>
+.header {
+  grid-area: header;
+  height: $header-height;
+  background: tomato;
+}
+</style>
