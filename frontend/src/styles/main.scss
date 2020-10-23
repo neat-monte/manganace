@@ -7,7 +7,9 @@
 // General components
 @import "./components/header.scss";
 @import "./components/footer.scss";
-@import "./components/loading.scss";
+
+// Sharable components
+@import "./components/shared/loading.scss";
 
 // Views imports with associated components
 @import "./views/generator.scss";
@@ -19,6 +21,4 @@
 @import "./components/library/collections.scss";
 @import "./components/library/collection.scss";
 @import "./components/library/images.scss";
-
-// @import "./views/collections.scss";
-// @import "./components/collections/collection-card.scss";
+@import "./components/library/image-card.scss";

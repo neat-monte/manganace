@@ -4,7 +4,7 @@
 
     <Suspense>
       <template #default>
-        <Collections />
+        <Collections :collectionId="collectionId" />
       </template>
       <template #fallback>
         <Loading />
@@ -27,7 +27,7 @@ import { computed, ref, onErrorCaptured, watchEffect } from "vue";
 import { useRoute } from "vue-router";
 import Collections from "@/components/library/Collections";
 import Images from "@/components/library/Images";
-import Loading from "@/components/Loading";
+import Loading from "@/components/shared/Loading";
 
 export default {
   name: "Library",

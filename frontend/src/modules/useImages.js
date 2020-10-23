@@ -1,4 +1,5 @@
 import { reactive, readonly } from 'vue'
+import endpoints from "@/services/http/endpoints"
 import http from '@/services/http'
 
 const state = reactive({
@@ -14,6 +15,8 @@ export default function useImages() {
 
     let imgDict = {}
     images.forEach(image => {
+      image.path = `${endpoints.baseAddress}${endpoints.static}/${image.filename}`;
+
       imgDict[image.id] = image;
     });
     state.images[collectionId] = imgDict;

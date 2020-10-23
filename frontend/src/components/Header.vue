@@ -1,6 +1,10 @@
 <template>
   <header class="header">
-    <h1>Manganace</h1>
+    <div class="brand">
+      <router-link to="/">
+        <h1>Manganace</h1>
+      </router-link>
+    </div>
   </header>
 </template>
 

@@ -1,15 +1,13 @@
 <template>
-  <div id="images">
-    {{ collectionId }}
-    <div v-for="image in images" :key="image.id">
-      {{ image.filename }}
-    </div>
+  <div class="images">
+    <ImageCard v-for="image in images" :key="image.id" :image="image" />
   </div>
 </template>
 
 <script>
 import { ref, watchEffect } from "vue";
 import useImages from "@/modules/useImages";
+import ImageCard from "@/components/library/ImageCard";
 
 export default {
   name: "Images",
@@ -30,6 +28,10 @@ export default {
     return {
       images,
     };
+  },
+
+  components: {
+    ImageCard,
   },
 };
 </script>

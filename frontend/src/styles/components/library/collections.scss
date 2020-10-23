@@ -1,4 +1,26 @@
-#collections {
-    flex: 1 30%;
-    background: lightcoral;
+.collections {
+    display: none;
+}
+
+@include sm-desktop {
+    .collections {
+        display: block;
+        flex: 1 30%;
+        background: lightcoral;
+
+        .collections-header {
+            display: flex;
+
+            h2 {
+                flex: 1 80%;
+                margin: 0;
+                padding: 10px;
+            }
+
+            .collections-controls {
+                flex: 1 20%;
+                align-self: center;
+            }
+        }
+    }
 }
