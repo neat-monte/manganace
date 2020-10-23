@@ -1,6 +1,7 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import Generator from '@/views/Generator.vue'
 import Library from '@/views/Library.vue'
+import NotFound from '@/views/NotFound.vue'
 
 const routes = [
   {
@@ -18,6 +19,11 @@ const routes = [
     path: "/generator",
     name: "Generator",
     component: Generator
+  },
+  {
+    path: "/notfound",
+    name: "NotFound",
+    component: NotFound
   }
 ]
 

@@ -1,9 +1,9 @@
 <template>
   <div v-if="collections" class="collections">
     <div class="collections-header">
-      <h2>Collections</h2>
-      <div class="collections-controls">
-        <CreateCollection />
+      <h1 class="title">Collections</h1>
+      <div class="controls">
+        <CollectionCreate />
       </div>
     </div>
 
@@ -23,7 +23,7 @@
 <script>
 import { useRouter } from "vue-router";
 import Collection from "@/components/library/Collection";
-import CreateCollection from "@/components/library/CreateCollection";
+import CollectionCreate from "@/components/library/CollectionCreate";
 import useCollections from "@/modules/useCollections";
 
 export default {
@@ -44,6 +44,7 @@ export default {
     }
 
     const { state, loadCollections } = useCollections();
+
     await loadCollections();
 
     return {
@@ -54,7 +55,7 @@ export default {
 
   components: {
     Collection,
-    CreateCollection,
+    CollectionCreate,
   },
 };
 </script>
@@ -67,21 +68,23 @@ export default {
 @include sm-desktop {
   .collections {
     display: block;
-    flex: 1 30%;
     background: lightcoral;
 
     .collections-header {
       display: flex;
+      position: relative;
+      margin: 8px 16px;
 
-      h2 {
-        flex: 1 80%;
+      .title {
+        width: 100%;
         margin: 0;
         padding: 10px;
       }
 
-      .collections-controls {
-        flex: 1 20%;
+      .controls {
+        position: absolute;
         align-self: center;
+        right: 0;
       }
     }
   }

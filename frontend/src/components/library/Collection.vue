@@ -1,31 +1,48 @@
 <template>
-  <div class="collection"></div>
+  <div class="collection">
+    <p>{{ collection.description }}</p>
+    <a-descriptions size="small" :column="1">
+      <a-descriptions-item label="Created">
+        {{ collection.created }}
+      </a-descriptions-item>
+      <a-descriptions-item v-if="collection.updated" label="Updated">
+        {{ collection.updated }}
+      </a-descriptions-item>
+    </a-descriptions>
+    <div class="controls">
+      <CollectionDelete :collectionId="collection.id" />
+      <CollectionUpdate :collection="collection" />
+    </div>
+  </div>
 </template>
 
 <script>
-import { ref } from "vue";
+import CollectionUpdate from "@/components/library/CollectionUpdate";
+import CollectionDelete from "@/components/library/CollectionDelete";
 
 export default {
   name: "Collection",
   props: {
     collection: Object,
   },
-  setup() {
-    const isExpanded = ref();
 
-    return {
-      isExpanded,
-    };
+  components: {
+    CollectionUpdate,
+    CollectionDelete,
   },
 };
 </script>
 
 <style lang="scss" scoped>
 .collection {
-  height: 80px;
-  border-top: 1px solid black;
-  border-bottom: 1px solid black;
-  margin-bottom: 10px;
-  cursor: pointer;
+  text-align: left;
+
+  .controls {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 12px;
+    margin: 12px 0;
+    border-top: 1px solid lightgray;
+  }
 }
 </style>

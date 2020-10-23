@@ -1,0 +1,12 @@
+.collection {
+    .ant-descriptions-small .ant-descriptions-row > th,
+    .ant-descriptions-small .ant-descriptions-row > td {
+        padding: 0 !important;
+    }
+}
+
+.collections {
+    .ant-collapse-content > .ant-collapse-content-box {
+        padding-bottom: 0 !important;
+    }
+}

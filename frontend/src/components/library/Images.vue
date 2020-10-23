@@ -37,13 +37,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.images {
-  flex: 100%;
-}
-
 @include sm-desktop {
   .images {
-    flex: 1 70%;
     padding: 10px 5%;
     display: grid;
     grid-gap: 20px;

@@ -19,7 +19,8 @@ html {
                 flex-direction: column;
                 height: 100%;
 
-                .content, .loader {
+                .content,
+                .loader {
                     flex: 1 0 auto;
                 }
             }

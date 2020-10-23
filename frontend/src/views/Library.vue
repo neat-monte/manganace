@@ -1,7 +1,5 @@
 <template>
   <div id="library" class="content">
-    <div v-if="error">{{ error }}</div>
-
     <Suspense>
       <template #default>
         <Collections :collectionId="collectionId" />
@@ -23,7 +21,7 @@
 </template>
 
 <script>
-import { computed, ref, onErrorCaptured, watchEffect } from "vue";
+import { computed, ref, onErrorCaptured } from "vue";
 import { useRoute } from "vue-router";
 import Collections from "@/components/library/Collections";
 import Images from "@/components/library/Images";
@@ -34,7 +32,6 @@ export default {
 
   setup() {
     const route = useRoute();
-    watchEffect(() => route.params);
 
     const collectionId = computed(() => Number(route.params.collectionId));
 
@@ -61,5 +58,17 @@ export default {
 #library {
   display: flex;
   flex-wrap: wrap;
+}
+
+@include sm-desktop {
+  #library {
+    .collections {
+      flex: 1 30%;
+    }
+
+    .images {
+      flex: 1 70%;
+    }
+  }
 }
 </style>

@@ -17,17 +17,16 @@ export const getRange = async (skip = 0, limit = 100) => {
   return await fetchAsync(url, methods.GET);
 }
 
-export const create = async () => {
-  // TODO: add data
-  return await fetchAsync(endpoints.collections, methods.POST);
+export const create = async (data) => {
+  return await fetchAsync(endpoints.collections, methods.POST, data);
 }
 
-export const update = async () => {
-  // TODO: add data
-  return await fetchAsync(endpoints.collections, methods.PUT);
+export const update = async (id, data) => {
+  const endpoint = `${endpoints.collections}/${id}`
+  return await fetchAsync(endpoint, methods.PUT, data);
 }
 
-export const remove = async (id) => {
+export const destroy = async (id) => {
   const endpoint = `${endpoints.collections}/${id}`;
   return await fetchAsync(endpoint, methods.DELETE);
 }

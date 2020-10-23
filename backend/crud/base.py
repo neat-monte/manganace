@@ -39,7 +39,7 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
     def update(self, db: Session, id_: int, obj_in: Union[UpdateSchemaType, Dict[str, Any]]) -> ModelType:
         """ Updates properties of the existing object by provided id """
         db_obj = self.get(db, id_)
-        return self.update(db, db_obj, obj_in)
+        return self.update_obj(db, db_obj, obj_in)
 
     def update_obj(self, db: Session, db_obj: ModelType, obj_in: Union[UpdateSchemaType, Dict[str, Any]]) -> ModelType:
         """ Updates properties of the existing provided object """
