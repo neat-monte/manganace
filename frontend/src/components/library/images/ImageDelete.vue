@@ -10,10 +10,7 @@
     title="Confirm delete"
     @ok="handleDelete()"
   >
-    <p>
-      The collection will be removed with all the data. It will be
-      unrecoverable.
-    </p>
+    <p>The image will be removed. It will be unrecoverable.</p>
   </a-modal>
 </template>
 
@@ -21,13 +18,13 @@
 import { ref } from "vue";
 import { DeleteOutlined } from "@ant-design/icons-vue";
 import notification from "@/services/notification";
-import useCollections from "@/modules/useCollections";
+import useImages from "@/modules/useImages";
 
 export default {
-  name: "CollectionDelete",
+  name: "ImageDelete",
 
   props: {
-    collectionId: Number,
+    imageId: Number,
   },
 
   setup(props) {
@@ -36,11 +33,11 @@ export default {
       visible.value = true;
     }
 
-    const { deleteCollection } = useCollections();
+    const { deleteImage } = useImages();
     async function handleDelete() {
-      const deleted = await deleteCollection(props.collectionId);
+      const deleted = await deleteImage(props.imageId);
       visible.value = false;
-      notification.collections.deleted(deleted);
+      notification.images.deleted(deleted);
     }
 
     return {

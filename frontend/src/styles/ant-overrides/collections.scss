@@ -1,16 +1,16 @@
-.collection {
-    .ant-descriptions-small .ant-descriptions-row > th,
-    .ant-descriptions-small .ant-descriptions-row > td {
-        padding: 0 !important;
-    }
-}
-
-.collections {
+#collections {
     .ant-collapse {
         background: $filler !important;
 
         .ant-collapse-content > .ant-collapse-content-box {
             padding-bottom: 0 !important;
+        }
+    }
+
+    .collection {
+        .ant-descriptions-small .ant-descriptions-row > th,
+        .ant-descriptions-small .ant-descriptions-row > td {
+            padding: 0 !important;
         }
     }
 }

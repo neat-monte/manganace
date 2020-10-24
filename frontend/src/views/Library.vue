@@ -5,7 +5,7 @@
         <Collections :collectionId="collectionId" />
       </template>
       <template #fallback>
-        <Loading />
+        <!-- <Loading :replacementId="'collections'" /> -->
       </template>
     </Suspense>
 
@@ -14,7 +14,7 @@
         <Images :collectionId="collectionId" />
       </template>
       <template #fallback>
-        <Loading />
+        <!-- <Loading :replacementId="'images'" /> -->
       </template>
     </Suspense>
   </div>
@@ -25,7 +25,7 @@ import { computed, ref, onErrorCaptured } from "vue";
 import { useRoute } from "vue-router";
 import Collections from "@/components/library/Collections";
 import Images from "@/components/library/Images";
-import Loading from "@/components/shared/Loading";
+// import Loading from "@/components/shared/Loading";
 
 export default {
   name: "Library",
@@ -49,7 +49,7 @@ export default {
   components: {
     Collections,
     Images,
-    Loading,
+    // Loading,
   },
 };
 </script>
@@ -62,11 +62,11 @@ export default {
 
 @include sm-desktop {
   #library {
-    .collections {
+    #collections {
       flex: 0 300px;
     }
 
-    .images {
+    #images {
       flex: 1;
     }
   }

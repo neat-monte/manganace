@@ -24,7 +24,7 @@ export default {
   position: relative;
   min-height: 100vh;
 
-  .content {
+  > .content {
     padding-bottom: $footer-height;
   }
 }

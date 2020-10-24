@@ -22,12 +22,12 @@ export const create = async () => {
   return await fetchAsync(endpoints.images, methods.POST);
 }
 
-export const update = async () => {
-  // TODO: add data
-  return await fetchAsync(endpoints.images, methods.PUT);
+export const update = async (id, data) => {
+  const endpoint = `${endpoints.images}/${id}`
+  return await fetchAsync(endpoint, methods.PUT, data);
 }
 
-export const remove = async (id) => {
+export const destroy = async (id) => {
   const endpoint = `${endpoints.images}/${id}`;
   return await fetchAsync(endpoint, methods.DELETE);
 }

@@ -8,7 +8,6 @@ from .tag import Tag
 
 class ImageBase(CamelModel):
     """ Properties that are shared """
-    filename: Optional[constr(max_length=64)] = None
     description: Optional[str] = None
     collection_id: Optional[int] = None
 
@@ -23,7 +22,6 @@ class ImageCreate(ImageBase):
 
 class ImageUpdate(ImageBase):
     """ Properties that are available/required for an update """
-    filename: constr(max_length=64)
     tags_ids: Optional[List[int]] = None
 
 

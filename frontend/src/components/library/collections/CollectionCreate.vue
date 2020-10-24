@@ -27,7 +27,7 @@ import notification from "@/services/notification";
 import useCollections from "@/modules/useCollections";
 
 export default {
-  name: "CreateCollection",
+  name: "CollectionCreate",
 
   setup() {
     const visible = ref();

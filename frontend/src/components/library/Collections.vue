@@ -1,5 +1,5 @@
 <template>
-  <div v-if="collections" class="collections">
+  <div v-if="collections" id="collections">
     <div class="collections-header">
       <span class="title">Collections</span>
       <div class="controls">
@@ -61,12 +61,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.collections {
+#collections {
   display: none;
 }
 
 @include sm-desktop {
-  .collections {
+  #collections {
     display: block;
 
     .collections-header {

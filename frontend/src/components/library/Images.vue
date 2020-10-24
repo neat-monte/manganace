@@ -1,13 +1,18 @@
 <template>
-  <div class="images">
-    <ImageCard v-for="image in images" :key="image.id" :image="image" />
+  <div id="images">
+    <div class="controls"></div>
+    <div class="images-list">
+      <Suspense v-for="image in images" :key="image.id">
+        <ImageCardAsync :image="image" />
+      </Suspense>
+    </div>
   </div>
 </template>
 
 <script>
-import { ref, watchEffect } from "vue";
+import { defineAsyncComponent, ref, watchEffect } from "vue";
+import Loading from "@/components/shared/Loading";
 import useImages from "@/modules/useImages";
-import ImageCard from "@/components/library/images/ImageCard";
 
 export default {
   name: "Images",
@@ -17,12 +22,12 @@ export default {
   },
 
   async setup(props) {
-    const { state, getImagesOfCollection } = useImages();
+    const { state, loadImagesOfCollection } = useImages();
     const images = ref();
 
     watchEffect(async () => {
-      await getImagesOfCollection(props.collectionId);
-      images.value = state.images[props.collectionId];
+      await loadImagesOfCollection(props.collectionId);
+      images.value = state.collectionImages[props.collectionId];
     });
 
     return {
@@ -31,18 +36,38 @@ export default {
   },
 
   components: {
-    ImageCard,
+    ImageCardAsync: defineAsyncComponent({
+      loader: () => import("@/components/library/images/ImageCard"),
+      loadingComponent: Loading,
+      delay: 100,
+      suspensible: false,
+    }),
   },
 };
 </script>
 
 <style lang="scss" scoped>
+@include tablet {
+  #images {
+    .controls {
+      height: 70px;
+    }
+
+    .images-list {
+      display: grid;
+      grid-gap: 10px;
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+}
+
 @include sm-desktop {
-  .images {
-    padding: 10px 5%;
-    display: grid;
-    grid-gap: 20px;
-    grid-template-columns: repeat(3, auto);
+  #images {
+    .images-list {
+      padding: 10px;
+      grid-gap: 20px;
+      grid-template-columns: repeat(3, 1fr);
+    }
   }
 }
 </style>

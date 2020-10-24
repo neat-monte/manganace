@@ -1,8 +1,8 @@
 <template>
   <section class="generated-image">
-    <!-- <div class="image-wrapper">
-      <img class="face" :src="image.path"/>
-    </div> -->
+    <div class="image-wrapper">
+      <img class="face" src="#" />
+    </div>
   </section>
 </template>
 
