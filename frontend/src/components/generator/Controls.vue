@@ -19,7 +19,6 @@ export default {
 
 <style lang="scss" scoped>
 .controls {
-  background: deepskyblue;
   flex: 1;
   order: -1;
 }

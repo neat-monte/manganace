@@ -12,7 +12,6 @@ export default {
 
 <style lang="scss" scoped>
 .history {
-  background: orange;
   min-height: 200px;
 
   flex: 1 100%;

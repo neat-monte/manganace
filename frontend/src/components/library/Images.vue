@@ -7,7 +7,7 @@
 <script>
 import { ref, watchEffect } from "vue";
 import useImages from "@/modules/useImages";
-import ImageCard from "@/components/library/ImageCard";
+import ImageCard from "@/components/library/images/ImageCard";
 
 export default {
   name: "Images",

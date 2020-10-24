@@ -23,7 +23,7 @@
 <script>
 import { reactive, ref } from "vue";
 import { PlusOutlined } from "@ant-design/icons-vue";
-import { notification } from "ant-design-vue";
+import notification from "@/services/notification";
 import useCollections from "@/modules/useCollections";
 
 export default {
@@ -41,13 +41,9 @@ export default {
       description: null,
     });
     async function handleCreate() {
-      await addCollection(newCollection);
+      const created = await addCollection(newCollection);
       visible.value = false;
-      notification.open({
-        message: "Collection created",
-        description: `Collection "${newCollection.name}" was created successfully`,
-        placement: "bottomRight",
-      });
+      notification.collections.created(created);
     }
 
     return {

@@ -3,27 +3,10 @@
 }
 
 html {
-    height: 100%;
+    text-align: center;
 
     body {
         font-family: Avenir, Helvetica, Arial, sans-serif;
         margin: 0;
-        height: 100%;
-        text-align: center;
-
-        #app {
-            height: 100%;
-
-            .wrapper {
-                display: flex;
-                flex-direction: column;
-                height: 100%;
-
-                .content,
-                .loader {
-                    flex: 1 0 auto;
-                }
-            }
-        }
     }
 }

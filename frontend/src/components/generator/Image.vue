@@ -47,7 +47,7 @@ $image-dims: calc(100vw * 0.6);
   }
 }
 
-$image-dims: calc((100vw - 2 * #{$sm-generator-y-padding}) * 0.5);
+$image-dims: calc((100vw - 2 * #{$sm-y-padding}) * 0.5);
 
 @include sm-desktop {
   .generated-image {
@@ -60,7 +60,7 @@ $image-dims: calc((100vw - 2 * #{$sm-generator-y-padding}) * 0.5);
   }
 }
 
-$image-dims: calc((100vw - 2 * #{$lg-generator-y-padding}) * 0.5);
+$image-dims: calc((100vw - 2 * #{$lg-y-padding}) * 0.5);
 
 @include lg-desktop {
   .generated-image {

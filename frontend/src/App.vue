@@ -1,9 +1,7 @@
 <template>
-  <div class="wrapper">
-    <Header />
-    <router-view />
-    <Footer />
-  </div>
+  <Header />
+  <router-view />
+  <Footer />
 </template>
 
 <script>
@@ -19,8 +17,27 @@ export default {
 </script>
 
 <style lang="scss">
-/**
-  This empty style tag is required
-  to load the external CSS
-*/
+#app {
+  background: $filler;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  min-height: 100vh;
+
+  .content {
+    padding-bottom: $footer-height;
+  }
+}
+
+@include sm-desktop {
+  #app > .content {
+    padding: 20px $sm-y-padding $footer-height $sm-y-padding;
+  }
+}
+
+@include lg-desktop {
+  #app > .content {
+    padding: 40px $lg-y-padding $footer-height $lg-y-padding;
+  }
+}
 </style>

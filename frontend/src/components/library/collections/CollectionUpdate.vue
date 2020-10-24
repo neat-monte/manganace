@@ -27,7 +27,7 @@
 <script>
 import { reactive, ref } from "vue";
 import { EditOutlined } from "@ant-design/icons-vue";
-import { notification } from "ant-design-vue";
+import notification from "@/services/notification";
 import useCollections from "@/modules/useCollections";
 
 export default {
@@ -53,11 +53,7 @@ export default {
     async function handleUpdate() {
       const updated = await updateCollection(updatedCollection);
       visible.value = false;
-      notification.open({
-        message: "Collection updated",
-        description: `Collection "${updated.name}" was updated successfully`,
-        placement: "bottomRight",
-      });
+      notification.collections.updated(updated);
     }
 
     return {

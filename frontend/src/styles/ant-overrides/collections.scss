@@ -6,7 +6,11 @@
 }
 
 .collections {
-    .ant-collapse-content > .ant-collapse-content-box {
-        padding-bottom: 0 !important;
+    .ant-collapse {
+        background: $filler !important;
+
+        .ant-collapse-content > .ant-collapse-content-box {
+            padding-bottom: 0 !important;
+        }
     }
 }

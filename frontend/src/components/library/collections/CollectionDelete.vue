@@ -20,7 +20,7 @@
 <script>
 import { ref } from "vue";
 import { DeleteOutlined } from "@ant-design/icons-vue";
-import { notification } from "ant-design-vue";
+import notification from "@/services/notification";
 import useCollections from "@/modules/useCollections";
 
 export default {
@@ -40,11 +40,7 @@ export default {
     async function handleDelete() {
       const deleted = await deleteCollection(props.collectionId);
       visible.value = false;
-      notification.open({
-        message: "Collection deleted",
-        description: `Collection "${deleted.name}" was deleted successfully`,
-        placement: "bottomRight",
-      });
+      notification.collections.deleted(deleted);
     }
 
     return {

@@ -1,16 +1,24 @@
-// Viewports
+/**
+ * Viewports
+ */
 $tablet-width: 768px;
 $sm-desktop-width: 992px;
 $lg-desktop-width: 1200px;
 
-// Generated image sizes (height and width)
+/**
+ * Generated image sizes (height and width)
+ */
 $sm-desktop-image: 512px;
 $lg-desktop-image: 768px;
 
-// Paddings
-$sm-generator-y-padding: 5vw;
-$lg-generator-y-padding: 10vw;
+/**
+ * Paddings
+ */
+$sm-y-padding: 5vw;
+$lg-y-padding: 10vw;
 
-
-$header-height: 80px;
-$footer-height: 80px;
+/**
+ * Heights
+ */
+$header-height: 120px;
+$footer-height: 120px;

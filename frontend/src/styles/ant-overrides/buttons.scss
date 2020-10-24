@@ -1,0 +1,25 @@
+.ant-btn {
+    &.ant-btn-primary {
+        color: $filler !important;
+        background-color: $primary !important;
+        border-color: $primary !important;
+
+        &:hover {
+            color: $filler !important;
+            background-color: $primary-dark !important;
+            border-color: $darkness !important;
+        }
+    }
+
+    &.ant-btn-danger {
+        color: $filler !important;
+        background-color: $danger !important;
+        border-color: $danger !important;
+
+        &:hover {
+            color: $filler !important;
+            background-color: $danger-dark !important;
+            border-color: $darkness !important;
+        }
+    }
+}

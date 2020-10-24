@@ -1,7 +1,7 @@
 <template>
   <div v-if="collections" class="collections">
     <div class="collections-header">
-      <h1 class="title">Collections</h1>
+      <span class="title">Collections</span>
       <div class="controls">
         <CollectionCreate />
       </div>
@@ -22,8 +22,8 @@
 
 <script>
 import { useRouter } from "vue-router";
-import Collection from "@/components/library/Collection";
-import CollectionCreate from "@/components/library/CollectionCreate";
+import Collection from "@/components/library/collections/Collection";
+import CollectionCreate from "@/components/library/collections/CollectionCreate";
 import useCollections from "@/modules/useCollections";
 
 export default {
@@ -68,7 +68,6 @@ export default {
 @include sm-desktop {
   .collections {
     display: block;
-    background: lightcoral;
 
     .collections-header {
       display: flex;
@@ -79,6 +78,10 @@ export default {
         width: 100%;
         margin: 0;
         padding: 10px;
+        font-size: 1.4rem;
+        font-weight: bold;
+        text-transform: uppercase;
+        color: $primary;
       }
 
       .controls {
