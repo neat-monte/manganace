@@ -10,17 +10,24 @@
     title="Edit collection"
     @ok="handleUpdate()"
   >
-    <a-input v-model:value="updatedCollection.name" placeholder="Name" />
-
-    <a-textarea
-      v-model:value="updatedCollection.description"
-      placeholder="Description"
-      :rows="4"
-    />
-
-    <a-checkbox v-model:checked="updatedCollection.isArchived">
-      Archive this collection
-    </a-checkbox>
+    <a-form>
+      <a-form-item label="Name">
+        <a-input
+          v-model:value="updatedCollection.name"
+          placeholder="Well describing name"
+        />
+      </a-form-item>
+      <a-form-item label="Description">
+        <a-textarea
+          v-model:value="updatedCollection.description"
+          placeholder="What does this collection contain?"
+          :rows="2"
+        />
+      </a-form-item>
+      <a-form-item label="Archive collection">
+        <a-switch v-model:checked="updatedCollection.isArchived" />
+      </a-form-item>
+    </a-form>
   </a-modal>
 </template>
 

@@ -1,12 +1,12 @@
 <template>
-  <div id="images">
+  <section id="images">
     <div class="controls"></div>
     <div class="images-list">
       <Suspense v-for="image in images" :key="image.id">
         <ImageCardAsync :image="image" />
       </Suspense>
     </div>
-  </div>
+  </section>
 </template>
 
 <script>

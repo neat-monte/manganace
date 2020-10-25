@@ -4,7 +4,8 @@
         background-color: $primary !important;
         border-color: $primary !important;
 
-        &:hover {
+        &:hover,
+        &:focus {
             color: $filler !important;
             background-color: $primary-dark !important;
             border-color: $darkness !important;
@@ -13,10 +14,11 @@
 
     &.ant-btn-danger {
         color: $filler !important;
-        background-color: $danger !important;
-        border-color: $danger !important;
+        background-color: $danger-80 !important;
+        border-color: $danger-80 !important;
 
-        &:hover {
+        &:hover,
+        &:focus {
             color: $filler !important;
             background-color: $danger-dark !important;
             border-color: $darkness !important;

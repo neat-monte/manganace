@@ -1,0 +1,35 @@
+.ant-input {
+    color: $darkness !important;
+
+    &:hover,
+    &:focus {
+        border-color: $primary !important;
+    }
+
+    &:last-child {
+        margin: 0 !important;
+    }
+
+    &::placeholder {
+        color: $primary-50 !important;
+        font-style: italic !important;
+    }
+}
+
+.ant-switch-checked {
+    background-color: $primary !important;
+}
+
+.ant-checkbox-wrapper {
+    .ant-checkbox {
+        .ant-checkbox-inner {
+            border-color: $primary !important;
+        }
+    }
+
+    .ant-checkbox-checked {
+        .ant-checkbox-inner {
+            background-color: $primary !important;
+        }
+    }
+}

@@ -3,10 +3,8 @@
  */
 
 <template>
-  <div :id="replacementId" :class="replacementClass">
-    <div class="loading">
-      <div class="dual-ring"></div>
-    </div>
+  <div :id="replacementId" class="loading">
+    <div class="dual-ring"></div>
   </div>
 </template>
 
@@ -16,7 +14,6 @@ export default {
 
   props: {
     replacementId: String,
-    replacementClass: String,
   },
 };
 </script>

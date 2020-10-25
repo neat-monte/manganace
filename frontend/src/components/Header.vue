@@ -1,11 +1,11 @@
 <template>
   <header id="header">
-    <router-link class="brand-link" to="/">
-      <div class="brand">
+    <div class="brand">
+      <router-link class="brand-link" to="/">
         <span class="title">Manganace</span>
         <span class="subtitle">Manipulate GAN Face</span>
-      </div>
-    </router-link>
+      </router-link>
+    </div>
     <nav class="navigation">
       <router-link to="/">
         <div class="link">
@@ -41,12 +41,12 @@ export default {
   height: $header-height;
   padding: 20px 0;
 
-  .brand-link {
+  .brand {
     display: flex;
     align-items: center;
     justify-content: center;
 
-    .brand {
+    .brand-link {
       flex: 0;
       display: flex;
       flex-wrap: wrap;
@@ -66,7 +66,10 @@ export default {
         transition: all 0.2s ease;
       }
 
-      &:hover {
+      &:hover,
+      &:focus {
+        box-shadow: none !important;
+
         .subtitle {
           color: $darkness;
           transform: scale(1.3);
@@ -117,7 +120,10 @@ export default {
         }
       }
 
-      &:hover {
+      &:hover,
+      &:focus {
+        box-shadow: none !important;
+
         .link::after {
           visibility: visible;
           transform: scaleX(1);
@@ -133,7 +139,7 @@ export default {
     padding-right: 30px;
     display: flex;
 
-    .brand-link {
+    .brand {
       flex: 3 400px;
     }
 
@@ -157,7 +163,7 @@ export default {
     padding-left: $sm-y-padding;
     padding-right: $sm-y-padding;
 
-    .brand-link {
+    .brand {
       justify-content: left;
 
       .brand {

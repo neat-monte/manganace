@@ -1,0 +1,7 @@
+html {
+    --antd-wave-shadow-color: $primary !important;
+
+    *:focus {
+        box-shadow: 0 0 0 1px $primary-50 !important;
+    }
+}

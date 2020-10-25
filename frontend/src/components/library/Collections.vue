@@ -1,5 +1,5 @@
 <template>
-  <div v-if="collections" id="collections">
+  <section v-if="collections" id="collections">
     <div class="collections-header">
       <span class="title">Collections</span>
       <div class="controls">
@@ -17,7 +17,7 @@
         <Collection :collection="collection" />
       </a-collapse-panel>
     </a-collapse>
-  </div>
+  </section>
 </template>
 
 <script>
@@ -78,10 +78,6 @@ export default {
         width: 100%;
         margin: 0;
         padding: 10px;
-        font-size: 1.4rem;
-        font-weight: bold;
-        text-transform: uppercase;
-        color: $primary;
       }
 
       .controls {

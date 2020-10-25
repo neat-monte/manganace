@@ -1,0 +1,26 @@
+.ant-modal {
+    .ant-modal-content {
+        background: $filler !important;
+
+        .ant-modal-header {
+            background: $primary !important;
+
+            .ant-modal-title {
+                color: $filler !important;
+                font-size: 1rem !important;
+                font-weight: bold !important;
+                text-transform: uppercase !important;
+            }
+        }
+
+        .ant-modal-body {
+            .ant-form {
+                .ant-form-item {
+                    &:last-child {
+                        margin-bottom: 0 !important;
+                    }
+                }
+            }
+        }
+    }
+}

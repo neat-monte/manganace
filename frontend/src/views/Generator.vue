@@ -1,7 +1,16 @@
 <template>
   <div id="generator" class="content">
     <Image />
-    <Controls />
+
+    <Suspense>
+      <template #default>
+        <Controls />
+      </template>
+      <template #fallback>
+        <Loading :replacementId="'controls'" />
+      </template>
+    </Suspense>
+
     <History />
   </div>
 </template>
@@ -10,6 +19,7 @@
 import Image from "@/components/generator/Image";
 import Controls from "@/components/generator/Controls";
 import History from "@/components/generator/History";
+import Loading from "@/components/shared/Loading";
 
 export default {
   name: "Generator",
@@ -17,6 +27,7 @@ export default {
     Image,
     Controls,
     History,
+    Loading,
   },
 };
 </script>
@@ -25,5 +36,9 @@ export default {
 #generator {
   display: flex;
   flex-wrap: wrap;
+
+  #controls {
+    order: -1;
+  }
 }
 </style>

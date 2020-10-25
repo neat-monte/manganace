@@ -10,11 +10,15 @@
     title="Edit image description"
     @ok="handleUpdate()"
   >
-    <a-textarea
-      v-model:value="updatedImage.description"
-      placeholder="Description"
-      :rows="4"
-    />
+    <a-form>
+      <a-form-item label="Description">
+        <a-textarea
+          v-model:value="updatedImage.description"
+          placeholder="Give picture a short description"
+          :rows="2"
+        />
+      </a-form-item>
+    </a-form>
   </a-modal>
 </template>
 

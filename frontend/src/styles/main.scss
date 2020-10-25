@@ -3,5 +3,10 @@
 @import "./base/colors.scss";
 @import "./base/layout.scss";
 
+@import "./ant-overrides/layout.scss";
 @import "./ant-overrides/collections.scss";
 @import "./ant-overrides/buttons.scss";
+@import "./ant-overrides/modal.scss";
+@import "./ant-overrides/form.scss";
+@import "./ant-overrides/inputs.scss";
+@import "./ant-overrides/notification.scss";

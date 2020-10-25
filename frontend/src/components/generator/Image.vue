@@ -1,22 +1,33 @@
 <template>
-  <section class="generated-image">
+  <section id="generated-image">
     <div class="image-wrapper">
-      <img class="face" src="#" />
+      <img class="face" :src="image.path" />
     </div>
   </section>
 </template>
 
 
 <script>
+import useGenerator from "@/modules/useGenerator";
+
 export default {
   name: "Image",
+
+  setup() {
+    const { state } = useGenerator();
+
+    return {
+      image: state.image,
+    };
+  },
 };
 </script>
 
 
 <style lang="scss" scoped>
-.generated-image {
+#generated-image {
   flex: 1 100%;
+  background: $secondary-20;
 
   .image-wrapper {
     position: relative;
@@ -36,7 +47,7 @@ export default {
 $image-dims: calc(100vw * 0.6);
 
 @include tablet {
-  .generated-image {
+  #generated-image {
     flex: 0 $image-dims;
     max-height: $image-dims;
 
@@ -50,7 +61,7 @@ $image-dims: calc(100vw * 0.6);
 $image-dims: calc((100vw - 2 * #{$sm-y-padding}) * 0.5);
 
 @include sm-desktop {
-  .generated-image {
+  #generated-image {
     flex: 0 $image-dims;
     max-height: $image-dims;
 
@@ -63,7 +74,7 @@ $image-dims: calc((100vw - 2 * #{$sm-y-padding}) * 0.5);
 $image-dims: calc((100vw - 2 * #{$lg-y-padding}) * 0.5);
 
 @include lg-desktop {
-  .generated-image {
+  #generated-image {
     flex: 0 $image-dims;
     max-height: $image-dims;
     max-width: $lg-desktop-image;

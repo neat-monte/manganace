@@ -8,7 +8,7 @@ export const fetchApi = fetchAbsolute(fetch)(endpoints.baseAddress)
  * @param response
  * @returns {{ok}|*}
  */
-function validate (response) {
+function validate(response) {
   if (!response.ok) {
     throw Error(response.statusText)
   }
@@ -20,7 +20,7 @@ function validate (response) {
  * @param response
  * @returns {*}
  */
-function jsonify (response) {
+function jsonify(response) {
   return response.json()
 }
 
@@ -28,22 +28,34 @@ function jsonify (response) {
  * Fetch pipeline function which logs an error
  * @param error
  */
-function dump (error) {
+function dump(error) {
   console.log('There was a problem: \n', error)
 }
 
 /**
- * Wrapped fetch call with a predetermined pipeline of validate and convert to json,
+ * Wrapped fetch call with a predetermined pipeline of validate and convert to JSON,
  * and in case of error - log to the console
  * @param url {String|URL}
  * @param method {String}
  * @param data {*}
  * @returns {Promise<postcss.Result|any|undefined>}
  */
-export async function fetchAsync (url, method, data = null) {
+export async function fetchAsync(url, method, data = null) {
   return fetchApi(url, { method: method, body: data })
     .then(validate)
     .then(jsonify)
+    .catch(dump)
+}
+
+/**
+ * Wrapped fetch call which does not expect any JSON response, only OK (200).
+ * It validates the response and in case of error - logs to the console.
+ * @param {*} url {String|URL}
+ * @param {*} method {String}
+ */
+export async function sendAsync(url, method) {
+  return fetchApi(url, { method: method })
+    .then(validate)
     .catch(dump)
 }
 
@@ -64,7 +76,7 @@ export const methods = {
  * @param params {*}
  * @returns {URL}
  */
-export function buildUrlParams (endpoint, params) {
+export function buildUrlParams(endpoint, params) {
   const address = endpoints.baseAddress + endpoint
   const url = new URL(address)
   Object.keys(params).forEach(key => url.searchParams.append(key, params[key]))

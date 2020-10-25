@@ -10,13 +10,21 @@
     title="Create new collection"
     @ok="handleCreate()"
   >
-    <a-input v-model:value="newCollection.name" placeholder="Name" />
-
-    <a-textarea
-      v-model:value="newCollection.description"
-      placeholder="Description"
-      :rows="4"
-    />
+    <a-form>
+      <a-form-item label="Name">
+        <a-input
+          v-model:value="newCollection.name"
+          placeholder="Well describing name"
+        />
+      </a-form-item>
+      <a-form-item label="Description">
+        <a-textarea
+          v-model:value="newCollection.description"
+          placeholder="What does this collection contain?"
+          :rows="2"
+        />
+      </a-form-item>
+    </a-form>
   </a-modal>
 </template>
 

@@ -1,7 +1,7 @@
 <template>
-  <aside class="history">
-    <h1>History</h1>
-  </aside>
+  <section class="history">
+    <span class="title">History</span>
+  </section>
 </template>
 
 <script>

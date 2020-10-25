@@ -2,6 +2,10 @@
     .ant-collapse {
         background: $filler !important;
 
+        .ant-collapse-header {
+            font-size: 1rem;
+        }
+
         .ant-collapse-content > .ant-collapse-content-box {
             padding-bottom: 0 !important;
         }

@@ -24,7 +24,7 @@ class GeneratorInterface:
         name = f'{seed}_{"".join(random.choice(string.ascii_letters) for _ in range(8))}.png'
         path = f'{STATIC}{name}'
         plt.imsave(path, img)
-        return path
+        return name
 
 
 generator = GeneratorInterface()
