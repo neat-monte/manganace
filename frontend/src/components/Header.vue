@@ -39,7 +39,7 @@ export default {
 <style lang="scss" scoped>
 #header {
   height: $header-height;
-  padding: 20px 0;
+  padding: 20px initial;
 
   .brand {
     display: flex;
@@ -85,7 +85,7 @@ export default {
       flex: 1;
       display: flex;
       align-items: center;
-      justify-content: center;
+      justify-content: right;
       transition: all 0.2s ease;
 
       .link {
@@ -135,8 +135,6 @@ export default {
 
 @include tablet {
   #header {
-    padding-left: 30px;
-    padding-right: 30px;
     display: flex;
 
     .brand {
@@ -160,23 +158,13 @@ export default {
 
 @include sm-desktop {
   #header {
-    padding-left: $sm-y-padding;
-    padding-right: $sm-y-padding;
-
     .brand {
       justify-content: left;
 
-      .brand {
-        flex: 0 300px;
+      .brand-link {
+        margin-left: 30px;
       }
     }
-  }
-}
-
-@include lg-desktop {
-  #header {
-    padding-left: $lg-y-padding;
-    padding-right: $lg-y-padding;
   }
 }
 </style>

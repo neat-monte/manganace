@@ -1,7 +1,5 @@
 <template>
   <div id="generator" class="content">
-    <Image />
-
     <Suspense>
       <template #default>
         <Controls />
@@ -10,7 +8,7 @@
         <Loading :replacementId="'controls'" />
       </template>
     </Suspense>
-
+    <Image />
     <History />
   </div>
 </template>
@@ -35,10 +33,26 @@ export default {
 <style lang="scss" scoped>
 #generator {
   display: flex;
-  flex-wrap: wrap;
+  flex-flow: row wrap;
 
-  #controls {
-    order: -1;
+  #controls,
+  #generated-image,
+  #history {
+    flex: 100%;
+  }
+}
+
+@include sm-desktop {
+  #generator {
+    #controls {
+      flex: 1 300px;
+    }
+    #generated-image {
+      flex: 1 512px;
+    }
+    #history {
+      flex: 1 100%;
+    }
   }
 }
 </style>

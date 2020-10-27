@@ -1,7 +1,12 @@
 <template>
   <section id="generated-image">
+    <div class="controls">
+      <button>Add</button>
+      <ImageDownload />
+    </div>
     <div class="image-wrapper">
-      <img class="face" :src="image.path" />
+      <Loading v-if="generating" />
+      <img :src="image.path" />
     </div>
   </section>
 </template>
@@ -9,16 +14,24 @@
 
 <script>
 import useGenerator from "@/modules/useGenerator";
+import ImageDownload from "@/components/library/images/ImageDownload";
+import Loading from "@/components/shared/Loading";
 
 export default {
   name: "Image",
 
   setup() {
-    const { state } = useGenerator();
+    const { state, generating } = useGenerator();
 
     return {
       image: state.image,
+      generating,
     };
+  },
+
+  components: {
+    Loading,
+    ImageDownload,
   },
 };
 </script>
@@ -26,63 +39,26 @@ export default {
 
 <style lang="scss" scoped>
 #generated-image {
-  flex: 1 100%;
-  background: $secondary-20;
+  .controls {
+    text-align: right;
+    height: 40px;
+  }
 
   .image-wrapper {
+    background: $secondary-20;
     position: relative;
-    height: 100vw;
-    width: 100%;
 
-    .face {
+    img {
       object-fit: cover;
+      width: 100%;
+      height: auto;
+      border-radius: 2px;
+    }
+
+    .loading {
       position: absolute;
+      background: $secondary-50;
       height: 100%;
-      width: 100%;
-      right: 0;
-    }
-  }
-}
-
-$image-dims: calc(100vw * 0.6);
-
-@include tablet {
-  #generated-image {
-    flex: 0 $image-dims;
-    max-height: $image-dims;
-
-    .image-wrapper {
-      height: $image-dims;
-      width: 100%;
-    }
-  }
-}
-
-$image-dims: calc((100vw - 2 * #{$sm-y-padding}) * 0.5);
-
-@include sm-desktop {
-  #generated-image {
-    flex: 0 $image-dims;
-    max-height: $image-dims;
-
-    .image-wrapper {
-      height: $image-dims;
-    }
-  }
-}
-
-$image-dims: calc((100vw - 2 * #{$lg-y-padding}) * 0.5);
-
-@include lg-desktop {
-  #generated-image {
-    flex: 0 $image-dims;
-    max-height: $image-dims;
-    max-width: $lg-desktop-image;
-
-    .image-wrapper {
-      height: $image-dims;
-      max-height: $lg-desktop-image;
-      max-width: $lg-desktop-image;
     }
   }
 }

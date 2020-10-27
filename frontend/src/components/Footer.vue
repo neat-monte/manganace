@@ -48,18 +48,4 @@ export default {
     }
   }
 }
-
-@include sm-desktop {
-  #footer {
-    padding-left: $sm-y-padding;
-    padding-right: $sm-y-padding;
-  }
-}
-
-@include lg-desktop {
-  #footer {
-    padding-left: $lg-y-padding;
-    padding-right: $lg-y-padding;
-  }
-}
 </style>

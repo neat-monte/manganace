@@ -9,26 +9,30 @@
           :value="generateRequest.seed"
           @change="seedOnChange"
           :maxlength="10"
-          placeholder="Enter a seed"
           :disabled="generating"
+          placeholder="Enter a seed"
         />
       </a-form-item>
     </a-form>
-    <a-button @click="generate" type="primary" :disabled="generating">
+    <a-button
+      @click="generate(generateRequest)"
+      :disabled="generating"
+      type="primary"
+    >
       Generate
     </a-button>
   </section>
 </template>
 
 <script>
-import { reactive, ref } from "vue";
+import { reactive } from "vue";
 import useGenerator from "@/modules/useGenerator";
 
 export default {
   name: "Controls",
 
   async setup() {
-    const { initGenerator, generateImage } = useGenerator();
+    const { initGenerator, generate, generating } = useGenerator();
     await initGenerator();
 
     const generateRequest = reactive({
@@ -43,13 +47,6 @@ export default {
       }
     }
 
-    const generating = ref(false);
-    async function generate() {
-      generating.value = true;
-      await generateImage(generateRequest);
-      generating.value = false;
-    }
-
     return {
       generateRequest,
       generating,
@@ -61,11 +58,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-#controls {
-  flex: 1;
-  order: -1;
-}
-
 @include sm-desktop {
   #controls {
     margin-right: 10px;

@@ -23,11 +23,16 @@ export default {
   flex: 1;
   align-self: center;
   width: 100%;
+  position: relative;
 
   .dual-ring {
     display: inline-block;
     width: 80px;
     height: 80px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 
     &:after {
       content: " ";
