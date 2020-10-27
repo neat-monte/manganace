@@ -41,7 +41,7 @@ function dump(error) {
  * @returns {Promise<postcss.Result|any|undefined>}
  */
 export async function fetchAsync(url, method, data = null) {
-  return fetchApi(url, { method: method, body: data })
+  return fetchApi(url, { method: method, body: data, credentials: 'include' })
     .then(validate)
     .then(jsonify)
     .catch(dump)
@@ -54,7 +54,7 @@ export async function fetchAsync(url, method, data = null) {
  * @param {*} method {String}
  */
 export async function sendAsync(url, method) {
-  return fetchApi(url, { method: method })
+  return fetchApi(url, { method: method, credentials: 'include' })
     .then(validate)
     .catch(dump)
 }

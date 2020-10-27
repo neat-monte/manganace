@@ -34,6 +34,7 @@ export default {
   cursor: pointer;
   position: relative;
   margin-bottom: 20px;
+  box-shadow: $box-double-shadow;
 
   .image-wrapper {
     display: block;
@@ -62,14 +63,12 @@ export default {
     bottom: 0;
     height: 50px;
     border-top: 1px solid $secondary-20;
-    border-bottom: 1px solid $secondary;
   }
 }
 
 @include tablet {
   .image-card {
     margin: 0;
-    border: 1px solid $secondary-50;
     border-radius: 2px 2px 2px 2px;
 
     .image-wrapper img {

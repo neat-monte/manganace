@@ -1,26 +1,28 @@
 <template>
   <section id="controls">
-    <div class="controls-header">
-      <span class="title">Controls</span>
+    <div class="wrapper">
+      <div class="header">
+        <span class="title">Controls</span>
+      </div>
+      <a-form>
+        <a-form-item>
+          <a-input
+            :value="generateRequest.seed"
+            @change="seedOnChange"
+            :maxlength="10"
+            :disabled="generating"
+            placeholder="Enter a seed"
+          />
+        </a-form-item>
+      </a-form>
+      <a-button
+        @click="generate(generateRequest)"
+        :disabled="generating"
+        type="primary"
+      >
+        Generate
+      </a-button>
     </div>
-    <a-form>
-      <a-form-item>
-        <a-input
-          :value="generateRequest.seed"
-          @change="seedOnChange"
-          :maxlength="10"
-          :disabled="generating"
-          placeholder="Enter a seed"
-        />
-      </a-form-item>
-    </a-form>
-    <a-button
-      @click="generate(generateRequest)"
-      :disabled="generating"
-      type="primary"
-    >
-      Generate
-    </a-button>
   </section>
 </template>
 
@@ -32,7 +34,7 @@ export default {
   name: "Controls",
 
   async setup() {
-    const { initGenerator, generate, generating } = useGenerator();
+    const { generating, initGenerator, generate } = useGenerator();
     await initGenerator();
 
     const generateRequest = reactive({
@@ -58,15 +60,4 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@include sm-desktop {
-  #controls {
-    margin-right: 10px;
-  }
-}
-
-@include lg-desktop {
-  #controls {
-    margin-right: 20px;
-  }
-}
 </style>

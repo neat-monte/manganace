@@ -64,7 +64,7 @@ export default {
 @include sm-desktop {
   #images {
     .images-list {
-      padding: 10px;
+      margin-left: 50px;
       grid-gap: 20px;
       grid-template-columns: repeat(3, 1fr);
     }

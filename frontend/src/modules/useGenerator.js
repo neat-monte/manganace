@@ -1,22 +1,36 @@
-import { ref, reactive, readonly } from "vue"
+import { ref, readonly, reactive } from "vue"
 import endpoints from "@/services/http/endpoints"
 import http from "@/services/http"
+import { getCookie } from "@/services/cookie"
 
-const generating = ref(false);
+/** Status of the generator */
+const isGenerating = ref(false);
 
-const state = reactive({
-    image: {
-        seed: null,
-        filename: null,
-        path: null,
-    },
-    history: []
+/**
+ * Object that holds the information of a generated image
+ */
+const image = reactive({
+    seed: null,
+    filename: null,
+    path: null,
 });
 
-function mapImage(image) {
-    state.image.seed = image.seed;
-    state.image.filename = image.filename;
-    state.image.path = `${endpoints.baseAddress}${endpoints.static}/${image.filename}`;
+/**
+ * Object that holds previously generated images,
+ * those images should not be changed or manipulated
+ * just readonly.
+ */
+const activity = ref([]);
+
+/**
+ * Maps an image either from the API or image from the
+ * history to the reactive image container
+ * @param {*} img {Object}
+ */
+function mapImage(img) {
+    image.seed = img.seed;
+    image.filename = img.filename;
+    image.path = img.path;
 }
 
 export default function useGenerator() {
@@ -26,20 +40,37 @@ export default function useGenerator() {
     }
 
     const generate = async (request) => {
-        generating.value = true;
+        isGenerating.value = true;
         const requestJson = JSON.stringify(request);
         const generatedImage = await http.generator.generate(requestJson);
         if (generatedImage) {
+            generatedImage.path = `${endpoints.baseAddress}${endpoints.sessionImages}/${generatedImage.filename}`
             mapImage(generatedImage);
-            state.history.unshift(Object.assign({}, state.image));
+            activity.value.unshift(Object.assign({}, image));
         }
-        generating.value = false;
+        isGenerating.value = false;
+    }
+
+    const loadActivity = async () => {
+        const sessionGuid = getCookie("session");
+        const sessionActivity = await http.generator.getActivity(sessionGuid);
+        console.log(sessionActivity);
+        // if (sessionHistory) {
+
+        // }
+    }
+
+    const swapImage = (index) => {
+        mapImage(activity[index])
     }
 
     return {
-        state: readonly(state),
+        image: readonly(image),
+        isGenerating: readonly(isGenerating),
+        activity: readonly(activity),
         initGenerator,
+        loadActivity,
         generate,
-        generating
+        swapImage
     }
 }

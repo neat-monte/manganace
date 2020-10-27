@@ -1,9 +1,9 @@
 import random
 import string
-
+import uuid
+from pathlib import Path
 import matplotlib.pyplot as plt
 
-from . import *
 from .wrapper import GeneratorWrapper
 
 
@@ -19,10 +19,10 @@ class GeneratorInterface:
         # [Necessary] Dummy call to save internal variables
         _ = self.generator.generate_image_from_seed(0)
 
-    def get_image_by_seed(self, seed: int) -> string:
+    def get_image_by_seed(self, seed: int, session: str) -> string:
         img = self.generator.generate_image_from_seed(seed)
-        name = f'{seed}_{"".join(random.choice(string.ascii_letters) for _ in range(8))}.png'
-        path = f'{STATIC}{name}'
+        name = f'{seed}_{str(uuid.uuid4())}.png'
+        path = Path.cwd() / 'static' / 'images' / 'session' / session / name
         plt.imsave(path, img)
         return name
 

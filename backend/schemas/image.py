@@ -15,7 +15,7 @@ class ImageBase(CamelModel):
 class ImageCreate(ImageBase):
     """ Properties that are available/required for the creation """
     seed: int
-    filename: constr(max_length=64)
+    filename: constr(max_length=51)
     collection_id: int
     tags_ids: Optional[List[int]] = None
 
@@ -29,7 +29,7 @@ class ImageInDb(ImageBase):
     """ Properties that are in the database """
     id: int
     seed: int
-    filename: constr(max_length=64)
+    filename: constr(max_length=51)
     collection_id: int
 
     class Config:
@@ -45,3 +45,9 @@ class JustImage(ImageInDb):
     """ Properties without any relations that are returned via the API """
     tags_ids: str
     pass
+
+
+class UnsavedSessionActivityImage(CamelModel):
+    """ Properties of unsaved images from session activity that are returned via the API """
+    seed: int
+    filename: str

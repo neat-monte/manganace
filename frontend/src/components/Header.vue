@@ -57,22 +57,29 @@ export default {
         font-weight: bold;
         text-transform: uppercase;
         color: $primary;
+        text-shadow: $text-shadow-hard;
+        transition: all 0.2s ease;
       }
+
       .subtitle {
         flex: 100%;
         margin-top: -18px;
         font-size: 1.2rem;
         color: $primary-dark;
+        text-shadow: $text-shadow-soft;
         transition: all 0.2s ease;
       }
 
       &:hover,
       &:focus {
-        box-shadow: none !important;
+        .title {
+          text-shadow: $text-shadow-soft;
+        }
 
         .subtitle {
           color: $darkness;
-          transform: scale(1.3);
+          text-shadow: $text-shadow-hard;
+          transform: scale(1.2);
         }
       }
     }

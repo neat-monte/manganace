@@ -7,7 +7,7 @@ const state = reactive({
 })
 
 function insertImage(image) {
-  image.path = `${endpoints.baseAddress}${endpoints.static}/${image.filename}`;
+  image.path = `${endpoints.baseAddress}${endpoints.savedImages}/${image.filename}`;
   if (state.collectionImages[image.collectionId] === undefined) {
     state.collectionImages[image.collectionId] = {};
   }

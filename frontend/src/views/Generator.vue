@@ -8,15 +8,24 @@
         <Loading :replacementId="'controls'" />
       </template>
     </Suspense>
+
     <Image />
-    <History />
+
+    <Suspense>
+      <template #default>
+        <Activity />
+      </template>
+      <template #fallback>
+        <Loading :replacementId="'activity'" />
+      </template>
+    </Suspense>
   </div>
 </template>
 
 <script>
 import Image from "@/components/generator/Image";
 import Controls from "@/components/generator/Controls";
-import History from "@/components/generator/History";
+import Activity from "@/components/generator/Activity";
 import Loading from "@/components/shared/Loading";
 
 export default {
@@ -24,7 +33,7 @@ export default {
   components: {
     Image,
     Controls,
-    History,
+    Activity,
     Loading,
   },
 };
@@ -37,7 +46,7 @@ export default {
 
   #controls,
   #generated-image,
-  #history {
+  #activity {
     flex: 100%;
   }
 }
@@ -45,13 +54,13 @@ export default {
 @include sm-desktop {
   #generator {
     #controls {
-      flex: 1 300px;
+      flex: 1;
     }
     #generated-image {
-      flex: 1 512px;
+      flex: 1;
     }
-    #history {
-      flex: 1 100%;
+    #activity {
+      flex: 0 100%;
     }
   }
 }

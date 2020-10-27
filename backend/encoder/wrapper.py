@@ -6,7 +6,8 @@ import numpy as np
 
 import dnnlib
 from .model import Generator
-from . import *
+
+PICKLED_GEN = 'stylegan2-ffhq-config-f.pkl'
 
 
 class GeneratorWrapper:
@@ -15,7 +16,7 @@ class GeneratorWrapper:
         dnnlib.tflib.init_tf()
         self.tf_session = tf.get_default_session()
         # Load networks from weights file
-        pickled = Path(__file__).parent.parent.absolute() / Path(PICKLED_GEN)
+        pickled = Path.cwd() / 'weights' / PICKLED_GEN
         with open(pickled, "rb") as file:
             _, _, self.Gs = pickle.load(file)
         # Initialize the generator
