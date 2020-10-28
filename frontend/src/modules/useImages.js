@@ -22,6 +22,15 @@ export default function useImages() {
     images.forEach(image => insertImage(image));
   }
 
+  const createImage = async (newImage) => {
+    const imageJson = JSON.stringify(newImage);
+    const image = await http.images.create(imageJson);
+    if (image) {
+      insertImage(image);
+      return state.collectionImages[image.collectionId][image.id];
+    }
+  }
+
   const updateImage = async (updatedImage) => {
     const imageJson = JSON.stringify(updatedImage);
     const image = await http.images.update(updatedImage.id, imageJson)
@@ -43,6 +52,7 @@ export default function useImages() {
   return {
     state: readonly(state),
     loadImagesOfCollection,
+    createImage,
     updateImage,
     deleteImage
   }

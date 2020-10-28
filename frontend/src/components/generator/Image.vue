@@ -1,25 +1,35 @@
 <template>
   <section id="generated-image">
-    <div class="controls">
-      <button>Add</button>
-      <ImageDownload :imageUrl="image.path" />
-    </div>
-    <div class="image-wrapper">
-      <Loading v-if="isGenerating" />
-      <img :src="image.path" />
-      <div
-        class="zoomed-in"
-        :style="`background-image: url('${image.path}')`"
-        @mousemove="ZoomIn"
-      />
+    <div class="wrapper">
+      <div class="controls">
+        <Suspense>
+          <template #default>
+            <ImageSave />
+          </template>
+          <template #fallback>
+            <Loading />
+          </template>
+        </Suspense>
+        <ImageDownload :imageUrl="image.path" />
+      </div>
+      <div class="image-wrapper">
+        <Loading v-if="isGenerating" />
+        <img :src="image.path" />
+        <div
+          class="zoomed-in"
+          :style="`background-image: url('${image.path}')`"
+          @mousemove="ZoomIn"
+        />
+      </div>
     </div>
   </section>
 </template>
 
 <script>
-import useGenerator from "@/modules/useGenerator";
-import ImageDownload from "@/components/library/images/ImageDownload";
+import ImageSave from "@/components/actions/image/ImageSave";
+import ImageDownload from "@/components/actions/image/ImageDownload";
 import Loading from "@/components/shared/Loading";
+import useGenerator from "@/modules/useGenerator";
 
 export default {
   name: "Image",
@@ -55,6 +65,7 @@ export default {
 
   components: {
     Loading,
+    ImageSave,
     ImageDownload,
   },
 };
@@ -63,69 +74,72 @@ export default {
 
 <style lang="scss" scoped>
 #generated-image {
-  .controls {
-    text-align: right;
-    padding: 20px 50px;
-  }
+  padding: 20px;
+  height: 100vw;
 
-  .image-wrapper {
-    position: relative;
-    height: 100vw;
-    overflow: hidden;
+  .wrapper {
+    margin: auto;
 
-    img {
-      object-fit: cover;
-      width: 100%;
-      height: auto;
-      border-radius: 2px;
+    .controls {
+      padding: 20px 0;
+      display: flex;
+      justify-content: space-around;
     }
 
-    .zoomed-in {
-      position: absolute;
-      top: 0;
-      left: 0;
-      height: 100%;
-      width: 100%;
-      opacity: 0;
-      transition: opacity 0.2s linear;
-    }
+    .image-wrapper {
+      position: relative;
+      overflow: hidden;
 
-    .loading {
-      position: absolute;
-      background: $secondary-50;
-      height: 100%;
-    }
+      img {
+        object-fit: cover;
+        width: 100%;
+        height: auto;
+        border-radius: 2px;
+      }
 
-    &:hover {
       .zoomed-in {
-        opacity: 1;
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        opacity: 0;
+        transition: opacity 0.2s linear;
+      }
+
+      .loading {
+        position: absolute;
+        height: 100%;
+      }
+
+      &:hover {
+        .zoomed-in {
+          opacity: 1;
+          cursor: move;
+        }
       }
     }
   }
 }
 
 @include tablet {
-  // viewport width minus padding from both sides:
-  $height: calc(100vw - (#{$tablet-x-padding} * 2));
-
   #generated-image {
-    .image-wrapper {
-      height: $height;
-      border-radius: 2px;
-      box-shadow: $box-double-shadow;
-    }
+    height: calc(100vw - 2 * #{$tablet-x-padding});
+    border-radius: 2px;
+    box-shadow: $box-double-shadow;
+    margin-bottom: 20px;
   }
 }
 
 @include sm-desktop {
   #generated-image {
+    height: initial;
     display: flex;
     flex-flow: row wrap;
     justify-content: right;
 
     .controls {
       flex: 1 100%;
-      padding: 20px 0;
     }
 
     .image-wrapper {

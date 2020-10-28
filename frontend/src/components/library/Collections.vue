@@ -22,8 +22,9 @@
 
 <script>
 import { useRouter } from "vue-router";
-import Collection from "@/components/library/collections/Collection";
-import CollectionCreate from "@/components/library/collections/CollectionCreate";
+
+import Collection from "@/components/library/Collection";
+import CollectionCreate from "@/components/actions/collection/CollectionCreate";
 import useCollections from "@/modules/useCollections";
 
 export default {

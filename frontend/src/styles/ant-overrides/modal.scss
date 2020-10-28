@@ -2,6 +2,22 @@
     .ant-modal-content {
         background: $filler !important;
 
+        .ant-modal-close {
+            transition: all 0.2s ease !important;
+
+            .ant-modal-close-x {
+                .ant-modal-close-icon {
+                    color: $filler !important;
+                }
+            }
+
+            &:hover,
+            &:focus {
+                box-shadow: none !important;
+                transform: scale(1.3) !important;
+            }
+        }
+
         .ant-modal-header {
             background: $primary !important;
 

@@ -28,6 +28,7 @@
 
 <script>
 import { reactive } from "vue";
+
 import useGenerator from "@/modules/useGenerator";
 
 export default {
@@ -60,4 +61,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+#controls {
+  padding: 20px;
+}
+
+@include tablet {
+  #controls {
+    border-radius: 2px;
+    box-shadow: $box-double-shadow;
+    margin-bottom: 20px;
+  }
+}
 </style>

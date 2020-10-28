@@ -17,8 +17,8 @@
 </template>
 
 <script>
-import CollectionUpdate from "@/components/library/collections/CollectionUpdate";
-import CollectionDelete from "@/components/library/collections/CollectionDelete";
+import CollectionUpdate from "@/components/actions/collection/CollectionUpdate";
+import CollectionDelete from "@/components/actions/collection/CollectionDelete";
 
 export default {
   name: "Collection",

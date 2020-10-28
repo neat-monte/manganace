@@ -17,9 +17,9 @@ export const getRange = async (skip = 0, limit = 100) => {
   return await fetchAsync(url, methods.GET);
 }
 
-export const create = async () => {
-  // TODO: add data
-  return await fetchAsync(endpoints.images, methods.POST);
+export const create = async (data) => {
+  const endpoint = `${endpoints.library}${endpoints.images}`
+  return await fetchAsync(endpoint, methods.POST, data);
 }
 
 export const update = async (id, data) => {

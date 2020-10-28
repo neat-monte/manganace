@@ -1,6 +1,6 @@
 <template>
   <section id="activity">
-    <swiper :slides-per-view="6" :space-between="5" :lazy="true">
+    <swiper :slides-per-view="6" :space-between="0" :lazy="true">
       <swiper-slide v-for="(image, index) in images" :key="index">
         <img @click="swapImage(index)" :src="image.path" />
       </swiper-slide>
@@ -9,9 +9,11 @@
 </template>
 
 <script>
-import { Swiper, SwiperSlide } from "swiper/vue";
 import "swiper/swiper.scss";
 import "swiper/components/lazy/lazy.scss";
+
+import { Swiper, SwiperSlide } from "swiper/vue";
+
 import useGenerator from "@/modules/useGenerator";
 
 export default {
@@ -40,7 +42,6 @@ export default {
   max-width: 100%;
 
   .swiper-container {
-    min-height: 220px;
     padding: 20px 0;
     border-radius: 2px;
 
@@ -49,6 +50,8 @@ export default {
       cursor: pointer;
 
       img {
+        width: 100%;
+        height: auto;
         border-radius: 2px;
       }
 
@@ -64,18 +67,6 @@ export default {
     .swiper-container {
       box-shadow: $box-double-shadow;
     }
-  }
-}
-
-@include sm-desktop {
-  #activity {
-    margin-top: 10px;
-  }
-}
-
-@include lg-desktop {
-  #activity {
-    margin-top: 20px;
   }
 }
 </style>

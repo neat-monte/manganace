@@ -12,7 +12,9 @@ from schemas import ImageCreate, ImageUpdate
 # noinspection PyMethodMayBeStatic
 class CRUDImage(CRUDBase[Image, ImageCreate, ImageUpdate]):
     def create_with_tags(self, db: Session, image_in: ImageCreate) -> Image:
-        tags = db.query(Tag).filter(Tag.id.in_(image_in.tags_ids)).all()
+        tags = []
+        if image_in.tags_ids:
+            tags = db.query(Tag).filter(Tag.id.in_(image_in.tags_ids)).all()
         image_in_data = jsonable_encoder(image_in, exclude={"tags_ids"}, by_alias=False)
         db_image = Image(**image_in_data)
         db_image.tags = tags

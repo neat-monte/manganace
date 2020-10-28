@@ -1,4 +1,13 @@
 .ant-btn {
+    color: $darkness !important;
+    border-color: $darkness-20 !important;
+
+    &:hover,
+    &:focus {
+        color: $primary !important;
+        border-color: $primary !important;
+    }
+
     &.ant-btn-primary {
         color: $filler !important;
         background-color: $primary !important;

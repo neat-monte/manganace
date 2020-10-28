@@ -8,7 +8,7 @@
         <Loading :replacementId="'controls'" />
       </template>
     </Suspense>
-
+    <div class="dummy"></div>
     <Image />
 
     <Suspense>
@@ -54,6 +54,9 @@ export default {
 @include sm-desktop {
   #generator {
     #controls {
+      flex: 1 300px;
+    }
+    .dummy {
       flex: 1;
     }
     #generated-image {

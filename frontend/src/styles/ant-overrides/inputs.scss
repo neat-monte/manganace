@@ -33,3 +33,7 @@
         }
     }
 }
+
+.ant-select-dropdown-menu-item-active:not(.ant-select-dropdown-menu-item-disabled) {
+    background-color: $primary-50 !important;
+}

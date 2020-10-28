@@ -16,9 +16,9 @@
 </template>
 
 <script>
-import ImageDelete from "./ImageDelete";
-import ImageUpdate from "./ImageUpdate";
-import ImageDownload from "./ImageDownload";
+import ImageDelete from "@/components/actions/image/ImageDelete";
+import ImageUpdate from "@/components/actions/image/ImageUpdate";
+import ImageDownload from "@/components/actions/image/ImageDownload";
 // import useTags from "@/modules/useTags";
 
 export default {

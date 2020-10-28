@@ -11,6 +11,7 @@
 
 <script>
 import { defineAsyncComponent, ref, watchEffect } from "vue";
+
 import Loading from "@/components/shared/Loading";
 import useImages from "@/modules/useImages";
 
@@ -37,7 +38,7 @@ export default {
 
   components: {
     ImageCardAsync: defineAsyncComponent({
-      loader: () => import("@/components/library/images/ImageCard"),
+      loader: () => import("@/components/library/ImageCard"),
       loadingComponent: Loading,
       delay: 100,
       suspensible: false,

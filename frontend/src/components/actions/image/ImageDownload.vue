@@ -3,7 +3,12 @@
     <template v-slot:title>
       <span>Download image</span>
     </template>
-    <a-button type="primary" shape="circle" @click="download(imageUrl)">
+    <a-button
+      @click="download(imageUrl)"
+      :disabled="!imageUrl"
+      type="primary"
+      shape="circle"
+    >
       <template v-slot:icon>
         <DownloadOutlined />
       </template>
