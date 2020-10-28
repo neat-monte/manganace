@@ -1,8 +1,8 @@
 <template>
   <section id="activity">
     <swiper :slides-per-view="6" :space-between="5" :lazy="true">
-      <swiper-slide v-for="(item, index) in activity" :key="index">
-        <img @click="swapImage(index)" :src="item.path" />
+      <swiper-slide v-for="(image, index) in images" :key="index">
+        <img @click="swapImage(index)" :src="image.path" />
       </swiper-slide>
     </swiper>
   </section>
@@ -24,7 +24,7 @@ export default {
 
     return {
       swapImage,
-      activity,
+      images: activity.images,
     };
   },
 
@@ -38,7 +38,6 @@ export default {
 <style lang="scss" scoped>
 #activity {
   max-width: 100%;
-  background: $secondary-20;
 
   .swiper-container {
     min-height: 220px;

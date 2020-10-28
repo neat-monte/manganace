@@ -1,5 +1,5 @@
 <template>
-  <a-button type="primary" shape="circle" @click="download()">
+  <a-button type="primary" shape="circle" @click="download(imageUrl)">
     <template v-slot:icon>
       <DownloadOutlined />
     </template>
@@ -8,13 +8,16 @@
 
 <script>
 import { DownloadOutlined } from "@ant-design/icons-vue";
+import download from "downloadjs";
 
 export default {
   name: "ImageDownload",
 
-  setup() {
-    function download() {}
+  props: {
+    imageUrl: String,
+  },
 
+  setup() {
     return {
       download,
     };

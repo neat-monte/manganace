@@ -3,16 +3,18 @@ import endpoints from "@/services/http/endpoints"
 import http from "@/services/http"
 import { getCookie } from "@/services/cookie"
 
-/** Status of the generator */
+/**
+ * Status of the generator
+ */
 const isGenerating = ref(false);
 
 /**
  * Object that holds the information of a generated image
  */
 const image = reactive({
-    seed: null,
-    filename: null,
-    path: null,
+    seed: "",
+    filename: "",
+    path: "",
 });
 
 /**
@@ -20,7 +22,10 @@ const image = reactive({
  * those images should not be changed or manipulated
  * just readonly.
  */
-const activity = ref([]);
+const activity = reactive({
+    session: getCookie("session"),
+    images: []
+});
 
 /**
  * Maps an image either from the API or image from the
@@ -33,10 +38,19 @@ function mapImage(img) {
     image.path = img.path;
 }
 
+/**
+ * Assembles a path attribute for a generated image
+ * @param {*} img {Object}
+ */
+function addPath(img) {
+    img.path = `${endpoints.baseAddress}${endpoints.sessionImages}/${activity.session}/${img.filename}`
+}
+
 export default function useGenerator() {
 
     const initGenerator = async () => {
         await http.generator.initialize();
+        activity.session = getCookie("session");
     }
 
     const generate = async (request) => {
@@ -44,24 +58,28 @@ export default function useGenerator() {
         const requestJson = JSON.stringify(request);
         const generatedImage = await http.generator.generate(requestJson);
         if (generatedImage) {
-            generatedImage.path = `${endpoints.baseAddress}${endpoints.sessionImages}/${generatedImage.filename}`
+            addPath(generatedImage);
             mapImage(generatedImage);
-            activity.value.unshift(Object.assign({}, image));
+            activity.images.unshift(generatedImage);
         }
         isGenerating.value = false;
     }
 
     const loadActivity = async () => {
-        const sessionGuid = getCookie("session");
-        const sessionActivity = await http.generator.getActivity(sessionGuid);
-        console.log(sessionActivity);
-        // if (sessionHistory) {
-
-        // }
+        if (!activity.session) {
+            return;
+        }
+        const sessionActivity = await http.generator.getActivity(activity.session);
+        if (sessionActivity) {
+            sessionActivity.forEach(image => {
+                addPath(image);
+                activity.images.push(image);
+            });
+        }
     }
 
     const swapImage = (index) => {
-        mapImage(activity[index])
+        mapImage(activity.images[index])
     }
 
     return {
