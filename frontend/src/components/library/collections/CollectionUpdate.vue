@@ -1,9 +1,14 @@
 <template>
-  <a-button type="primary" shape="circle" @click="showModal()">
-    <template v-slot:icon>
-      <EditOutlined />
+  <a-tooltip placement="top">
+    <template v-slot:title>
+      <span>Edit collection</span>
     </template>
-  </a-button>
+    <a-button type="primary" shape="circle" @click="showModal()">
+      <template v-slot:icon>
+        <EditOutlined />
+      </template>
+    </a-button>
+  </a-tooltip>
 
   <a-modal
     v-model:visible="visible"

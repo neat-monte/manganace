@@ -9,6 +9,7 @@
     </div>
     <div class="controls">
       <ImageDelete :imageId="image.id" />
+      <ImageDownload :imageUrl="image.path" />
       <ImageUpdate :image="image" />
     </div>
   </div>
@@ -17,6 +18,7 @@
 <script>
 import ImageDelete from "./ImageDelete";
 import ImageUpdate from "./ImageUpdate";
+import ImageDownload from "./ImageDownload";
 // import useTags from "@/modules/useTags";
 
 export default {
@@ -25,13 +27,16 @@ export default {
     image: Object,
   },
 
-  components: { ImageDelete, ImageUpdate },
+  components: {
+    ImageDelete,
+    ImageUpdate,
+    ImageDownload,
+  },
 };
 </script>
 
 <style lang="scss" scoped>
 .image-card {
-  cursor: pointer;
   position: relative;
   margin-bottom: 20px;
   box-shadow: $box-double-shadow;

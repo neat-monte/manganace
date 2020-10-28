@@ -1,5 +1,5 @@
 import endpoints from './endpoints'
-import { sendAsync, fetchAsync, buildUrlParams, methods } from './base'
+import { fetchAsync, buildUrlParams, methods } from './base'
 
 export const get = async (id) => {
   const endpoint = `${endpoints.images}/${id}`;
@@ -30,8 +30,4 @@ export const update = async (id, data) => {
 export const destroy = async (id) => {
   const endpoint = `${endpoints.images}/${id}`;
   return await fetchAsync(endpoint, methods.DELETE);
-}
-
-export const download = async (imageUrl) => {
-  return await sendAsync(imageUrl, methods.GET)
 }

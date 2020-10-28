@@ -26,7 +26,7 @@ export default {
 
   > .content {
     padding-bottom: $footer-height;
-    min-height: 100vh;
+    min-height: calc(100vh - #{$header-height});
     width: 100%;
   }
 }

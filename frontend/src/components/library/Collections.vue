@@ -67,7 +67,11 @@ export default {
 
 @include sm-desktop {
   #collections {
-    display: block;
+    display: initial;
+    box-shadow: $box-double-shadow;
+    border-radius: 2px;
+    padding: 0 20px 10px 20px;
+    height: 100%;
 
     .collections-header {
       display: flex;

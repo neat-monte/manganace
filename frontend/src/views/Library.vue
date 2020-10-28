@@ -63,7 +63,7 @@ export default {
 @include sm-desktop {
   #library {
     #collections {
-      flex: 0 300px;
+      flex: 0 380px;
     }
 
     #images {

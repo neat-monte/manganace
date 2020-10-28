@@ -1,9 +1,14 @@
 <template>
-  <a-button type="danger" shape="circle" @click="showModal()">
-    <template v-slot:icon>
-      <DeleteOutlined />
+  <a-tooltip placement="top">
+    <template v-slot:title>
+      <span>Delete collection</span>
     </template>
-  </a-button>
+    <a-button type="danger" shape="circle" @click="showModal()">
+      <template v-slot:icon>
+        <DeleteOutlined />
+      </template>
+    </a-button>
+  </a-tooltip>
 
   <a-modal
     v-model:visible="visible"

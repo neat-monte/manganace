@@ -72,6 +72,8 @@ export default {
 
       &:hover,
       &:focus {
+        box-shadow: none !important;
+
         .title {
           text-shadow: $text-shadow-soft;
         }

@@ -1,9 +1,14 @@
 <template>
-  <a-button type="primary" shape="circle" @click="download(imageUrl)">
-    <template v-slot:icon>
-      <DownloadOutlined />
+  <a-tooltip placement="top">
+    <template v-slot:title>
+      <span>Download image</span>
     </template>
-  </a-button>
+    <a-button type="primary" shape="circle" @click="download(imageUrl)">
+      <template v-slot:icon>
+        <DownloadOutlined />
+      </template>
+    </a-button>
+  </a-tooltip>
 </template>
 
 <script>
