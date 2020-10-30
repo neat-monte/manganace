@@ -4,7 +4,7 @@ from typing import Optional, List
 from fastapi_camelcase import CamelModel
 from pydantic import constr
 
-from .image import Image
+from .image import ImageWithTags
 
 
 class CollectionBase(CamelModel):
@@ -37,10 +37,10 @@ class CollectionInDb(CollectionBase):
 
 
 class Collection(CollectionInDb):
-    """ Properties with relations that are returned via the API """
-    images: List[Image]
-
-
-class JustCollection(CollectionInDb):
     """ Properties without any relations that are returned via the API """
     pass
+
+
+class CollectionWithImages(CollectionInDb):
+    """ Properties with relations that are returned via the API """
+    images: List[ImageWithTags]

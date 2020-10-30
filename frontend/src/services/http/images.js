@@ -7,7 +7,7 @@ export const get = async (id) => {
 }
 
 export const getImagesOfCollecton = async (collectionId) => {
-  const endpoint = `${endpoints.library}${endpoints.collections}/${collectionId}${endpoints.images}`;
+  const endpoint = `${endpoints.collections}/${collectionId}/images`;
   return await fetchAsync(endpoint, methods.GET);
 }
 
@@ -18,8 +18,7 @@ export const getRange = async (skip = 0, limit = 100) => {
 }
 
 export const create = async (data) => {
-  const endpoint = `${endpoints.library}${endpoints.images}`
-  return await fetchAsync(endpoint, methods.POST, data);
+  return await fetchAsync(endpoints.images, methods.POST, data);
 }
 
 export const update = async (id, data) => {

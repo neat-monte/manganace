@@ -1,7 +1,7 @@
 from typing import Optional, List
 
 from fastapi_camelcase import CamelModel
-from pydantic import constr
+from pydantic import constr, HttpUrl
 
 from .tag import Tag
 
@@ -17,12 +17,12 @@ class ImageCreate(ImageBase):
     seed: int
     filename: constr(max_length=51)
     collection_id: int
-    tags_ids: Optional[List[int]] = None
+    tags_ids: Optional[List[int]]
 
 
 class ImageUpdate(ImageBase):
     """ Properties that are available/required for an update """
-    tags_ids: Optional[List[int]] = None
+    tags_ids: Optional[List[int]]
 
 
 class ImageInDb(ImageBase):
@@ -37,17 +37,13 @@ class ImageInDb(ImageBase):
 
 
 class Image(ImageInDb):
-    """ Properties that are returned via the API """
-    tags: List[Tag]
-
-
-class JustImage(ImageInDb):
     """ Properties without any relations that are returned via the API """
-    tags_ids: str
+    # path: HttpUrl
+    tags_ids: List[int]
     pass
 
 
-class UnsavedSessionActivityImage(CamelModel):
-    """ Properties of unsaved images from session activity that are returned via the API """
-    seed: int
-    filename: str
+class ImageWithTags(ImageInDb):
+    """ Properties that are returned via the API """
+    path: HttpUrl
+    tags: List[Tag]

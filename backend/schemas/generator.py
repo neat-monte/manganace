@@ -1,5 +1,10 @@
 from fastapi_camelcase import CamelModel
-from pydantic import conint
+from pydantic import conint, HttpUrl
+
+
+class GeneratorInitializedResponse(CamelModel):
+    """ Properties that are return after the generator initializes """
+    session: str
 
 
 class GenerateRequest(CamelModel):
@@ -10,3 +15,10 @@ class GenerateRequest(CamelModel):
 class GenerateResponse(GenerateRequest):
     """ Properties that are returned after an image is generated """
     filename: str
+
+
+class UnsavedSessionActivityImage(CamelModel):
+    """ Properties of unsaved images from session activity that are returned via the API """
+    seed: int
+    filename: str
+    # path: HttpUrl

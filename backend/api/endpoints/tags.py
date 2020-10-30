@@ -34,14 +34,16 @@ def get_tag(id_: int, db: Session = Depends(deps.get_db)) -> Any:
 @router.put('/{id_}', response_model=Tag)
 def update_tag(id_: int, tag_in: TagUpdate, db: Session = Depends(deps.get_db)) -> Any:
     """ Modify an existing tag """
-    return crud.tag.update(db, id_, tag_in)
+    tag = crud.tag.get(db, id_)
+    if not tag:
+        raise HTTPException(status_code=404, detail="Tag not found")
+    return crud.tag.update(db, tag, tag_in)
 
 
 @router.delete("/{id_}", response_model=Tag)
 def delete_tag(id_: int, db: Session = Depends(deps.get_db)) -> Any:
     """ Delete a tag """
-    item = crud.tag.get(db, id_)
-    if not item:
+    tag = crud.tag.get(db, id_)
+    if not tag:
         raise HTTPException(status_code=404, detail="Tag not found")
-    item = crud.tag.remove(db, id_)
-    return item
+    return crud.tag.remove(db, id_)

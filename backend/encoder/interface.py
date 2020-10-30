@@ -22,7 +22,7 @@ class GeneratorInterface:
     def get_image_by_seed(self, seed: int, session: str) -> string:
         img = self.generator.generate_image_from_seed(seed)
         name = f'{seed}_{str(uuid.uuid4())}.png'
-        path = Path.cwd() / 'static' / 'images' / 'session' / session / name
+        path = Path.cwd() / 'static' / 'images' / 'sessions' / session / name
         plt.imsave(path, img)
         return name
 

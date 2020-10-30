@@ -7,8 +7,7 @@ export const get = async (id) => {
 }
 
 export const getAllWithoutRelations = async () => {
-  const endpoint = `${endpoints.library}${endpoints.collections}`;
-  return await fetchAsync(endpoint, methods.GET);
+  return await fetchAsync(endpoints.collections, methods.GET);
 }
 
 export const getRange = async (skip = 0, limit = 100) => {

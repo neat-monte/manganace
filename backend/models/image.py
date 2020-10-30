@@ -2,7 +2,7 @@ from sqlalchemy import Column, Integer, String, ForeignKey, Text
 from sqlalchemy.orm import relationship
 
 from database.setup import Base
-from .associations import image_tag_table
+# from .associations import ImageTag
 
 
 class Image(Base):
@@ -15,4 +15,5 @@ class Image(Base):
     collection_id = Column(Integer, ForeignKey('collections.id'))
 
     collection = relationship("Collection", back_populates="images")
-    tags = relationship("Tag", secondary=image_tag_table, back_populates="images")
+    tags = relationship("Tag", secondary='image_tag', back_populates="images")
+    # tags = relationship("image_tag", backref="image", primaryjoin=id == ImageTag.image_id)

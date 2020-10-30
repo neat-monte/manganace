@@ -66,11 +66,12 @@ export default function useGenerator() {
     }
 
     const loadActivity = async () => {
-        if (!activity.session) {
+        if (activity.images !== undefined && activity.images.length > 0) {
             return;
         }
         const sessionActivity = await http.generator.getActivity(activity.session);
         if (sessionActivity) {
+            console.log(sessionActivity)
             sessionActivity.forEach(image => {
                 addPath(image);
                 activity.images.push(image);
