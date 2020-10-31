@@ -23,12 +23,14 @@ export default {
   },
 
   async setup(props) {
-    const { state, loadImagesOfCollection } = useImages();
-    const images = ref();
+    const { imagesByCollection, loadImagesOfCollection } = useImages();
+    const images = ref([]);
 
     watchEffect(async () => {
-      await loadImagesOfCollection(props.collectionId);
-      images.value = state.collectionImages[props.collectionId];
+      if (props.collectionId) {
+        await loadImagesOfCollection(props.collectionId);
+        images.value = imagesByCollection[props.collectionId];
+      }
     });
 
     return {

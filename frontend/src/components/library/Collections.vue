@@ -44,12 +44,12 @@ export default {
       });
     }
 
-    const { state, loadCollections } = useCollections();
+    const { collectionsById, loadCollections } = useCollections();
 
     await loadCollections();
 
     return {
-      collections: state.collections,
+      collections: collectionsById,
       renderImages,
     };
   },

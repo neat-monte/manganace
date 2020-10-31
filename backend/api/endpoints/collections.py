@@ -6,7 +6,7 @@ from sqlalchemy.orm import Session
 import crud
 from api import deps
 from schemas import Collection, Image, CollectionCreate, CollectionUpdate
-from services import image_service
+from services import ImageService
 
 router = APIRouter()
 
@@ -31,7 +31,7 @@ def get_collection_images(id_, db: Session = Depends(deps.get_db)) -> Any:
     collection = crud.collection.get(db, id_)
     if not collection:
         raise HTTPException(status_code=404, detail="Collection not found")
-    return image_service.get_images_of_collection(db, id_)
+    return ImageService.get_images_of_collection(db, id_)
 
 
 # @router.get('/', response_model=List[Image])

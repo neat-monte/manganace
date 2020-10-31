@@ -21,4 +21,4 @@ class UnsavedSessionActivityImage(CamelModel):
     """ Properties of unsaved images from session activity that are returned via the API """
     seed: int
     filename: str
-    # path: HttpUrl
+    path: HttpUrl

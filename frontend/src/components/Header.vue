@@ -171,7 +171,7 @@ export default {
       justify-content: left;
 
       .brand-link {
-        margin-left: 30px;
+        margin-left: 62px;
       }
     }
   }

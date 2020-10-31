@@ -22,7 +22,7 @@ export default {
   emits: ["collection-id-set"],
 
   async setup(_, context) {
-    const { state, loadCollections } = useCollections();
+    const { collectionsById, loadCollections } = useCollections();
 
     const collectionsOptions = ref([]);
     const dropdownOptions = ref([]);
@@ -30,7 +30,7 @@ export default {
 
     watchEffect(() => {
       collectionsOptions.value = [];
-      for (const [id, collection] of Object.entries(state.collections)) {
+      for (const [id, collection] of Object.entries(collectionsById)) {
         collectionsOptions.value.push({
           value: id.toString(),
           text: collection.name,

@@ -1,25 +1,25 @@
 import { reactive, readonly } from 'vue'
-import endpoints from "@/services/http/endpoints"
 import http from '@/services/http'
 
 const state = reactive({
-  collectionImages: {},
+  loaded: {},
+  imagesByCollection: {},
 })
 
 function insertImage(image) {
-  image.path = `${endpoints.baseAddress}${endpoints.savedImages}/${image.filename}`;
-  if (state.collectionImages[image.collectionId] === undefined) {
-    state.collectionImages[image.collectionId] = {};
+  if (state.imagesByCollection[image.collectionId] === undefined) {
+    state.imagesByCollection[image.collectionId] = {};
   }
-  state.collectionImages[image.collectionId][image.id] = image;
+  state.imagesByCollection[image.collectionId][image.id] = image;
 }
 
 export default function useImages() {
   const loadImagesOfCollection = async (collectionId) => {
-    if (collectionId in state.collectionImages)
+    if (state !== undefined && collectionId in state.loaded && state.loaded[collectionId])
       return;
     const images = await http.images.getImagesOfCollecton(collectionId);
     images.forEach(image => insertImage(image));
+    state.loaded[collectionId] = true;
   }
 
   const createImage = async (newImage) => {
@@ -27,7 +27,7 @@ export default function useImages() {
     const image = await http.images.create(imageJson);
     if (image) {
       insertImage(image);
-      return state.collectionImages[image.collectionId][image.id];
+      return state.imagesByCollection[image.collectionId][image.id];
     }
   }
 
@@ -36,21 +36,21 @@ export default function useImages() {
     const image = await http.images.update(updatedImage.id, imageJson)
     if (image) {
       insertImage(image);
-      return state.collectionImages[image.collectionId][image.id];
+      return state.imagesByCollection[image.collectionId][image.id];
     }
   }
 
   const deleteImage = async (imageId) => {
     const image = await http.images.destroy(imageId);
     if (image) {
-      const deleted = state.collectionImages[image.collectionId][image.id]
-      delete state.collectionImages[image.collectionId][image.id];
+      const deleted = state.imagesByCollection[image.collectionId][image.id]
+      delete state.imagesByCollection[image.collectionId][image.id];
       return deleted;
     }
   }
 
   return {
-    state: readonly(state),
+    imagesByCollection: readonly(state.imagesByCollection),
     loadImagesOfCollection,
     createImage,
     updateImage,

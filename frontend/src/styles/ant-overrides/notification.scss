@@ -1,21 +1,21 @@
 .ant-notification-notice {
-    color: $filler !important;
-    background: $secondary !important;
+    color: $primary !important;
+    background: $filler !important;
     border: 1px solid $darkness-50 !important;
 
     .ant-notification-notice-content {
         .ant-notification-notice-with-icon {
             .ant-notification-notice-icon-success {
                 svg {
-                    color: $filler !important;
+                    color: $primary !important;
                 }
             }
 
             .ant-notification-notice-message {
-                color: $filler !important;
+                color: $darkness !important;
             }
             .ant-notification-notice-description {
-                color: $filler !important;
+                color: $darkness !important;
             }
         }
     }

@@ -3,8 +3,6 @@ from typing import Optional, List
 from fastapi_camelcase import CamelModel
 from pydantic import constr, HttpUrl
 
-from .tag import Tag
-
 
 class ImageBase(CamelModel):
     """ Properties that are shared """
@@ -38,12 +36,6 @@ class ImageInDb(ImageBase):
 
 class Image(ImageInDb):
     """ Properties without any relations that are returned via the API """
-    # path: HttpUrl
+    path: HttpUrl
     tags_ids: List[int]
     pass
-
-
-class ImageWithTags(ImageInDb):
-    """ Properties that are returned via the API """
-    path: HttpUrl
-    tags: List[Tag]

@@ -1,10 +1,8 @@
 from datetime import datetime
-from typing import Optional, List
+from typing import Optional
 
 from fastapi_camelcase import CamelModel
 from pydantic import constr
-
-from .image import ImageWithTags
 
 
 class CollectionBase(CamelModel):
@@ -39,8 +37,3 @@ class CollectionInDb(CollectionBase):
 class Collection(CollectionInDb):
     """ Properties without any relations that are returned via the API """
     pass
-
-
-class CollectionWithImages(CollectionInDb):
-    """ Properties with relations that are returned via the API """
-    images: List[ImageWithTags]

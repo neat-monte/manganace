@@ -7,6 +7,7 @@ from fastapi import APIRouter, Response, Cookie, HTTPException
 
 from encoder.interface import generator
 from schemas import UnsavedSessionActivityImage, GenerateRequest, GenerateResponse, GeneratorInitializedResponse
+from services import ImageFileService
 
 router = APIRouter()
 
@@ -49,6 +50,7 @@ def get_activity(session: Optional[str] = Cookie(None)):
     for file in files:
         filename = file.name
         seed = int(filename.split('_')[0])
-        image = UnsavedSessionActivityImage.construct(seed=seed, filename=filename)
+        path = ImageFileService.make_image_url(filename, session)
+        image = UnsavedSessionActivityImage.construct(seed=seed, filename=filename, path=path)
         images.append(image)
     return images
