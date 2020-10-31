@@ -5,7 +5,7 @@
         <Controls />
       </template>
       <template #fallback>
-        <Loading :replacementId="'controls'" />
+        <Loading id="controls" />
       </template>
     </Suspense>
     <div class="dummy"></div>
@@ -16,7 +16,7 @@
         <Activity />
       </template>
       <template #fallback>
-        <Loading :replacementId="'activity'" />
+        <Loading id="activity" />
       </template>
     </Suspense>
   </div>

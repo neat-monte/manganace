@@ -1,30 +1,36 @@
 <template>
-  <div class="image-card">
-    <div class="image-wrapper">
-      <img :src="image.path" :alt="image.description" />
+  <a-tooltip placement="top" :title="image.description">
+    <div class="image-card">
+      <div class="image-wrapper">
+        <img :src="image.path" />
+      </div>
+      <div class="info">
+        <div class="tags"></div>
+      </div>
+      <div class="card-controls">
+        <ImageDelete :imageId="image.id" />
+        <ImageDownload :imageUrl="image.path" />
+        <ImageUpdate :image="image" />
+      </div>
     </div>
-    <div class="info">
-      <p>{{ image.description }}</p>
-      <div class="tags"></div>
-    </div>
-    <div class="controls">
-      <ImageDelete :imageId="image.id" />
-      <ImageDownload :imageUrl="image.path" />
-      <ImageUpdate :image="image" />
-    </div>
-  </div>
+  </a-tooltip>
 </template>
 
 <script>
 import ImageDelete from "@/components/actions/image/ImageDelete";
 import ImageUpdate from "@/components/actions/image/ImageUpdate";
 import ImageDownload from "@/components/actions/image/ImageDownload";
+import { watch } from "vue";
 // import useTags from "@/modules/useTags";
 
 export default {
   name: "ImageCard",
   props: {
     image: Object,
+  },
+
+  setup(props) {
+    watch(props.image);
   },
 
   components: {
@@ -59,7 +65,7 @@ export default {
     }
   }
 
-  .controls {
+  .card-controls {
     width: 100%;
     display: flex;
     justify-content: space-around;
@@ -80,8 +86,39 @@ export default {
       border-radius: 2px 2px 0 0;
     }
 
-    .controls {
+    .card-controls {
       border-bottom: none;
+    }
+  }
+}
+
+@include sm-desktop {
+  .image-card {
+    overflow: hidden;
+
+    .info {
+      position: absolute;
+      top: 0;
+      left: 0;
+      visibility: hidden;
+      display: none;
+    }
+
+    .card-controls {
+      position: absolute;
+      background: $filler-35;
+      bottom: -40px;
+      left: 0;
+      transition: all 0.2s ease;
+      height: 40px;
+      visibility: hidden;
+    }
+
+    &:hover {
+      .card-controls {
+        bottom: 0;
+        visibility: visible;
+      }
     }
   }
 }

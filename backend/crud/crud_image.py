@@ -25,7 +25,9 @@ class CRUDImage(CRUDBase[Image, ImageCreate, ImageUpdate]):
 
     def update_with_tags(self, db: Session, db_image: Image, image_in: ImageUpdate) -> Image:
         self._update_properties(db_image, image_in)
-        tags = db.query(Tag).filter(Tag.id.in_(image_in.tags_ids)).all()
+        tags = []
+        if image_in.tags_ids:
+            tags = db.query(Tag).filter(Tag.id.in_(image_in.tags_ids)).all()
         db_image.tags = tags
         return self._add_save(db, db_image)
 

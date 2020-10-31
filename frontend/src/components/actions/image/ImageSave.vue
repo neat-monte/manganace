@@ -5,7 +5,7 @@
     </template>
     <a-button
       @click="showModal()"
-      :disabled="!image.seed || !image.filename"
+      :disabled="!image.filename"
       type="primary"
       shape="circle"
     >

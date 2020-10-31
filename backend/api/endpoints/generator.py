@@ -20,7 +20,7 @@ def initialize(response: Response, session: Optional[str] = Cookie(None)):
         generator.initialize()
     if not session:
         session = str(uuid.uuid4())
-        response.set_cookie(key="session", value=session)
+        response.set_cookie(key="session", value=session, expires=2**31)
         session_dir = Path.cwd() / 'static' / 'images' / 'sessions' / session
         session_dir.mkdir(parents=True)
     response = GeneratorInitializedResponse.construct(session=session)

@@ -1,9 +1,10 @@
-import { reactive, readonly } from "vue"
+import { ref, reactive, readonly } from "vue"
 import moment from "moment"
 import http from "@/services/http"
 
+const loaded = ref(false);
+
 const state = reactive({
-  loaded: false,
   collectionsById: {}
 });
 
@@ -15,12 +16,12 @@ function insertCollection(collection) {
 
 export default function useCollections() {
   const loadCollections = async () => {
-    if (state !== undefined && state.loaded) {
+    if (state !== undefined && loaded.value) {
       return;
     }
     const collections = await http.collections.getAllWithoutRelations();
     collections.forEach(collection => insertCollection(collection));
-    state.loaded = true;
+    loaded.value = true;
   }
 
   const addCollection = async (newCollection) => {
@@ -51,6 +52,7 @@ export default function useCollections() {
   }
 
   return {
+    collectionsLoaded: readonly(loaded),
     collectionsById: readonly(state.collectionsById),
     loadCollections,
     addCollection,

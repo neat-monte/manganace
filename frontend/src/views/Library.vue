@@ -5,16 +5,16 @@
         <Collections :collectionId="collectionId" />
       </template>
       <template #fallback>
-        <Loading :replacementId="'collections'" />
+        <Loading id="collections" />
       </template>
     </Suspense>
 
-    <Suspense>
+    <Suspense v-if="collectionId">
       <template #default>
         <Images :collectionId="collectionId" />
       </template>
       <template #fallback>
-        <Loading :replacementId="'images'" />
+        <Loading id="images" />
       </template>
     </Suspense>
   </div>

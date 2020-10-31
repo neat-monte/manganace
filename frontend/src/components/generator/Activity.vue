@@ -1,6 +1,13 @@
 <template>
   <section id="activity">
-    <swiper :slides-per-view="6" :space-between="0" :lazy="true">
+    <swiper
+      :slides-per-view="6"
+      :space-between="0"
+      :lazy="true"
+      navigation
+      :pagination="{ clickable: true }"
+      :scrollbar="{ draggable: true }"
+    >
       <swiper-slide v-for="(image, index) in images" :key="index">
         <img @click="swapImage(index)" :src="image.path" />
       </swiper-slide>
@@ -11,10 +18,15 @@
 <script>
 import "swiper/swiper.scss";
 import "swiper/components/lazy/lazy.scss";
-
-import { Swiper, SwiperSlide } from "swiper/vue";
+import "swiper/components/navigation/navigation.scss";
+import "swiper/components/scrollbar/scrollbar.scss";
 
 import useGenerator from "@/modules/useGenerator";
+
+import SwiperCore, { Navigation, Scrollbar } from "swiper";
+import { Swiper, SwiperSlide } from "swiper/vue";
+
+SwiperCore.use([Navigation, Scrollbar]);
 
 export default {
   name: "Activity",
@@ -44,6 +56,7 @@ export default {
   .swiper-container {
     padding: 20px 0;
     border-radius: 2px;
+    min-height: 110px;
 
     .swiper-slide {
       display: flex;

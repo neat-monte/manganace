@@ -1,6 +1,15 @@
 <template>
   <section id="generated-image">
     <div class="wrapper">
+      <div class="image-wrapper">
+        <Loading v-if="isGenerating" />
+        <img :src="image.path" />
+        <div
+          class="zoomed-in"
+          :style="`background-image: url('${image.path}')`"
+          @mousemove="ZoomIn"
+        />
+      </div>
       <div class="controls">
         <Suspense>
           <template #default>
@@ -11,15 +20,6 @@
           </template>
         </Suspense>
         <ImageDownload :imageUrl="image.path" />
-      </div>
-      <div class="image-wrapper">
-        <Loading v-if="isGenerating" />
-        <img :src="image.path" />
-        <div
-          class="zoomed-in"
-          :style="`background-image: url('${image.path}')`"
-          @mousemove="ZoomIn"
-        />
       </div>
     </div>
   </section>
