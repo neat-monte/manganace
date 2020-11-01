@@ -12,7 +12,7 @@ from schemas import ImageCreate, ImageUpdate
 # noinspection PyMethodMayBeStatic
 class CRUDImage(CRUDBase[Image, ImageCreate, ImageUpdate]):
     def exists_with_filename(self, db: Session, filename: str):
-        return db.query(Image.id).filter_by(filename=filename).scalar() is not None
+        return db.query(Image.id).filter_by(filename=filename).first() is not None
 
     def create_with_tags(self, db: Session, image_in: ImageCreate) -> Image:
         tags = []

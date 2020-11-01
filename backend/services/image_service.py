@@ -50,7 +50,7 @@ class ImageService:
     def construct_image(image, tags_ids: [int] = None):
         if not tags_ids and hasattr(image, 'tags_ids') and image.tags_ids:
             tags_ids = list(map(int, image.tags_ids.split(",")))
-        else:
+        elif not tags_ids:
             tags_ids = []
         return Image.construct(
             id=image.id,

@@ -15,6 +15,7 @@ function insertImage(image) {
 }
 
 export default function useImages() {
+
   const loadImagesOfCollection = async (collectionId) => {
     if (state !== undefined && collectionId in state.loaded && state.loaded[collectionId])
       return;
@@ -57,11 +58,11 @@ export default function useImages() {
     try {
       const image = await http.images.destroy(imageId);
       if (image) {
-        delete state.imagesByCollection[image.collectionId][image.id];
+        delete state.imagesByCollection[image.collectionId][imageId];
         notification.images.deleted(image);
       }
     } catch {
-      notification.collections.failedToDelete();
+      notification.images.failedToDelete();
     }
   }
 

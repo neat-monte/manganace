@@ -12,7 +12,7 @@
           <template #default>
             <TagSelect
               @tag-id-set="filterImagesByTags"
-              :initialTags="tags"
+              :initialTags="filterTags"
               :showCreate="false"
               placeholder="Filter by tags"
             />
@@ -49,22 +49,22 @@ export default {
   },
 
   async setup(props) {
+    const { collectionsById, collectionsLoaded } = useCollections();
     const { imagesByCollection, loadImagesOfCollection } = useImages();
-    const { collectionsLoaded, collectionsById } = useCollections();
     const collection = ref(null);
     const images = ref([]);
-    const tags = ref([]);
+    const filterTags = ref([]);
 
     watchEffect(async () => {
       if (props.collectionId && collectionsLoaded) {
         collection.value = collectionsById[props.collectionId];
         await loadImagesOfCollection(props.collectionId);
+
         if (imagesByCollection[props.collectionId]) {
-          images.value = Object.values(imagesByCollection[props.collectionId]);
-        } else {
-          images.value = [];
+          images.value = imagesByCollection[props.collectionId];
         }
-        tags.value = [];
+
+        filterTags.value = [];
       }
     });
 
@@ -79,18 +79,19 @@ export default {
 
     function filterImagesByTags(tags) {
       if (tags.length > 0) {
-        images.value = images.value.filter((image) =>
-          includesAll(image.tagsIds, tags)
+        images.value = Object.assign(
+          {},
+          Object.values(images.value).filter((image) =>
+            includesAll(image.tagsIds, tags)
+          )
         );
       } else if (imagesByCollection[props.collectionId]) {
-        images.value = Object.values(imagesByCollection[props.collectionId]);
-      } else {
-        images.value = [];
+        images.value = imagesByCollection[props.collectionId];
       }
     }
 
     return {
-      tags,
+      filterTags,
       images,
       collection,
       filterImagesByTags,

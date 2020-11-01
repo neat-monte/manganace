@@ -16,6 +16,7 @@ function insertCollection(collection) {
 }
 
 export default function useCollections() {
+
   const loadCollections = async () => {
     try {
       if (state !== undefined && loaded.value) {

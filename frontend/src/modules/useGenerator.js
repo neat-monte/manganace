@@ -7,6 +7,8 @@ import notification from "@/services/notification"
  * Status of the generator
  */
 const isGenerating = ref(false);
+const initializing = ref(false);
+const initialized = ref(false);
 
 /**
  * Object that holds the information of a generated image
@@ -41,10 +43,16 @@ function mapImage(img) {
 export default function useGenerator() {
 
     const initGenerator = async () => {
+        if (initializing.value || initialized.value) {
+            return;
+        }
         try {
+            initializing.value = true;
             await http.generator.initialize();
             activity.session = getCookie("session");
             notification.generator.loaded();
+            initializing.value = false;
+            initialized.value = true;
         } catch (e) {
             notification.generator.failedToLoad();
         }
