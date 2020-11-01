@@ -30,6 +30,7 @@ function jsonify(response) {
  */
 function dump(error) {
   console.log('There was a problem: \n', error)
+  throw error;
 }
 
 /**

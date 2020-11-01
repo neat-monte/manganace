@@ -1,7 +1,7 @@
 import { ref, readonly, reactive } from "vue"
-import endpoints from "@/services/http/endpoints"
 import http from "@/services/http"
 import { getCookie } from "@/services/cookie"
+import notification from "@/services/notification"
 
 /**
  * Status of the generator
@@ -38,19 +38,12 @@ function mapImage(img) {
     image.path = img.path;
 }
 
-/**
- * Assembles a path attribute for a generated image
- * @param {*} img {Object}
- */
-function addPath(img) {
-    img.path = `${endpoints.baseAddress}${endpoints.sessionImages}/${activity.session}/${img.filename}`
-}
-
 export default function useGenerator() {
 
     const initGenerator = async () => {
         await http.generator.initialize();
         activity.session = getCookie("session");
+        notification.generator.loaded();
     }
 
     const generate = async (request) => {
@@ -58,7 +51,6 @@ export default function useGenerator() {
         const requestJson = JSON.stringify(request);
         const generatedImage = await http.generator.generate(requestJson);
         if (generatedImage) {
-            addPath(generatedImage);
             mapImage(generatedImage);
             activity.images.unshift(generatedImage);
         }
@@ -72,7 +64,6 @@ export default function useGenerator() {
         const sessionActivity = await http.generator.getActivity(activity.session);
         if (sessionActivity) {
             sessionActivity.forEach(image => {
-                addPath(image);
                 activity.images.push(image);
             });
         }

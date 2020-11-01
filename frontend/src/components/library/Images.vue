@@ -153,8 +153,6 @@ export default {
 
 @include sm-desktop {
   #images {
-    margin-left: 50px;
-
     .images-list {
       grid-gap: 20px;
       grid-template-columns: repeat(3, 1fr);

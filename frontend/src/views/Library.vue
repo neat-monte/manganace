@@ -17,6 +17,14 @@
         <Loading id="images" />
       </template>
     </Suspense>
+    <Suspense v-else>
+      <template #default>
+        <Tags />
+      </template>
+      <template #fallback>
+        <Loading id="tags" />
+      </template>
+    </Suspense>
   </div>
 </template>
 
@@ -25,6 +33,7 @@ import { computed, ref, onErrorCaptured } from "vue";
 import { useRoute } from "vue-router";
 import Collections from "@/components/library/Collections";
 import Images from "@/components/library/Images";
+import Tags from "@/components/library/Tags";
 import Loading from "@/components/shared/Loading";
 
 export default {
@@ -49,6 +58,7 @@ export default {
   components: {
     Collections,
     Images,
+    Tags,
     Loading,
   },
 };
@@ -64,9 +74,11 @@ export default {
   #library {
     #collections {
       flex: 0 380px;
+      margin-right: 50px;
     }
 
-    #images {
+    #images,
+    #tags {
       flex: 1;
     }
   }

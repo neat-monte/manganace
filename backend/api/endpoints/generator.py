@@ -33,7 +33,8 @@ def generate(request: GenerateRequest, session: Optional[str] = Cookie(None)):
     if not generator.is_initialized():
         return HTTPException(status_code=412, detail="The generator is not initialized")
     image_filename = generator.get_image_by_seed(request.seed, session)
-    response = GenerateResponse.construct(**request.dict(), filename=image_filename)
+    path = ImageFileService.make_image_url(image_filename, session)
+    response = GenerateResponse.construct(**request.dict(), filename=image_filename, path=path)
     return response
 
 

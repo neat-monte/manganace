@@ -15,6 +15,7 @@ class GenerateRequest(CamelModel):
 class GenerateResponse(GenerateRequest):
     """ Properties that are returned after an image is generated """
     filename: str
+    path: HttpUrl
 
 
 class UnsavedSessionActivityImage(CamelModel):

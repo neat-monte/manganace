@@ -14,7 +14,7 @@ export const update = async (id, data) => {
   return await fetchAsync(endpoint, methods.PUT, data);
 }
 
-export const remove = async (id) => {
+export const destroy = async (id) => {
   const endpoint = `${endpoints.tags}/${id}`
   return await fetchAsync(endpoint, methods.DELETE);
 }

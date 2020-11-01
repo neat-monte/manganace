@@ -12,12 +12,12 @@
 
   <a-modal
     v-model:visible="visible"
-    title="Confirm delete"
+    title="Confirm collection delete"
     @ok="handleDelete()"
   >
     <p>
-      The collection will be removed with all the data. It will be
-      unrecoverable.
+      The collection will be removed with all the data.
+      <strong>It will be unrecoverable.</strong>
     </p>
   </a-modal>
 </template>

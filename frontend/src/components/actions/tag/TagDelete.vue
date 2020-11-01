@@ -1,7 +1,7 @@
 <template>
   <a-tooltip placement="top">
     <template v-slot:title>
-      <span>Delete image</span>
+      <span>Delete tag</span>
     </template>
     <a-button type="danger" shape="circle" @click="showModal()">
       <template v-slot:icon>
@@ -12,10 +12,13 @@
 
   <a-modal
     v-model:visible="visible"
-    title="Confirm image delete"
+    title="Confirm tag delete"
     @ok="handleDelete()"
   >
-    <p>The image will be removed. <strong>It will be unrecoverable.</strong></p>
+    <p>
+      The tag will be removed from all the images.
+      <strong>It will be unrecoverable.</strong>
+    </p>
   </a-modal>
 </template>
 
@@ -23,13 +26,13 @@
 import { ref } from "vue";
 import { DeleteOutlined } from "@ant-design/icons-vue";
 import notification from "@/services/notification";
-import useImages from "@/modules/useImages";
+import useTags from "@/modules/useTags";
 
 export default {
-  name: "ImageDelete",
+  name: "TagDelete",
 
   props: {
-    imageId: Number,
+    tagId: Number,
   },
 
   setup(props) {
@@ -38,11 +41,11 @@ export default {
       visible.value = true;
     }
 
-    const { deleteImage } = useImages();
+    const { deleteTag } = useTags();
     async function handleDelete() {
-      const deleted = await deleteImage(props.imageId);
+      const deleted = await deleteTag(props.tagId);
       visible.value = false;
-      notification.images.deleted(deleted);
+      notification.tags.deleted(deleted);
     }
 
     return {

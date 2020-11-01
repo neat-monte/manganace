@@ -25,7 +25,6 @@ export default function useTags() {
 
   const addTag = async (newTag) => {
     const tagJson = JSON.stringify(newTag);
-    console.log(tagJson);
     const tag = await http.tags.create(tagJson);
     if (tag) {
       insertTag(tag);
@@ -33,10 +32,30 @@ export default function useTags() {
     }
   }
 
+  const updateTag = async (updatedTag) => {
+    const tagJson = JSON.stringify(updatedTag);
+    const tag = await http.tags.update(updatedTag.id, tagJson);
+    if (tag) {
+      insertTag(tag);
+      return state.tagsById[tag.id];
+    }
+  }
+
+  const deleteTag = async (tagId) => {
+    const tag = await http.tags.destroy(tagId);
+    if (tag) {
+      const deleted = state.tagsById[tag.id];
+      delete state.tagsById[tag.id];
+      return deleted;
+    }
+  }
+
   return {
     areLoaded: readonly(loaded),
     tagsById: readonly(state.tagsById),
     loadTags,
-    addTag
+    addTag,
+    updateTag,
+    deleteTag
   }
 }
