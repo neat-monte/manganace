@@ -42,7 +42,6 @@
 import { reactive, ref } from "vue";
 import { EditOutlined } from "@ant-design/icons-vue";
 import TagSelect from "@/components/actions/tag/TagSelect";
-import notification from "@/services/notification";
 import useImages from "@/modules/useImages";
 
 export default {
@@ -69,9 +68,8 @@ export default {
       updatedImage.tagsIds = tagsIds;
     }
     async function handleUpdate() {
-      const updated = await updateImage(updatedImage);
+      await updateImage(updatedImage);
       visible.value = false;
-      notification.images.updated(updated);
     }
 
     return {

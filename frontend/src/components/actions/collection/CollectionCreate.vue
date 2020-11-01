@@ -36,7 +36,6 @@
 <script>
 import { reactive, ref } from "vue";
 import { PlusOutlined } from "@ant-design/icons-vue";
-import notification from "@/services/notification";
 import useCollections from "@/modules/useCollections";
 
 export default {
@@ -54,9 +53,8 @@ export default {
       description: null,
     });
     async function handleCreate() {
-      const created = await addCollection(newCollection);
+      await addCollection(newCollection);
       visible.value = false;
-      notification.collections.created(created);
     }
 
     return {

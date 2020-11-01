@@ -22,7 +22,6 @@
 <script>
 import { reactive, ref } from "vue";
 import { EditOutlined } from "@ant-design/icons-vue";
-import notification from "@/services/notification";
 import useTags from "@/modules/useTags";
 
 export default {
@@ -44,9 +43,8 @@ export default {
       name: props.tag.name,
     });
     async function handleUpdate() {
-      const updated = await updateTag(updatedTag);
+      await updateTag(updatedTag);
       visible.value = false;
-      notification.tags.updated(updated);
     }
 
     return {

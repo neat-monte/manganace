@@ -22,7 +22,6 @@
 <script>
 import { ref } from "vue";
 import { DeleteOutlined } from "@ant-design/icons-vue";
-import notification from "@/services/notification";
 import useImages from "@/modules/useImages";
 
 export default {
@@ -40,9 +39,8 @@ export default {
 
     const { deleteImage } = useImages();
     async function handleDelete() {
-      const deleted = await deleteImage(props.imageId);
+      await deleteImage(props.imageId);
       visible.value = false;
-      notification.images.deleted(deleted);
     }
 
     return {

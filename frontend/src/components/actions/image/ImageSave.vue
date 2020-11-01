@@ -48,7 +48,6 @@ import { SaveOutlined } from "@ant-design/icons-vue";
 
 import CollectionSelect from "@/components/actions/collection/CollectionSelect";
 import TagSelect from "@/components/actions/tag/TagSelect";
-import notification from "@/services/notification";
 import useImages from "@/modules/useImages";
 import useGenerator from "@/modules/useGenerator";
 
@@ -84,9 +83,8 @@ export default {
     }
 
     async function handleSave() {
-      const created = await createImage(newImage);
+      await createImage(newImage);
       visible.value = false;
-      notification.images.added(created);
     }
 
     return {

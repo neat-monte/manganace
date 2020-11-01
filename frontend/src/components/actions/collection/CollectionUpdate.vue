@@ -39,7 +39,6 @@
 <script>
 import { reactive, ref } from "vue";
 import { EditOutlined } from "@ant-design/icons-vue";
-import notification from "@/services/notification";
 import useCollections from "@/modules/useCollections";
 
 export default {
@@ -63,9 +62,8 @@ export default {
       isArchived: props.collection.isArchived,
     });
     async function handleUpdate() {
-      const updated = await updateCollection(updatedCollection);
+      await updateCollection(updatedCollection);
       visible.value = false;
-      notification.collections.updated(updated);
     }
 
     return {

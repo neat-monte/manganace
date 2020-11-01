@@ -25,7 +25,6 @@
 <script>
 import { ref } from "vue";
 import { DeleteOutlined } from "@ant-design/icons-vue";
-import notification from "@/services/notification";
 import useTags from "@/modules/useTags";
 
 export default {
@@ -43,9 +42,8 @@ export default {
 
     const { deleteTag } = useTags();
     async function handleDelete() {
-      const deleted = await deleteTag(props.tagId);
+      await deleteTag(props.tagId);
       visible.value = false;
-      notification.tags.deleted(deleted);
     }
 
     return {

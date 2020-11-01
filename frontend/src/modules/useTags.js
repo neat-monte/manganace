@@ -1,5 +1,6 @@
 import { ref, reactive, readonly } from 'vue'
 import http from '@/services/http'
+import notification from "@/services/notification"
 
 const loaded = ref(false);
 
@@ -17,36 +18,51 @@ export default function useTags() {
     if (state !== undefined && loaded.value) {
       return;
     }
-    const tags = await http.tags.getAll();
-    if (tags) {
-      tags.forEach(tag => insertTag(tag));
+    try {
+      const tags = await http.tags.getAll();
+      if (tags) {
+        tags.forEach(tag => insertTag(tag));
+      }
+    } catch {
+      notification.tags.failedToLoad();
     }
   }
 
   const addTag = async (newTag) => {
-    const tagJson = JSON.stringify(newTag);
-    const tag = await http.tags.create(tagJson);
-    if (tag) {
-      insertTag(tag);
-      return state.tagsById[tag.id];
+    try {
+      const tagJson = JSON.stringify(newTag);
+      const tag = await http.tags.create(tagJson);
+      if (tag) {
+        insertTag(tag);
+        notification.tags.created(tag);
+      }
+    } catch {
+      notification.tags.failedToAdd();
     }
   }
 
   const updateTag = async (updatedTag) => {
-    const tagJson = JSON.stringify(updatedTag);
-    const tag = await http.tags.update(updatedTag.id, tagJson);
-    if (tag) {
-      insertTag(tag);
-      return state.tagsById[tag.id];
+    try {
+      const tagJson = JSON.stringify(updatedTag);
+      const tag = await http.tags.update(updatedTag.id, tagJson);
+      if (tag) {
+        insertTag(tag);
+        notification.tags.updated(tag);
+      }
+    } catch {
+      notification.tags.failedToUpdate();
     }
   }
 
   const deleteTag = async (tagId) => {
-    const tag = await http.tags.destroy(tagId);
-    if (tag) {
-      const deleted = state.tagsById[tag.id];
-      delete state.tagsById[tag.id];
-      return deleted;
+    try {
+      const tag = await http.tags.destroy(tagId);
+      if (tag) {
+        delete state.tagsById[tag.id];
+        notification.tags.deleted(tag);
+      }
+    } catch {
+      notification.tags.failedToDelete();
     }
   }
 

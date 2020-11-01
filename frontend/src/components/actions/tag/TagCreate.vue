@@ -32,7 +32,6 @@
 <script>
 import { ref, reactive } from "vue";
 import { PlusOutlined } from "@ant-design/icons-vue";
-import notification from "@/services/notification";
 import useTags from "@/modules/useTags";
 
 export default {
@@ -56,9 +55,8 @@ export default {
       name: null,
     });
     async function handleCreate() {
-      const created = await addTag(newTag);
+      await addTag(newTag);
       visible.value = false;
-      notification.tags.created(created);
     }
 
     return {

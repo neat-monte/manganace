@@ -41,31 +41,43 @@ function mapImage(img) {
 export default function useGenerator() {
 
     const initGenerator = async () => {
-        await http.generator.initialize();
-        activity.session = getCookie("session");
-        notification.generator.loaded();
+        try {
+            await http.generator.initialize();
+            activity.session = getCookie("session");
+            notification.generator.loaded();
+        } catch (e) {
+            notification.generator.failedToLoad();
+        }
     }
 
     const generate = async (request) => {
-        isGenerating.value = true;
-        const requestJson = JSON.stringify(request);
-        const generatedImage = await http.generator.generate(requestJson);
-        if (generatedImage) {
-            mapImage(generatedImage);
-            activity.images.unshift(generatedImage);
+        try {
+            isGenerating.value = true;
+            const requestJson = JSON.stringify(request);
+            const generatedImage = await http.generator.generate(requestJson);
+            if (generatedImage) {
+                mapImage(generatedImage);
+                activity.images.unshift(generatedImage);
+            }
+            isGenerating.value = false;
+        } catch (e) {
+            notification.generator.failedToGenerate();
         }
-        isGenerating.value = false;
     }
 
     const loadActivity = async () => {
-        if (activity.images !== undefined && activity.images.length > 0) {
-            return;
-        }
-        const sessionActivity = await http.generator.getActivity(activity.session);
-        if (sessionActivity) {
-            sessionActivity.forEach(image => {
-                activity.images.push(image);
-            });
+        try {
+            if (activity.images !== undefined && activity.images.length > 0) {
+                return;
+            }
+            const sessionActivity = await http.generator.getActivity(activity.session);
+            if (sessionActivity) {
+                sessionActivity.forEach(image => {
+                    activity.images.push(image);
+                });
+            }
+        } catch (e) {
+            notification.generator.failedToLoadActivity();
         }
     }
 

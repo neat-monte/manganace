@@ -74,7 +74,7 @@ export default {
   #library {
     #collections {
       flex: 0 380px;
-      margin-right: 50px;
+      margin-right: 20px;
     }
 
     #images,

@@ -24,8 +24,9 @@
 
 <script>
 import { ref } from "vue";
+import { useRouter } from "vue-router";
+
 import { DeleteOutlined } from "@ant-design/icons-vue";
-import notification from "@/services/notification";
 import useCollections from "@/modules/useCollections";
 
 export default {
@@ -36,6 +37,8 @@ export default {
   },
 
   setup(props) {
+    const router = useRouter();
+
     const visible = ref();
     function showModal() {
       visible.value = true;
@@ -43,9 +46,9 @@ export default {
 
     const { deleteCollection } = useCollections();
     async function handleDelete() {
-      const deleted = await deleteCollection(props.collectionId);
+      await deleteCollection(props.collectionId);
       visible.value = false;
-      notification.collections.deleted(deleted);
+      router.push({ name: "Collections" });
     }
 
     return {

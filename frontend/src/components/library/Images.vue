@@ -59,7 +59,11 @@ export default {
       if (props.collectionId && collectionsLoaded) {
         collection.value = collectionsById[props.collectionId];
         await loadImagesOfCollection(props.collectionId);
-        images.value = Object.values(imagesByCollection[props.collectionId]);
+        if (imagesByCollection[props.collectionId]) {
+          images.value = Object.values(imagesByCollection[props.collectionId]);
+        } else {
+          images.value = [];
+        }
         tags.value = [];
       }
     });
@@ -78,8 +82,10 @@ export default {
         images.value = images.value.filter((image) =>
           includesAll(image.tagsIds, tags)
         );
-      } else {
+      } else if (imagesByCollection[props.collectionId]) {
         images.value = Object.values(imagesByCollection[props.collectionId]);
+      } else {
+        images.value = [];
       }
     }
 
