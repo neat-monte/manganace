@@ -7,6 +7,18 @@
         </span>
         <span class="meta">{{ Object.keys(images).length }} images</span>
       </div>
+      <div class="image-filter">
+        <Suspense>
+          <template #default>
+            <TagSelect
+              @tag-id-set="filterImagesByTags"
+              :initialTags="tags"
+              :showCreate="false"
+              placeholder="Filter by tags"
+            />
+          </template>
+        </Suspense>
+      </div>
     </div>
     <div class="images-list">
       <Suspense v-for="image in images" :key="image.id">
@@ -24,6 +36,7 @@
 <script>
 import { defineAsyncComponent, ref, watchEffect } from "vue";
 
+import TagSelect from "@/components/actions/tag/TagSelect";
 import Loading from "@/components/shared/Loading";
 import useImages from "@/modules/useImages";
 import useCollections from "@/modules/useCollections";
@@ -40,26 +53,49 @@ export default {
     const { collectionsLoaded, collectionsById } = useCollections();
     const collection = ref(null);
     const images = ref([]);
+    const tags = ref([]);
 
     watchEffect(async () => {
       if (props.collectionId && collectionsLoaded) {
         collection.value = collectionsById[props.collectionId];
         await loadImagesOfCollection(props.collectionId);
-        images.value = imagesByCollection[props.collectionId];
+        images.value = Object.values(imagesByCollection[props.collectionId]);
+        tags.value = [];
       }
     });
 
+    function includesAll(array, values) {
+      for (var i = 0; i < values.length; i++) {
+        if (!array.includes(values[i])) {
+          return false;
+        }
+      }
+      return true;
+    }
+
+    function filterImagesByTags(tags) {
+      if (tags.length > 0) {
+        images.value = images.value.filter((image) =>
+          includesAll(image.tagsIds, tags)
+        );
+      } else {
+        images.value = Object.values(imagesByCollection[props.collectionId]);
+      }
+    }
+
     return {
+      tags,
       images,
       collection,
+      filterImagesByTags,
     };
   },
 
   components: {
+    TagSelect,
     Loading,
     ImageCardAsync: defineAsyncComponent({
       loader: () => import("@/components/library/ImageCard"),
-      // loadingComponent: Loading,
       delay: 200,
       suspensible: true,
     }),
@@ -80,6 +116,7 @@ export default {
       flex: 100%;
       display: flex;
       align-items: center;
+      margin-bottom: 10px;
 
       .title {
         flex: 1 70%;
@@ -91,6 +128,10 @@ export default {
         font-style: italic;
         text-align: right;
       }
+    }
+
+    .image-filter {
+      width: 100%;
     }
   }
 }

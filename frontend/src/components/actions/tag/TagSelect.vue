@@ -4,7 +4,7 @@
       @change="handleChange"
       v-model:value="selectedTags"
       mode="multiple"
-      placeholder="Choose tags"
+      :placeholder="placeholder"
       :allowClear="true"
       optionLabelProp="key"
       optionFilterProp="key"
@@ -35,6 +35,10 @@ export default {
     initialTags: {
       type: Array,
       default: () => [],
+    },
+    placeholder: {
+      type: String,
+      default: "Choose tags",
     },
     showCreate: {
       type: Boolean,
@@ -74,8 +78,11 @@ export default {
 <style lang="scss" scoped>
 .tag-select {
   display: flex;
+  width: 100%;
 
   .ant-select {
+    width: 100%;
+
     .ant-select-selection {
       border-top-right-radius: 0;
       border-bottom-right-radius: 0;
