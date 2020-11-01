@@ -20,7 +20,7 @@
 import ImageDelete from "@/components/actions/image/ImageDelete";
 import ImageUpdate from "@/components/actions/image/ImageUpdate";
 import ImageDownload from "@/components/actions/image/ImageDownload";
-import { watch } from "vue";
+import { watchEffect } from "vue";
 // import useTags from "@/modules/useTags";
 
 export default {
@@ -30,7 +30,7 @@ export default {
   },
 
   setup(props) {
-    watch(props.image);
+    watchEffect(props.image);
   },
 
   components: {

@@ -71,7 +71,6 @@ export default function useGenerator() {
         }
         const sessionActivity = await http.generator.getActivity(activity.session);
         if (sessionActivity) {
-            console.log(sessionActivity)
             sessionActivity.forEach(image => {
                 addPath(image);
                 activity.images.push(image);

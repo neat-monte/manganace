@@ -31,6 +31,13 @@
           :rows="2"
         />
       </a-form-item>
+      <a-form-item label="Tags">
+        <Suspense>
+          <template #default>
+            <TagSelect @tag-id-set="setTagsIds" />
+          </template>
+        </Suspense>
+      </a-form-item>
     </a-form>
   </a-modal>
 </template>
@@ -40,6 +47,7 @@ import { reactive, ref, watchEffect } from "vue";
 import { SaveOutlined } from "@ant-design/icons-vue";
 
 import CollectionSelect from "@/components/actions/collection/CollectionSelect";
+import TagSelect from "@/components/actions/tag/TagSelect";
 import notification from "@/services/notification";
 import useImages from "@/modules/useImages";
 import useGenerator from "@/modules/useGenerator";
@@ -59,7 +67,7 @@ export default {
     const newImage = reactive({
       description: null,
       collectionId: null,
-      imageTags: [],
+      tagsIds: [],
     });
 
     watchEffect(() => {
@@ -71,6 +79,10 @@ export default {
       newImage.collectionId = id;
     }
 
+    function setTagsIds(tagsIds) {
+      newImage.tagsIds = tagsIds;
+    }
+
     async function handleSave() {
       const created = await createImage(newImage);
       visible.value = false;
@@ -80,6 +92,7 @@ export default {
     return {
       image,
       setCollectionId,
+      setTagsIds,
       newImage,
       handleSave,
       showModal,
@@ -87,6 +100,10 @@ export default {
     };
   },
 
-  components: { SaveOutlined, CollectionSelect },
+  components: {
+    SaveOutlined,
+    CollectionSelect,
+    TagSelect,
+  },
 };
 </script>

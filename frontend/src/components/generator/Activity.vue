@@ -16,11 +16,6 @@
 </template>
 
 <script>
-import "swiper/swiper.scss";
-import "swiper/components/lazy/lazy.scss";
-import "swiper/components/navigation/navigation.scss";
-import "swiper/components/scrollbar/scrollbar.scss";
-
 import useGenerator from "@/modules/useGenerator";
 
 import SwiperCore, { Navigation, Scrollbar } from "swiper";
@@ -47,6 +42,11 @@ export default {
     SwiperSlide,
   },
 };
+
+import "swiper/swiper.scss";
+import "swiper/components/lazy/lazy.scss";
+import "swiper/components/navigation/navigation.scss";
+import "swiper/components/scrollbar/scrollbar.scss";
 </script>
 
 <style lang="scss" scoped>

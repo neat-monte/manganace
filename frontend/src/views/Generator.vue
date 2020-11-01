@@ -8,7 +8,7 @@
         <Loading id="controls" />
       </template>
     </Suspense>
-    <div class="dummy"></div>
+
     <Image />
 
     <Suspense>
@@ -55,9 +55,7 @@ export default {
   #generator {
     #controls {
       flex: 1 300px;
-    }
-    .dummy {
-      flex: 1;
+      margin-right: 20px;
     }
     #generated-image {
       flex: 1;

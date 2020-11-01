@@ -23,6 +23,17 @@
           :rows="2"
         />
       </a-form-item>
+
+      <a-form-item label="Tags">
+        <Suspense>
+          <template #default>
+            <TagSelect
+              :initialTags="updatedImage.tagsIds"
+              @tag-id-set="setTagsIds"
+            />
+          </template>
+        </Suspense>
+      </a-form-item>
     </a-form>
   </a-modal>
 </template>
@@ -30,6 +41,7 @@
 <script>
 import { reactive, ref } from "vue";
 import { EditOutlined } from "@ant-design/icons-vue";
+import TagSelect from "@/components/actions/tag/TagSelect";
 import notification from "@/services/notification";
 import useImages from "@/modules/useImages";
 
@@ -51,7 +63,11 @@ export default {
       id: props.image.id,
       description: props.image.description,
       collectionId: props.image.collectionId,
+      tagsIds: props.image.tagsIds,
     });
+    function setTagsIds(tagsIds) {
+      updatedImage.tagsIds = tagsIds;
+    }
     async function handleUpdate() {
       const updated = await updateImage(updatedImage);
       visible.value = false;
@@ -61,11 +77,15 @@ export default {
     return {
       updatedImage,
       handleUpdate,
+      setTagsIds,
       showModal,
       visible,
     };
   },
 
-  components: { EditOutlined },
+  components: {
+    EditOutlined,
+    TagSelect,
+  },
 };
 </script>
