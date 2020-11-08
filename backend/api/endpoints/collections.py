@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 import crud
-from api import deps
+from api.dependencies import get_db
 from schemas import Collection, Image, CollectionCreate, CollectionUpdate
 from services import ImageService
 
@@ -12,12 +12,13 @@ router = APIRouter()
 
 
 @router.get('/', response_model=List[Collection])
-def get_collections(db: Session = Depends(deps.get_db)) -> Any:
+def get_collections(db: Session = Depends(get_db)) -> Any:
+    """ Get all collections """
     return crud.collection.get_all(db)
 
 
 @router.get('/{id_}', response_model=Collection)
-def get_collection(id_: int, db: Session = Depends(deps.get_db)) -> Any:
+def get_collection(id_: int, db: Session = Depends(get_db)) -> Any:
     """ Get a collection by id """
     collection = crud.collection.get(db, id_)
     if not collection:
@@ -26,7 +27,7 @@ def get_collection(id_: int, db: Session = Depends(deps.get_db)) -> Any:
 
 
 @router.get('/{id_}/images', response_model=List[Image])
-def get_collection_images(id_, db: Session = Depends(deps.get_db)) -> Any:
+def get_collection_images(id_, db: Session = Depends(get_db)) -> Any:
     """ Get all images of a collection by id """
     collection = crud.collection.get(db, id_)
     if not collection:
@@ -41,13 +42,13 @@ def get_collection_images(id_, db: Session = Depends(deps.get_db)) -> Any:
 
 
 @router.post('/', response_model=Collection)
-def create_collection(collection_in: CollectionCreate, db: Session = Depends(deps.get_db)) -> Any:
+def create_collection(collection_in: CollectionCreate, db: Session = Depends(get_db)) -> Any:
     """ Create a new collection """
     return crud.collection.create(db, collection_in)
 
 
 @router.put('/{id_}', response_model=Collection)
-def update_collection(id_: int, collection_in: CollectionUpdate, db: Session = Depends(deps.get_db)) -> Any:
+def update_collection(id_: int, collection_in: CollectionUpdate, db: Session = Depends(get_db)) -> Any:
     """ Modify an existing collection """
     collection = crud.collection.get(db, id_)
     if not collection:
@@ -56,7 +57,7 @@ def update_collection(id_: int, collection_in: CollectionUpdate, db: Session = D
 
 
 @router.delete('/{id_}', response_model=Collection)
-def delete_collection(id_: int, db: Session = Depends(deps.get_db)) -> Any:
+def delete_collection(id_: int, db: Session = Depends(get_db)) -> Any:
     """ Delete a collection """
     collection = crud.collection.get(db, id_)
     if not collection:

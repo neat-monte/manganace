@@ -1,0 +1,26 @@
+[
+  {
+    "name": "happy",
+    "weight": 0.8
+  },
+  {
+    "name": "sad",
+    "weight": 1.5
+  },
+  {
+    "name": "angry",
+    "weight": 1.5
+  },
+  {
+    "name": "disgusted",
+    "weight": 1
+  },
+  {
+    "name": "fearful",
+    "weight": 1.25
+  },
+  {
+    "name": "surprised",
+    "weight": 1
+  }
+]

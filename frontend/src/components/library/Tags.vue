@@ -6,7 +6,7 @@
         <TagCreate />
       </div>
     </div>
-    <a-list bordered>
+    <a-list bordered >
       <a-list-item v-for="tag in tags" :key="tag.id">
         <span>{{ tag.name }}</span>
         <template v-slot:actions>

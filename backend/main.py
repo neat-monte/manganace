@@ -5,10 +5,9 @@ from fastapi.staticfiles import StaticFiles
 
 from api.router import main_router
 from config import settings
-from database.setup import engine
-from models import collection
+from database.setup import database_setup
 
-collection.Base.metadata.create_all(bind=engine)
+database_setup()
 
 app = FastAPI()
 

@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, ForeignKey, Table
 
-from database.setup import Base
+from database import Base
 
 
 class ImageTag(Base):

@@ -7,6 +7,7 @@ class Settings(BaseSettings):
     BACKEND_HOST_DOMAIN: str
     BACKEND_HOST_PORT: int
     BACKEND_CORS_ORIGINS: List[AnyHttpUrl] = []
+    DATABASE_CONNECTION_STRING: str
 
     @validator("BACKEND_CORS_ORIGINS", pre=True)
     def assemble_cors_origins(cls, v: Union[str, List[str]]) -> Union[List[str], str]:

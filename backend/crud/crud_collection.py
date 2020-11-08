@@ -1,7 +1,5 @@
-from sqlalchemy.orm import Session, load_only
-
 from crud.base import CRUDBase
-from models import Collection, Image
+from models import Collection
 from schemas import CollectionCreate, CollectionUpdate
 
 

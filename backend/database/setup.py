@@ -1,11 +1,34 @@
-from sqlalchemy import create_engine
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
+import json
+from pathlib import Path
 
-SQLALCHEMY_DATABASE_URL = "sqlite:///./database/manganace.sqlite"
+from sqlalchemy.orm import Session
 
-engine = create_engine(SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False})
+from models.emotion import Emotion
+from . import LocalSession, Base, engine
 
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+SETUP_DATA = Path.cwd() / "_preexisting_data"
+EMOTIONS = SETUP_DATA / "emotions.json"
 
-Base = declarative_base()
+
+def database_setup():
+    """ Create database with tables and populate or update it """
+    Base.metadata.create_all(bind=engine)
+    db = LocalSession()
+    try:
+        populate_emotions(db)
+    finally:
+        db.close()
+
+
+def populate_emotions(db: Session):
+    """ Read the JSON file and populate emotions table or update weights """
+    with open(EMOTIONS, "r") as file:
+        emotions = json.loads(file.read())
+    for emotion in emotions:
+        emotion_db = db.query(Emotion).filter(Emotion.name == emotion["name"]).first()
+        if emotion_db:
+            if emotion_db.weight != emotion["weight"]:
+                emotion_db.weight = emotion["weight"]
+            continue
+        db.add(Emotion(**emotion))
+    db.commit()

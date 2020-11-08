@@ -1,7 +1,7 @@
 from sqlalchemy import Boolean, Column, Integer, String, Text
 from sqlalchemy.orm import relationship
 
-from database.setup import Base
+from database import Base
 from .mixins import Timestamp
 
 

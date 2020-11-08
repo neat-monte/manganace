@@ -3,36 +3,39 @@ import uuid
 from pathlib import Path
 from typing import Optional, List
 
-from fastapi import APIRouter, Response, Cookie, HTTPException
+from fastapi import APIRouter, Response, Cookie, HTTPException, Depends
+from sqlalchemy.orm import Session
 
-from encoder.interface import generator
+from api.dependencies import get_db
 from schemas import UnsavedSessionActivityImage, GenerateRequest, GenerateResponse, GeneratorInitializedResponse
-from services import ImageFileService
+from services import ImageFileService, GeneratorService, EmotionService
 
 router = APIRouter()
 
 
 @router.get('/', response_model=GeneratorInitializedResponse)
-def initialize(response: Response, session: Optional[str] = Cookie(None)):
+def initialize(response: Response, session: Optional[str] = Cookie(None), db: Session = Depends(get_db)):
     """ Initializes the generator and provides a session cookie as JSON but also
         within the header which is set automatically in the browser """
-    if not generator.is_initialized():
-        generator.initialize()
+    if not GeneratorService.is_initialized():
+        GeneratorService.initialize(db)
     if not session:
         session = str(uuid.uuid4())
         response.set_cookie(key="session", value=session, expires=2**31)
-        session_dir = Path.cwd() / 'static' / 'images' / 'sessions' / session
+    session_dir = Path.cwd() / 'static' / 'images' / 'sessions' / session
+    if not session_dir.exists():
         session_dir.mkdir(parents=True)
-    response = GeneratorInitializedResponse.construct(session=session)
+    emotions = EmotionService.get_emotions(db)
+    response = GeneratorInitializedResponse.construct(session=session, emotions=emotions)
     return response
 
 
 @router.post('/', response_model=GenerateResponse)
 def generate(request: GenerateRequest, session: Optional[str] = Cookie(None)):
     """ Generates an image according to the provided request model """
-    if not generator.is_initialized():
+    if not GeneratorService.is_initialized():
         return HTTPException(status_code=412, detail="The generator is not initialized")
-    image_filename = generator.get_image_by_seed(request.seed, session)
+    image_filename = GeneratorService.generate_image(request, session)
     path = ImageFileService.make_image_url(image_filename, session)
     response = GenerateResponse.construct(**request.dict(), filename=image_filename, path=path)
     return response
