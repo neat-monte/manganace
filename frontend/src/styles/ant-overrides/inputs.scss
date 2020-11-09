@@ -16,6 +16,19 @@
     }
 }
 
+.ant-input-number {
+    color: $darkness !important;
+
+    &:hover,
+    &:focus {
+        border-color: $primary !important;
+    }
+
+    &.ant-input-number-focused {
+        box-shadow: 0 0 0 1px $primary-50 !important;
+    }
+}
+
 .ant-switch-checked {
     background-color: $primary !important;
 }
