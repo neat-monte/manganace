@@ -1,5 +1,5 @@
 import { reactive, readonly } from 'vue'
-import http from '@/services/http'
+import api from '@/services/api'
 import notification from "@/services/notification"
 
 const state = reactive({
@@ -20,7 +20,7 @@ export default function useImages() {
     if (state !== undefined && collectionId in state.loaded && state.loaded[collectionId])
       return;
     try {
-      const images = await http.images.getImagesOfCollecton(collectionId);
+      const images = await api.images.getImagesOfCollecton(collectionId);
       images.forEach(image => insertImage(image));
       state.loaded[collectionId] = true;
     } catch {
@@ -31,7 +31,7 @@ export default function useImages() {
   const createImage = async (newImage) => {
     try {
       const imageJson = JSON.stringify(newImage);
-      const image = await http.images.create(imageJson);
+      const image = await api.images.create(imageJson);
       if (image) {
         insertImage(image);
         notification.images.added(image);
@@ -44,7 +44,7 @@ export default function useImages() {
   const updateImage = async (updatedImage) => {
     try {
       const imageJson = JSON.stringify(updatedImage);
-      const image = await http.images.update(updatedImage.id, imageJson)
+      const image = await api.images.update(updatedImage.id, imageJson)
       if (image) {
         insertImage(image);
         notification.images.updated(image);
@@ -56,7 +56,7 @@ export default function useImages() {
 
   const deleteImage = async (imageId) => {
     try {
-      const image = await http.images.destroy(imageId);
+      const image = await api.images.destroy(imageId);
       if (image) {
         delete state.imagesByCollection[image.collectionId][imageId];
         notification.images.deleted(image);

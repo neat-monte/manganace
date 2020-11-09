@@ -1,5 +1,5 @@
 import { ref, readonly, reactive } from "vue"
-import http from "@/services/http"
+import api from "@/services/api"
 import { getCookie } from "@/services/cookie"
 import notification from "@/services/notification"
 
@@ -48,7 +48,7 @@ export default function useGenerator() {
         }
         try {
             initializing.value = true;
-            await http.generator.initialize();
+            await api.generator.initialize();
             activity.session = getCookie("session");
             notification.generator.loaded();
             initializing.value = false;
@@ -62,7 +62,7 @@ export default function useGenerator() {
         try {
             isGenerating.value = true;
             const requestJson = JSON.stringify(request);
-            const generatedImage = await http.generator.generate(requestJson);
+            const generatedImage = await api.generator.generate(requestJson);
             if (generatedImage) {
                 mapImage(generatedImage);
                 activity.images.unshift(generatedImage);
@@ -78,7 +78,7 @@ export default function useGenerator() {
             if (activity.images !== undefined && activity.images.length > 0) {
                 return;
             }
-            const sessionActivity = await http.generator.getActivity(activity.session);
+            const sessionActivity = await api.generator.getActivity(activity.session);
             if (sessionActivity) {
                 sessionActivity.forEach(image => {
                     activity.images.push(image);

@@ -11,7 +11,6 @@
     "ant-design-vue": "^2.0.0-beta",
     "core-js": "^3.6.5",
     "downloadjs": "^1.4.7",
-    "fetch-absolute": "^1.0.0",
     "moment": "^2.29.1",
     "node-sass": "^4.14.1",
     "sass-loader": "^10.0.3",

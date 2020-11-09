@@ -1,7 +1,4 @@
-import endpoints from '@/services/http/endpoints'
-
-const fetchAbsolute = require('fetch-absolute')
-export const fetchApi = fetchAbsolute(fetch)(endpoints.baseAddress)
+const domain = "http://localhost:8000";
 
 /**
  * Fetch pipeline function which validates if the response is OK [status = 200]
@@ -34,29 +31,20 @@ function dump(error) {
 }
 
 /**
- * Wrapped fetch call with a predetermined pipeline of validate and convert to JSON,
- * and in case of error - log to the console
+ * Wrapped fetch call with a predetermined pipeline to validate and convert to JSON,
+ * and in case of error - log to the console and throw an error
  * @param url {String|URL}
  * @param method {String}
  * @param data {*}
  * @returns {Promise<postcss.Result|any|undefined>}
  */
-export async function fetchAsync(url, method, data = null) {
-  return fetchApi(url, { method: method, body: data, credentials: 'include' })
+export async function fetchJSON(url, method, data = null) {
+  if ((typeof url === "string" || url instanceof String) && !url.startsWith(domain)) {
+    url = `${domain}${url}`;
+  }
+  return fetch(url, { method: method, body: data, credentials: 'include' })
     .then(validate)
     .then(jsonify)
-    .catch(dump)
-}
-
-/**
- * Wrapped fetch call which does not expect any JSON response, only OK (200).
- * It validates the response and in case of error - logs to the console.
- * @param {*} url {String|URL}
- * @param {*} method {String}
- */
-export async function sendAsync(url, method) {
-  return fetchApi(url, { method: method, credentials: 'include' })
-    .then(validate)
     .catch(dump)
 }
 
@@ -78,7 +66,7 @@ export const methods = {
  * @returns {URL}
  */
 export function buildUrlParams(endpoint, params) {
-  const address = endpoints.baseAddress + endpoint
+  const address = `${domain}${endpoint}`
   const url = new URL(address)
   Object.keys(params).forEach(key => url.searchParams.append(key, params[key]))
   return url

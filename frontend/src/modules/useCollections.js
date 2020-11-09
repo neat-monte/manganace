@@ -1,6 +1,6 @@
 import { ref, reactive, readonly } from "vue"
 import moment from "moment"
-import http from "@/services/http"
+import api from "@/services/api"
 import notification from "@/services/notification"
 
 const loaded = ref(false);
@@ -22,7 +22,7 @@ export default function useCollections() {
       if (state !== undefined && loaded.value) {
         return;
       }
-      const collections = await http.collections.getAllWithoutRelations();
+      const collections = await api.collections.getAll();
       collections.forEach(collection => insertCollection(collection));
       loaded.value = true;
     } catch {
@@ -33,7 +33,7 @@ export default function useCollections() {
   const addCollection = async (newCollection) => {
     try {
       const collectionJson = JSON.stringify(newCollection);
-      const collection = await http.collections.create(collectionJson);
+      const collection = await api.collections.create(collectionJson);
       if (collection) {
         insertCollection(collection);
         notification.collections.created(collection);
@@ -46,7 +46,7 @@ export default function useCollections() {
   const updateCollection = async (updatedCollection) => {
     try {
       const collectionJson = JSON.stringify(updatedCollection);
-      const collection = await http.collections.update(updatedCollection.id, collectionJson);
+      const collection = await api.collections.update(updatedCollection.id, collectionJson);
       if (collection) {
         insertCollection(collection);
         notification.collections.updated(collection);
@@ -58,7 +58,7 @@ export default function useCollections() {
 
   const deleteCollection = async (collectionId) => {
     try {
-      const collection = await http.collections.destroy(collectionId);
+      const collection = await api.collections.destroy(collectionId);
       if (collection) {
         delete state.collectionsById[collection.id];
         notification.collections.deleted(collection);
