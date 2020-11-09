@@ -15,8 +15,8 @@ class GeneratorService:
     generator = None
 
     def initialize(self, db: Session) -> None:
-        emotion_weights = EmotionService.get_emotion_weights(db)
-        self.generator = GeneratorWrapper(emotion_weights)
+        emotions_name_weight_by_id = EmotionService.get_emotions_dict(db)
+        self.generator = GeneratorWrapper(emotions_name_weight_by_id)
         _ = self.generator.generate(0)  # [Necessary] Dummy call to save internal variables
 
     def is_initialized(self) -> bool:

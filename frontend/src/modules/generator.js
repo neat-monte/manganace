@@ -6,6 +6,8 @@ const isGenerating = ref(false);
 const initializing = ref(false);
 const initialized = ref(false);
 
+const emotions = reactive({});
+
 const currentImage = reactive({
     seed: "",
     filename: "",
@@ -29,12 +31,18 @@ export default function useGenerator() {
         }
         try {
             initializing.value = true;
-            await api.generator.initialize();
-            notification.generator.loaded();
-            initializing.value = false;
-            initialized.value = true;
+            const response = await api.generator.initialize();
+            if (response) {
+                response.emotions.forEach(emotion => {
+                    emotions[emotion.id] = emotion;
+                });
+                initialized.value = true;
+                notification.generator.loaded();
+            }
         } catch (e) {
             notification.generator.failedToLoad();
+        } finally {
+            initializing.value = false;
         }
     }
 
@@ -42,6 +50,7 @@ export default function useGenerator() {
         try {
             isGenerating.value = true;
             const requestJson = JSON.stringify(request);
+            console.log(requestJson)
             const generatedImage = await api.generator.generate(requestJson);
             if (generatedImage) {
                 mapImage(generatedImage);
@@ -78,6 +87,7 @@ export default function useGenerator() {
         currentImage: readonly(currentImage),
         isGenerating: readonly(isGenerating),
         generatedImages: readonly(generatedImages),
+        emotions: readonly(emotions),
         initGenerator,
         loadActivity,
         generate,

@@ -10,8 +10,17 @@
             :value="generateRequest.seed"
             @change="seedOnChange"
             :maxlength="10"
-            :disabled="generating"
+            :disabled="isGenerating"
             placeholder="Enter a seed"
+          />
+        </a-form-item>
+        <a-form-item v-for="emotion in emotions" :key="emotion.id">
+          <Slider
+            :label="emotion.name"
+            :enableInput="true"
+            :min="emotion.min"
+            :max="emotion.max"
+            @change="emotionOnChange(emotion.id, $event)"
           />
         </a-form-item>
       </a-form>
@@ -28,6 +37,7 @@
 
 <script>
 import { reactive } from "vue";
+import Slider from "@/components/shared/Slider";
 
 import useGenerator from "@/modules/generator";
 
@@ -35,27 +45,51 @@ export default {
   name: "Controls",
 
   async setup() {
-    const { isGenerating, initGenerator, generate } = useGenerator();
-    await initGenerator();
+    const { isGenerating, initGenerator, generate, emotions } = useGenerator();
 
     const generateRequest = reactive({
       seed: "",
+      emotions: [],
     });
 
     function seedOnChange(e) {
       const { value } = e.target;
-      const onlyInt = /^-?[1-9]([0-9]*)?$/;
+      const onlyInt = /^([1-9]\d*|0)$/;
       if ((!isNaN(value) && onlyInt.test(value)) || value === "") {
         generateRequest.seed = value;
       }
     }
 
+    function emotionOnChange(id, value) {
+      const emotion = generateRequest.emotions.filter((e) => e.id === id)[0];
+
+      if (emotion && value > 0) {
+        emotion.multiplier = value;
+      } else if (!emotion && value > 0) {
+        generateRequest.emotions.push({
+          id: id,
+          multiplier: value,
+        });
+      } else if (emotion && value <= 0) {
+        const index = generateRequest.emotions.indexOf(emotion);
+        generateRequest.emotions.splice(index, 1);
+      }
+    }
+
+    await initGenerator();
+
     return {
+      emotions,
       generateRequest,
       isGenerating,
       generate,
       seedOnChange,
+      emotionOnChange,
     };
+  },
+
+  components: {
+    Slider,
   },
 };
 </script>

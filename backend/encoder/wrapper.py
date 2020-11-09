@@ -16,7 +16,7 @@ PICKLED_EMOTIONS_VECTORS = BASE_DIR / 'emotion_directions_in_latent_space.pkl'
 class GeneratorWrapper:
     multiplier_scale = 0.1
 
-    def __init__(self, emotion_weights):
+    def __init__(self, emotions_name_weight_by_id):
         # Initialize the tensorflow session
         dnnlib.tflib.init_tf()
         self.tf_session = tf.get_default_session()
@@ -28,7 +28,7 @@ class GeneratorWrapper:
             self.emotion_vectors = pickle.load(file)
         # Initialize the generator
         self.generator = Generator(self.Gs, batch_size=1, randomize_noise=False)
-        self.emotion_weights = emotion_weights
+        self.emotions_name_weight_by_id = emotions_name_weight_by_id
 
     def _get_latent_state(self, seed, truncation_psi=0.5):
         """ Given a seed [0..2^31-1] produce a latent state point """
@@ -42,9 +42,10 @@ class GeneratorWrapper:
         """ Apply emotions with provided multipliers """
         latent_state = latent_state.reshape((1, 18 * 512))
         for emotion in emotions:
+            (emo_name, emo_weight) = self.emotions_name_weight_by_id[emotion.id]
             multiplier = emotion.multiplier * self.multiplier_scale
-            emotion_vector = self.emotion_vectors[f'neutral->{emotion.name}']
-            weighted_emotion_vector = emotion_vector * self.emotion_weights[emotion.name]
+            emotion_vector = self.emotion_vectors[f'neutral->{emo_name}']
+            weighted_emotion_vector = emotion_vector * emo_weight
             scaled_emotion_vector = weighted_emotion_vector * multiplier
             latent_state += scaled_emotion_vector
         return latent_state.reshape((1, 18, 512))

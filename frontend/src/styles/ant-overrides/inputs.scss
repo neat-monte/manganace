@@ -60,3 +60,21 @@
         }
     }
 }
+
+.ant-slider {
+    .ant-slider-rail {
+        background-color: $darkness-20 !important;
+    }
+    .ant-slider-track {
+        background-color: $primary-50 !important;
+    }
+    .ant-slider-handle {
+        border-color: $primary !important;
+    }
+
+    &:hover {
+        .ant-slider-rail {
+            background-color: $darkness-50 !important;
+        }
+    }
+}

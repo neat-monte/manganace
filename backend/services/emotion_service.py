@@ -10,14 +10,14 @@ class EmotionService:
         emotions_db = crud.emotion.get_all(db)
         emotions = []
         for emotion_db in emotions_db:
-            emotion = Emotion.construct(name=emotion_db.name, weight=emotion_db.weight)
+            emotion = Emotion.construct(id=emotion_db.id, name=emotion_db.name, weight=emotion_db.weight)
             emotions.append(emotion)
         return emotions
 
     @staticmethod
-    def get_emotion_weights(db: Session):
+    def get_emotions_dict(db: Session):
         emotions_db = crud.emotion.get_all(db)
-        emotion_weights = {}
+        name_weight_by_id = {}
         for emotion_db in emotions_db:
-            emotion_weights[emotion_db.name] = emotion_db.weight
-        return emotion_weights
+            name_weight_by_id[emotion_db.id] = (emotion_db.name, emotion_db.weight)
+        return name_weight_by_id
