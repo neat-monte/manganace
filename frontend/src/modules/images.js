@@ -2,27 +2,25 @@ import { reactive, readonly } from 'vue'
 import api from '@/services/api'
 import notification from "@/services/notification"
 
-const state = reactive({
-  loaded: {},
-  imagesByCollection: {},
-})
+const loaded = reactive({});
+const imagesByCollectionId = reactive({});
 
 function insertImage(image) {
-  if (state.imagesByCollection[image.collectionId] === undefined) {
-    state.imagesByCollection[image.collectionId] = {};
+  if (imagesByCollectionId[image.collectionId] === undefined) {
+    imagesByCollectionId[image.collectionId] = {};
   }
-  state.imagesByCollection[image.collectionId][image.id] = image;
+  imagesByCollectionId[image.collectionId][image.id] = image;
 }
 
 export default function useImages() {
 
   const loadImagesOfCollection = async (collectionId) => {
-    if (state !== undefined && collectionId in state.loaded && state.loaded[collectionId])
+    if (loaded !== undefined && collectionId in loaded && loaded[collectionId])
       return;
     try {
       const images = await api.images.getImagesOfCollecton(collectionId);
       images.forEach(image => insertImage(image));
-      state.loaded[collectionId] = true;
+      loaded[collectionId] = true;
     } catch {
       notification.images.failedToLoad();
     }
@@ -58,7 +56,7 @@ export default function useImages() {
     try {
       const image = await api.images.destroy(imageId);
       if (image) {
-        delete state.imagesByCollection[image.collectionId][imageId];
+        delete imagesByCollectionId[image.collectionId][imageId];
         notification.images.deleted(image);
       }
     } catch {
@@ -67,7 +65,7 @@ export default function useImages() {
   }
 
   return {
-    imagesByCollection: readonly(state.imagesByCollection),
+    imagesByCollectionId: readonly(imagesByCollectionId),
     loadImagesOfCollection,
     createImage,
     updateImage,

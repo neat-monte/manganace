@@ -17,7 +17,7 @@
       </a-form>
       <a-button
         @click="generate(generateRequest)"
-        :disabled="generating"
+        :disabled="isGenerating"
         type="primary"
       >
         Generate
@@ -29,13 +29,13 @@
 <script>
 import { reactive } from "vue";
 
-import useGenerator from "@/modules/useGenerator";
+import useGenerator from "@/modules/generator";
 
 export default {
   name: "Controls",
 
   async setup() {
-    const { generating, initGenerator, generate } = useGenerator();
+    const { isGenerating, initGenerator, generate } = useGenerator();
     await initGenerator();
 
     const generateRequest = reactive({
@@ -52,7 +52,7 @@ export default {
 
     return {
       generateRequest,
-      generating,
+      isGenerating,
       generate,
       seedOnChange,
     };

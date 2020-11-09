@@ -36,7 +36,7 @@
 <script>
 import { reactive, ref } from "vue";
 import { PlusOutlined } from "@ant-design/icons-vue";
-import useCollections from "@/modules/useCollections";
+import useCollections from "@/modules/collections";
 
 export default {
   name: "CollectionCreate",

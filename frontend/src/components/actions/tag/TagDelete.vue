@@ -25,7 +25,7 @@
 <script>
 import { ref } from "vue";
 import { DeleteOutlined } from "@ant-design/icons-vue";
-import useTags from "@/modules/useTags";
+import useTags from "@/modules/tags";
 
 export default {
   name: "TagDelete",

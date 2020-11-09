@@ -8,7 +8,7 @@
       :pagination="{ clickable: true }"
       :scrollbar="{ draggable: true }"
     >
-      <swiper-slide v-for="(image, index) in images" :key="index">
+      <swiper-slide v-for="(image, index) in generatedImages" :key="index">
         <img @click="swapImage(index)" :src="image.path" />
       </swiper-slide>
     </swiper>
@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import useGenerator from "@/modules/useGenerator";
+import useGenerator from "@/modules/generator";
 
 import SwiperCore, { Navigation, Scrollbar } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/vue";
@@ -27,13 +27,13 @@ export default {
   name: "Activity",
 
   async setup() {
-    const { activity, loadActivity, swapImage } = useGenerator();
+    const { generatedImages, loadActivity, swapImage } = useGenerator();
 
     await loadActivity();
 
     return {
       swapImage,
-      images: activity.images,
+      generatedImages,
     };
   },
 

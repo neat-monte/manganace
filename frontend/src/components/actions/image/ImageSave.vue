@@ -5,7 +5,7 @@
     </template>
     <a-button
       @click="showModal()"
-      :disabled="!image.filename"
+      :disabled="!currentImage.filename"
       type="primary"
       shape="circle"
     >
@@ -48,14 +48,14 @@ import { SaveOutlined } from "@ant-design/icons-vue";
 
 import CollectionSelect from "@/components/actions/collection/CollectionSelect";
 import TagSelect from "@/components/actions/tag/TagSelect";
-import useImages from "@/modules/useImages";
-import useGenerator from "@/modules/useGenerator";
+import useImages from "@/modules/images";
+import useGenerator from "@/modules/generator";
 
 export default {
   name: "ImageSave",
 
   setup() {
-    const { image } = useGenerator();
+    const { currentImage } = useGenerator();
 
     const visible = ref();
     function showModal() {
@@ -70,8 +70,8 @@ export default {
     });
 
     watchEffect(() => {
-      newImage.seed = image.seed;
-      newImage.filename = image.filename;
+      newImage.seed = currentImage.seed;
+      newImage.filename = currentImage.filename;
     });
 
     function setCollectionId(id) {
@@ -88,7 +88,7 @@ export default {
     }
 
     return {
-      image,
+      currentImage,
       setCollectionId,
       setTagsIds,
       newImage,

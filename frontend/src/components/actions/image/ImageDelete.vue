@@ -22,7 +22,7 @@
 <script>
 import { ref } from "vue";
 import { DeleteOutlined } from "@ant-design/icons-vue";
-import useImages from "@/modules/useImages";
+import useImages from "@/modules/images";
 
 export default {
   name: "ImageDelete",

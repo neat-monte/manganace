@@ -4,22 +4,19 @@ import api from "@/services/api"
 import notification from "@/services/notification"
 
 const loaded = ref(false);
-
-const state = reactive({
-  collectionsById: {}
-});
+const collectionsById = reactive({});
 
 function insertCollection(collection) {
   collection.created = moment(collection.created).format("YYYY-MM-DD HH:mm");
   collection.updated = collection.updated !== null ? moment(collection.updated).format("YYYY-MM-DD HH:mm") : null;
-  state.collectionsById[collection.id] = collection;
+  collectionsById[collection.id] = collection;
 }
 
 export default function useCollections() {
 
   const loadCollections = async () => {
     try {
-      if (state !== undefined && loaded.value) {
+      if (collectionsById !== undefined && loaded.value) {
         return;
       }
       const collections = await api.collections.getAll();
@@ -60,7 +57,7 @@ export default function useCollections() {
     try {
       const collection = await api.collections.destroy(collectionId);
       if (collection) {
-        delete state.collectionsById[collection.id];
+        delete collectionsById[collection.id];
         notification.collections.deleted(collection);
       }
     } catch {
@@ -70,7 +67,7 @@ export default function useCollections() {
 
   return {
     collectionsLoaded: readonly(loaded),
-    collectionsById: readonly(state.collectionsById),
+    collectionsById: readonly(collectionsById),
     loadCollections,
     addCollection,
     updateCollection,

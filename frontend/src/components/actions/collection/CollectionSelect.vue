@@ -14,7 +14,7 @@
 <script>
 import { ref, watchEffect } from "vue";
 
-import useCollections from "@/modules/useCollections";
+import useCollections from "@/modules/collections";
 
 export default {
   name: "CollectionSelect",

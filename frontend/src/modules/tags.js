@@ -3,19 +3,16 @@ import api from '@/services/api'
 import notification from "@/services/notification"
 
 const loaded = ref(false);
-
-const state = reactive({
-  tagsById: {}
-});
+const tagsById = reactive({});
 
 function insertTag(tag) {
-  state.tagsById[tag.id] = tag;
+  tagsById[tag.id] = tag;
 }
 
 export default function useTags() {
 
   const loadTags = async () => {
-    if (state !== undefined && loaded.value) {
+    if (tagsById !== undefined && loaded.value) {
       return;
     }
     try {
@@ -58,7 +55,7 @@ export default function useTags() {
     try {
       const tag = await api.tags.destroy(tagId);
       if (tag) {
-        delete state.tagsById[tag.id];
+        delete tagsById[tag.id];
         notification.tags.deleted(tag);
       }
     } catch {
@@ -68,7 +65,7 @@ export default function useTags() {
 
   return {
     areLoaded: readonly(loaded),
-    tagsById: readonly(state.tagsById),
+    tagsById: readonly(tagsById),
     loadTags,
     addTag,
     updateTag,

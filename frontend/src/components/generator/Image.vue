@@ -3,10 +3,10 @@
     <div class="wrapper">
       <div class="image-wrapper">
         <Loading v-if="isGenerating" />
-        <img :src="image.path" />
+        <img :src="currentImage.path" />
         <div
           class="zoomed-in"
-          :style="`background-image: url('${image.path}')`"
+          :style="`background-image: url('${currentImage.path}')`"
           @mousemove="ZoomIn"
         />
       </div>
@@ -19,7 +19,7 @@
             <Loading />
           </template>
         </Suspense>
-        <ImageDownload :imageUrl="image.path" />
+        <ImageDownload :imageUrl="currentImage.path" />
       </div>
     </div>
   </section>
@@ -29,13 +29,13 @@
 import ImageSave from "@/components/actions/image/ImageSave";
 import ImageDownload from "@/components/actions/image/ImageDownload";
 import Loading from "@/components/shared/Loading";
-import useGenerator from "@/modules/useGenerator";
+import useGenerator from "@/modules/generator";
 
 export default {
   name: "Image",
 
   setup() {
-    const { image, isGenerating } = useGenerator();
+    const { currentImage, isGenerating } = useGenerator();
 
     function ZoomIn(event) {
       var genImage = document.getElementById("generated-image"),
@@ -57,7 +57,7 @@ export default {
     }
 
     return {
-      image,
+      currentImage,
       isGenerating,
       ZoomIn,
     };

@@ -32,7 +32,7 @@
 <script>
 import { ref, reactive } from "vue";
 import { PlusOutlined } from "@ant-design/icons-vue";
-import useTags from "@/modules/useTags";
+import useTags from "@/modules/tags";
 
 export default {
   name: "TagCreate",

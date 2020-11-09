@@ -38,8 +38,8 @@ import { defineAsyncComponent, ref, watchEffect } from "vue";
 
 import TagSelect from "@/components/actions/tag/TagSelect";
 import Loading from "@/components/shared/Loading";
-import useImages from "@/modules/useImages";
-import useCollections from "@/modules/useCollections";
+import useImages from "@/modules/images";
+import useCollections from "@/modules/collections";
 
 export default {
   name: "Images",
@@ -50,7 +50,7 @@ export default {
 
   async setup(props) {
     const { collectionsById, collectionsLoaded } = useCollections();
-    const { imagesByCollection, loadImagesOfCollection } = useImages();
+    const { imagesByCollectionId, loadImagesOfCollection } = useImages();
     const collection = ref(null);
     const images = ref([]);
     const filterTags = ref([]);
@@ -60,8 +60,8 @@ export default {
         collection.value = collectionsById[props.collectionId];
         await loadImagesOfCollection(props.collectionId);
 
-        if (imagesByCollection[props.collectionId]) {
-          images.value = imagesByCollection[props.collectionId];
+        if (imagesByCollectionId[props.collectionId]) {
+          images.value = imagesByCollectionId[props.collectionId];
         }
 
         filterTags.value = [];
@@ -85,8 +85,8 @@ export default {
             includesAll(image.tagsIds, tags)
           )
         );
-      } else if (imagesByCollection[props.collectionId]) {
-        images.value = imagesByCollection[props.collectionId];
+      } else if (imagesByCollectionId[props.collectionId]) {
+        images.value = imagesByCollectionId[props.collectionId];
       }
     }
 

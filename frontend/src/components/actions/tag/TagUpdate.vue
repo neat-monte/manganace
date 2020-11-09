@@ -22,7 +22,7 @@
 <script>
 import { reactive, ref } from "vue";
 import { EditOutlined } from "@ant-design/icons-vue";
-import useTags from "@/modules/useTags";
+import useTags from "@/modules/tags";
 
 export default {
   name: "TagUpdate",

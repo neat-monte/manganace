@@ -27,7 +27,7 @@ import { ref } from "vue";
 import { useRouter } from "vue-router";
 
 import { DeleteOutlined } from "@ant-design/icons-vue";
-import useCollections from "@/modules/useCollections";
+import useCollections from "@/modules/collections";
 
 export default {
   name: "CollectionDelete",

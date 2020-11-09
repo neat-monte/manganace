@@ -42,7 +42,7 @@
 import { reactive, ref } from "vue";
 import { EditOutlined } from "@ant-design/icons-vue";
 import TagSelect from "@/components/actions/tag/TagSelect";
-import useImages from "@/modules/useImages";
+import useImages from "@/modules/images";
 
 export default {
   name: "ImageUpdate",

@@ -25,7 +25,7 @@
 <script>
 import { ref, watchEffect } from "vue";
 
-import useTags from "@/modules/useTags";
+import useTags from "@/modules/tags";
 import TagCreate from "@/components/actions/tag/TagCreate";
 
 export default {

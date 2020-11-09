@@ -1,43 +1,24 @@
-import { ref, readonly, reactive } from "vue"
+import { ref, reactive, readonly } from "vue"
 import api from "@/services/api"
-import { getCookie } from "@/services/cookie"
 import notification from "@/services/notification"
 
-/**
- * Status of the generator
- */
 const isGenerating = ref(false);
 const initializing = ref(false);
 const initialized = ref(false);
 
-/**
- * Object that holds the information of a generated image
- */
-const image = reactive({
+const currentImage = reactive({
     seed: "",
     filename: "",
     path: "",
 });
 
-/**
- * Object that holds previously generated images,
- * those images should not be changed or manipulated
- * just readonly.
- */
-const activity = reactive({
-    session: getCookie("session"),
-    images: []
-});
+const activityLoaded = ref(false);
+const generatedImages = reactive([]);
 
-/**
- * Maps an image either from the API or image from the
- * history to the reactive image container
- * @param {*} img {Object}
- */
-function mapImage(img) {
-    image.seed = img.seed;
-    image.filename = img.filename;
-    image.path = img.path;
+function mapImage(image) {
+    currentImage.seed = image.seed;
+    currentImage.filename = image.filename;
+    currentImage.path = image.path;
 }
 
 export default function useGenerator() {
@@ -49,7 +30,6 @@ export default function useGenerator() {
         try {
             initializing.value = true;
             await api.generator.initialize();
-            activity.session = getCookie("session");
             notification.generator.loaded();
             initializing.value = false;
             initialized.value = true;
@@ -65,7 +45,7 @@ export default function useGenerator() {
             const generatedImage = await api.generator.generate(requestJson);
             if (generatedImage) {
                 mapImage(generatedImage);
-                activity.images.unshift(generatedImage);
+                generatedImages.unshift(generatedImage);
             }
             isGenerating.value = false;
         } catch (e) {
@@ -75,14 +55,15 @@ export default function useGenerator() {
 
     const loadActivity = async () => {
         try {
-            if (activity.images !== undefined && activity.images.length > 0) {
+            if (generatedImages !== undefined && activityLoaded.value) {
                 return;
             }
-            const sessionActivity = await api.generator.getActivity(activity.session);
+            const sessionActivity = await api.generator.getActivity();
             if (sessionActivity) {
                 sessionActivity.forEach(image => {
-                    activity.images.push(image);
+                    generatedImages.push(image);
                 });
+                activityLoaded.value = true;
             }
         } catch (e) {
             notification.generator.failedToLoadActivity();
@@ -90,13 +71,13 @@ export default function useGenerator() {
     }
 
     const swapImage = (index) => {
-        mapImage(activity.images[index])
+        mapImage(generatedImages[index])
     }
 
     return {
-        image: readonly(image),
+        currentImage: readonly(currentImage),
         isGenerating: readonly(isGenerating),
-        activity: readonly(activity),
+        generatedImages: readonly(generatedImages),
         initGenerator,
         loadActivity,
         generate,
