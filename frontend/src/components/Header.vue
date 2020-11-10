@@ -19,12 +19,22 @@
           <span>Generator</span>
         </div>
       </router-link>
+      <router-link to="/research">
+        <div class="link">
+          <ExperimentOutlined />
+          <span>Research</span>
+        </div>
+      </router-link>
     </nav>
   </header>
 </template>
 
 <script>
-import { PictureOutlined, InteractionOutlined } from "@ant-design/icons-vue";
+import {
+  PictureOutlined,
+  InteractionOutlined,
+  ExperimentOutlined,
+} from "@ant-design/icons-vue";
 
 export default {
   name: "Header",
@@ -32,6 +42,7 @@ export default {
   components: {
     PictureOutlined,
     InteractionOutlined,
+    ExperimentOutlined,
   },
 };
 </script>
@@ -155,7 +166,7 @@ export default {
       display: flex;
 
       > * {
-        margin-right: 40px;
+        margin-right: 10px;
       }
 
       :last-child {
@@ -172,6 +183,16 @@ export default {
 
       .brand-link {
         margin-left: 62px;
+      }
+    }
+
+    .navigation {
+      > * {
+        margin-right: 40px;
+      }
+
+      :last-child {
+        margin: 0;
       }
     }
   }

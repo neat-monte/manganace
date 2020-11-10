@@ -14,13 +14,14 @@
             placeholder="Enter a seed"
           />
         </a-form-item>
-        <a-form-item v-for="emotion in emotions" :key="emotion.id">
+        <a-form-item v-for="vector in vectors" :key="vector.id">
           <Slider
-            :label="emotion.name"
+            :label="vector.name"
+            :tooltip="`Make the face look ${vector.effect}`"
             :enableInput="true"
-            :min="emotion.min"
-            :max="emotion.max"
-            @change="emotionOnChange(emotion.id, $event)"
+            :min="vector.min"
+            :max="vector.max"
+            @change="vectorOnChange(vector.id, $event)"
           />
         </a-form-item>
       </a-form>
@@ -45,11 +46,11 @@ export default {
   name: "Controls",
 
   async setup() {
-    const { isGenerating, initGenerator, generate, emotions } = useGenerator();
+    const { isGenerating, initGenerator, generate, vectors } = useGenerator();
 
     const generateRequest = reactive({
       seed: "",
-      emotions: [],
+      vectors: [],
     });
 
     function seedOnChange(e) {
@@ -60,31 +61,31 @@ export default {
       }
     }
 
-    function emotionOnChange(id, value) {
-      const emotion = generateRequest.emotions.filter((e) => e.id === id)[0];
+    function vectorOnChange(id, value) {
+      const vector = generateRequest.vectors.filter((e) => e.id === id)[0];
 
-      if (emotion && value > 0) {
-        emotion.multiplier = value;
-      } else if (!emotion && value > 0) {
-        generateRequest.emotions.push({
+      if (vector && value > 0) {
+        vector.multiplier = value;
+      } else if (!vector && value > 0) {
+        generateRequest.vectors.push({
           id: id,
           multiplier: value,
         });
-      } else if (emotion && value <= 0) {
-        const index = generateRequest.emotions.indexOf(emotion);
-        generateRequest.emotions.splice(index, 1);
+      } else if (vector && value <= 0) {
+        const index = generateRequest.vectors.indexOf(vector);
+        generateRequest.vectors.splice(index, 1);
       }
     }
 
     await initGenerator();
 
     return {
-      emotions,
+      vectors,
       generateRequest,
       isGenerating,
       generate,
       seedOnChange,
-      emotionOnChange,
+      vectorOnChange,
     };
   },
 

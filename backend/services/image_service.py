@@ -56,7 +56,7 @@ class ImageService:
             id=image.id,
             seed=image.seed,
             filename=image.filename,
-            path=ImageFileService.make_image_url(image.filename),
+            url=ImageFileService.make_image_url(image.filename),
             description=image.description,
             collection_id=image.collection_id,
             tags_ids=tags_ids)

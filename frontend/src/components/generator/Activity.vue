@@ -9,7 +9,7 @@
       :scrollbar="{ draggable: true }"
     >
       <swiper-slide v-for="(image, index) in generatedImages" :key="index">
-        <img @click="swapImage(index)" :src="image.path" />
+        <img @click="swapImage(index)" :src="image.url" />
       </swiper-slide>
     </swiper>
   </section>

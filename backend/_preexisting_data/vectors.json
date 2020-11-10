@@ -1,0 +1,32 @@
+[
+  {
+    "name": "happiness",
+    "effect": "happy",
+    "weight": 0.8
+  },
+  {
+    "name": "sadness",
+    "effect": "sad",
+    "weight": 1.5
+  },
+  {
+    "name": "angriness",
+    "effect": "angry",
+    "weight": 1.5
+  },
+  {
+    "name": "disgust",
+    "effect": "disgusted",
+    "weight": 1
+  },
+  {
+    "name": "fearfulness",
+    "effect": "fearful",
+    "weight": 1.25
+  },
+  {
+    "name": "astonishment",
+    "effect": "surprised",
+    "weight": 1
+  }
+]

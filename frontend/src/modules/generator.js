@@ -6,12 +6,12 @@ const isGenerating = ref(false);
 const initializing = ref(false);
 const initialized = ref(false);
 
-const emotions = reactive({});
+const vectors = reactive({});
 
 const currentImage = reactive({
     seed: "",
     filename: "",
-    path: "",
+    url: "",
 });
 
 const activityLoaded = ref(false);
@@ -20,7 +20,7 @@ const generatedImages = reactive([]);
 function mapImage(image) {
     currentImage.seed = image.seed;
     currentImage.filename = image.filename;
-    currentImage.path = image.path;
+    currentImage.url = image.url;
 }
 
 export default function useGenerator() {
@@ -33,8 +33,8 @@ export default function useGenerator() {
             initializing.value = true;
             const response = await api.generator.initialize();
             if (response) {
-                response.emotions.forEach(emotion => {
-                    emotions[emotion.id] = emotion;
+                response.vectors.forEach(vector => {
+                    vectors[vector.id] = vector;
                 });
                 initialized.value = true;
                 notification.generator.loaded();
@@ -87,7 +87,7 @@ export default function useGenerator() {
         currentImage: readonly(currentImage),
         isGenerating: readonly(isGenerating),
         generatedImages: readonly(generatedImages),
-        emotions: readonly(emotions),
+        vectors: readonly(vectors),
         initGenerator,
         loadActivity,
         generate,

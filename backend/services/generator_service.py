@@ -7,7 +7,7 @@ from sqlalchemy.orm import Session
 
 from encoder.wrapper import GeneratorWrapper
 from schemas import GenerateRequest
-from .emotion_service import EmotionService
+from .vector_service import VectorService
 
 
 # noinspection PyMethodMayBeStatic
@@ -15,15 +15,15 @@ class GeneratorService:
     generator = None
 
     def initialize(self, db: Session) -> None:
-        emotions_name_weight_by_id = EmotionService.get_emotions_dict(db)
-        self.generator = GeneratorWrapper(emotions_name_weight_by_id)
+        vector_effect_weight_by_id = VectorService.get_vectors_dict(db)
+        self.generator = GeneratorWrapper(vector_effect_weight_by_id)
         _ = self.generator.generate(0)  # [Necessary] Dummy call to save internal variables
 
     def is_initialized(self) -> bool:
         return self.generator is not None
 
     def generate_image(self, request: GenerateRequest, session: str) -> string:
-        img = self.generator.generate(request.seed, request.emotions)
+        img = self.generator.generate(request.seed, request.vectors)
         return self._save_image(img, request.seed, session)
 
     def _save_image(self, img, seed: int, session: str):

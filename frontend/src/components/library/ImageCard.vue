@@ -2,14 +2,14 @@
   <a-tooltip placement="top" :title="image.description">
     <div class="image-card">
       <div class="image-wrapper">
-        <img :src="image.path" />
+        <img :src="image.url" />
       </div>
       <div class="info">
         <div class="tags"></div>
       </div>
       <div class="card-controls">
         <ImageDelete :imageId="image.id" />
-        <ImageDownload :imageUrl="image.path" />
+        <ImageDownload :imageUrl="image.url" />
         <ImageUpdate :image="image" />
       </div>
     </div>

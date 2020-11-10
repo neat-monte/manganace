@@ -1,6 +1,9 @@
 <template>
   <div class="slider">
-    <div v-if="label" class="label">{{ label }}</div>
+    <a-tooltip v-if="tooltip && label" placement="top" :title="tooltip">
+      <div class="label">{{ label }}</div>
+    </a-tooltip>
+    <div v-if="!tooltip && label" class="label">{{ label }}</div>
     <a-slider
       v-model:value="value"
       :min="min"
@@ -27,6 +30,10 @@ export default {
 
   props: {
     label: {
+      type: String,
+      default: null,
+    },
+    tooltip: {
       type: String,
       default: null,
     },
@@ -79,9 +86,14 @@ export default {
   align-items: center;
 
   .label {
+    margin-left: 5px;
     margin-right: 5px;
     text-transform: capitalize;
-    width: 80px;
+    width: 100px;
+
+    &.ant-tooltip-open {
+      cursor: help;
+    }
   }
 
   .ant-slider {

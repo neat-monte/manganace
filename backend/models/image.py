@@ -15,3 +15,4 @@ class Image(Base):
 
     collection = relationship("Collection", back_populates="images")
     tags = relationship("Tag", secondary='image_tag', back_populates="images")
+    vectors = relationship("Vector", secondary='image_vectors', back_populates="images")

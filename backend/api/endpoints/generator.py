@@ -8,7 +8,7 @@ from sqlalchemy.orm import Session
 
 from api.dependencies import get_db
 from schemas import UnsavedSessionActivityImage, GenerateRequest, GenerateResponse, GeneratorInitializedResponse
-from services import ImageFileService, GeneratorService, EmotionService
+from services import ImageFileService, GeneratorService, VectorService
 
 router = APIRouter()
 
@@ -25,8 +25,8 @@ def initialize(response: Response, session: Optional[str] = Cookie(None), db: Se
     session_dir = Path.cwd() / 'static' / 'images' / 'sessions' / session
     if not session_dir.exists():
         session_dir.mkdir(parents=True)
-    emotions = EmotionService.get_emotions(db)
-    response = GeneratorInitializedResponse.construct(session=session, emotions=emotions)
+    vectors = VectorService.get_vectors(db)
+    response = GeneratorInitializedResponse.construct(session=session, vectors=vectors)
     return response
 
 
@@ -36,8 +36,8 @@ def generate(request: GenerateRequest, session: Optional[str] = Cookie(None)):
     if not GeneratorService.is_initialized():
         return HTTPException(status_code=412, detail="The generator is not initialized")
     image_filename = GeneratorService.generate_image(request, session)
-    path = ImageFileService.make_image_url(image_filename, session)
-    response = GenerateResponse.construct(**request.dict(), filename=image_filename, path=path)
+    url = ImageFileService.make_image_url(image_filename, session)
+    response = GenerateResponse.construct(**request.dict(), filename=image_filename, url=url)
     return response
 
 
@@ -54,7 +54,7 @@ def get_activity(session: Optional[str] = Cookie(None)):
     for file in files:
         filename = file.name
         seed = int(filename.split('_')[0])
-        path = ImageFileService.make_image_url(filename, session)
-        image = UnsavedSessionActivityImage.construct(seed=seed, filename=filename, path=path)
+        url = ImageFileService.make_image_url(filename, session)
+        image = UnsavedSessionActivityImage.construct(seed=seed, filename=filename, url=url)
         images.append(image)
     return images

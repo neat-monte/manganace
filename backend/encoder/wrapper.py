@@ -16,7 +16,7 @@ PICKLED_EMOTIONS_VECTORS = BASE_DIR / 'emotion_directions_in_latent_space.pkl'
 class GeneratorWrapper:
     multiplier_scale = 0.1
 
-    def __init__(self, emotions_name_weight_by_id):
+    def __init__(self, vector_effect_weight_by_id):
         # Initialize the tensorflow session
         dnnlib.tflib.init_tf()
         self.tf_session = tf.get_default_session()
@@ -28,7 +28,7 @@ class GeneratorWrapper:
             self.emotion_vectors = pickle.load(file)
         # Initialize the generator
         self.generator = Generator(self.Gs, batch_size=1, randomize_noise=False)
-        self.emotions_name_weight_by_id = emotions_name_weight_by_id
+        self.vector_effect_weight_by_id = vector_effect_weight_by_id
 
     def _get_latent_state(self, seed, truncation_psi=0.5):
         """ Given a seed [0..2^31-1] produce a latent state point """
@@ -38,14 +38,14 @@ class GeneratorWrapper:
         average_latent = self.Gs.get_var("dlatent_avg")
         return average_latent + (all_w - average_latent) * truncation_psi
 
-    def _apply_emotions(self, latent_state, emotions):
+    def _apply_vectors(self, latent_state, vectors):
         """ Apply emotions with provided multipliers """
         latent_state = latent_state.reshape((1, 18 * 512))
-        for emotion in emotions:
-            (emo_name, emo_weight) = self.emotions_name_weight_by_id[emotion.id]
-            multiplier = emotion.multiplier * self.multiplier_scale
-            emotion_vector = self.emotion_vectors[f'neutral->{emo_name}']
-            weighted_emotion_vector = emotion_vector * emo_weight
+        for vector in vectors:
+            (v_effect, v_weight) = self.vector_effect_weight_by_id[vector.id]
+            multiplier = vector.multiplier * self.multiplier_scale
+            emotion_vector = self.emotion_vectors[f'neutral->{v_effect}']
+            weighted_emotion_vector = emotion_vector * v_weight
             scaled_emotion_vector = weighted_emotion_vector * multiplier
             latent_state += scaled_emotion_vector
         return latent_state.reshape((1, 18, 512))
@@ -57,10 +57,10 @@ class GeneratorWrapper:
         self.generator.reset_dlatents()
         return img_array
 
-    def generate(self, seed: int, emotions=None):
+    def generate(self, seed: int, vectors=None):
         """ Generation pipeline, make latent state from a seed, apply emotion vectors, and generate an image """
         with self.tf_session.as_default():
             latent_state = self._get_latent_state(seed)
-            if emotions:
-                self._apply_emotions(latent_state, emotions)
+            if vectors:
+                self._apply_vectors(latent_state, vectors)
             return self._generate_image(latent_state)

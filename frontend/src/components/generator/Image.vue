@@ -3,10 +3,10 @@
     <div class="wrapper">
       <div class="image-wrapper">
         <Loading v-if="isGenerating" />
-        <img :src="currentImage.path" />
+        <img :src="currentImage.url" />
         <div
           class="zoomed-in"
-          :style="`background-image: url('${currentImage.path}')`"
+          :style="`background-image: url('${currentImage.url}')`"
           @mousemove="ZoomIn"
         />
       </div>
@@ -19,7 +19,7 @@
             <Loading />
           </template>
         </Suspense>
-        <ImageDownload :imageUrl="currentImage.path" />
+        <ImageDownload :imageUrl="currentImage.url" />
       </div>
     </div>
   </section>

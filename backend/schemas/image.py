@@ -36,6 +36,6 @@ class ImageInDb(ImageBase):
 
 class Image(ImageInDb):
     """ Properties without any relations that are returned via the API """
-    path: HttpUrl
+    url: HttpUrl
     tags_ids: List[int]
     pass
