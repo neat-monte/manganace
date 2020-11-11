@@ -3,6 +3,8 @@ from typing import Optional, List
 from fastapi_camelcase import CamelModel
 from pydantic import constr, HttpUrl
 
+from .vector import VectorMultiplier
+
 
 class ImageBase(CamelModel):
     """ Properties that are shared """
@@ -15,6 +17,7 @@ class ImageCreate(ImageBase):
     seed: int
     filename: constr(max_length=51)
     collection_id: int
+    vectors: Optional[List[VectorMultiplier]]
     tags_ids: Optional[List[int]]
 
 
@@ -37,5 +40,6 @@ class ImageInDb(ImageBase):
 class Image(ImageInDb):
     """ Properties without any relations that are returned via the API """
     url: HttpUrl
+    vectors: List[VectorMultiplier]
     tags_ids: List[int]
     pass

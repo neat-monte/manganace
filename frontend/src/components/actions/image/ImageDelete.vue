@@ -37,9 +37,9 @@ export default {
       visible.value = true;
     }
 
-    const { deleteImage } = useImages();
+    const { deleteImageAsync } = useImages();
     async function handleDelete() {
-      await deleteImage(props.imageId);
+      await deleteImageAsync(props.imageId);
       visible.value = false;
     }
 

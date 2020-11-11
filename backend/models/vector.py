@@ -12,4 +12,4 @@ class Vector(Base):
     effect = Column(String(64), nullable=False)
     weight = Column(Float, nullable=False)
 
-    images = relationship("Image", secondary='image_vectors', back_populates="vectors")
+    images = relationship("ImageVector", back_populates="vector")

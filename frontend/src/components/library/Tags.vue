@@ -30,14 +30,14 @@ export default {
   name: "Tags",
 
   async setup() {
-    const { tagsById, loadTags } = useTags();
+    const { tagsById, loadTagsAsync } = useTags();
     const tags = ref([]);
 
     watchEffect(() => {
       tags.value = Object.values(tagsById);
     });
 
-    await loadTags();
+    await loadTagsAsync();
 
     return {
       tags,

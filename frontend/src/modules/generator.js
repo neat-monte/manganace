@@ -1,70 +1,78 @@
 import { ref, reactive, readonly } from "vue"
 import api from "@/services/api"
 import notification from "@/services/notification"
+import AwaitLock from 'await-lock';
+
+const isInitialized = ref(false);
+const initializeLock = new AwaitLock();
 
 const isGenerating = ref(false);
-const initializing = ref(false);
-const initialized = ref(false);
+const generateLock = new AwaitLock();
 
+const activityHasLoaded = ref(false);
+const activityLock = new AwaitLock();
+
+const generatedImages = reactive([]);
 const vectors = reactive({});
-
 const currentImage = reactive({
     seed: "",
     filename: "",
     url: "",
+    vectors: [],
 });
 
-const activityLoaded = ref(false);
-const generatedImages = reactive([]);
-
-function mapImage(image) {
+const setCurrentImage = (image) => {
     currentImage.seed = image.seed;
     currentImage.filename = image.filename;
     currentImage.url = image.url;
+    currentImage.vectors = image.vectors;
 }
 
 export default function useGenerator() {
 
-    const initGenerator = async () => {
-        if (initializing.value || initialized.value) {
-            return;
-        }
+    const initGeneratorAsync = async () => {
+        await initializeLock.acquireAsync();
         try {
-            initializing.value = true;
+            if (isInitialized.value) {
+                return;
+            }
             const response = await api.generator.initialize();
             if (response) {
                 response.vectors.forEach(vector => {
                     vectors[vector.id] = vector;
                 });
-                initialized.value = true;
+                isInitialized.value = true;
                 notification.generator.loaded();
             }
         } catch (e) {
             notification.generator.failedToLoad();
         } finally {
-            initializing.value = false;
+            initializeLock.release();
         }
     }
 
-    const generate = async (request) => {
+    const generateAsync = async (request) => {
+        await generateLock.acquireAsync();
         try {
             isGenerating.value = true;
             const requestJson = JSON.stringify(request);
-            console.log(requestJson)
             const generatedImage = await api.generator.generate(requestJson);
             if (generatedImage) {
-                mapImage(generatedImage);
+                setCurrentImage(generatedImage);
                 generatedImages.unshift(generatedImage);
             }
-            isGenerating.value = false;
         } catch (e) {
             notification.generator.failedToGenerate();
+        } finally {
+            isGenerating.value = false;
+            generateLock.release();
         }
     }
 
-    const loadActivity = async () => {
+    const loadActivityAsync = async () => {
+        await activityLock.acquireAsync();
         try {
-            if (generatedImages !== undefined && activityLoaded.value) {
+            if (activityHasLoaded.value) {
                 return;
             }
             const sessionActivity = await api.generator.getActivity();
@@ -72,15 +80,17 @@ export default function useGenerator() {
                 sessionActivity.forEach(image => {
                     generatedImages.push(image);
                 });
-                activityLoaded.value = true;
+                activityHasLoaded.value = true;
             }
         } catch (e) {
             notification.generator.failedToLoadActivity();
+        } finally {
+            activityLock.release();
         }
     }
 
     const swapImage = (index) => {
-        mapImage(generatedImages[index])
+        setCurrentImage(generatedImages[index])
     }
 
     return {
@@ -88,9 +98,9 @@ export default function useGenerator() {
         isGenerating: readonly(isGenerating),
         generatedImages: readonly(generatedImages),
         vectors: readonly(vectors),
-        initGenerator,
-        loadActivity,
-        generate,
+        initGeneratorAsync,
+        loadActivityAsync,
+        generateAsync,
         swapImage
     }
 }

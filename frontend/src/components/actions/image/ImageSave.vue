@@ -62,7 +62,7 @@ export default {
       visible.value = true;
     }
 
-    const { createImage } = useImages();
+    const { addImageAsync } = useImages();
     const newImage = reactive({
       description: null,
       collectionId: null,
@@ -72,6 +72,7 @@ export default {
     watchEffect(() => {
       newImage.seed = currentImage.seed;
       newImage.filename = currentImage.filename;
+      newImage.vectors = currentImage.vectors;
     });
 
     function setCollectionId(id) {
@@ -83,7 +84,7 @@ export default {
     }
 
     async function handleSave() {
-      await createImage(newImage);
+      await addImageAsync(newImage);
       visible.value = false;
     }
 

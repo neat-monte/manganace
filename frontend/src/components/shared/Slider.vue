@@ -62,7 +62,6 @@ export default {
 
     function onValueChange(newValue) {
       const onlyFloat = /^\d+(\.\d+)?$/;
-      console.log(newValue, onlyFloat.test(newValue));
       if (!isNaN(newValue) && onlyFloat.test(newValue)) {
         const num = Number(newValue);
         if (props.min <= num && num <= props.max) {

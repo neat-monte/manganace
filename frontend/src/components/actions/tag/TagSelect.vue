@@ -49,7 +49,7 @@ export default {
   emits: ["tag-id-set"],
 
   async setup(props, context) {
-    const { tagsById, loadTags } = useTags();
+    const { tagsById, loadTagsAsync } = useTags();
     const selectedTags = ref([]);
 
     watchEffect(() => {
@@ -60,7 +60,7 @@ export default {
       context.emit("tag-id-set", value);
     }
 
-    await loadTags();
+    await loadTagsAsync();
 
     return {
       selectedTags,

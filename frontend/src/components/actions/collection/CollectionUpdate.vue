@@ -54,7 +54,7 @@ export default {
       visible.value = true;
     }
 
-    const { updateCollection } = useCollections();
+    const { updateCollectionAsync } = useCollections();
     const updatedCollection = reactive({
       id: props.collection.id,
       name: props.collection.name,
@@ -62,7 +62,7 @@ export default {
       isArchived: props.collection.isArchived,
     });
     async function handleUpdate() {
-      await updateCollection(updatedCollection);
+      await updateCollectionAsync(updatedCollection);
       visible.value = false;
     }
 

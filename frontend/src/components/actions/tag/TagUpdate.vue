@@ -37,13 +37,13 @@ export default {
       visible.value = true;
     }
 
-    const { updateTag } = useTags();
+    const { updateTagAsync } = useTags();
     const updatedTag = reactive({
       id: props.tag.id,
       name: props.tag.name,
     });
     async function handleUpdate() {
-      await updateTag(updatedTag);
+      await updateTagAsync(updatedTag);
       visible.value = false;
     }
 

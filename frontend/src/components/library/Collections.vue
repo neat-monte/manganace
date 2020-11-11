@@ -44,9 +44,9 @@ export default {
       });
     }
 
-    const { collectionsById, loadCollections } = useCollections();
+    const { collectionsById, loadCollectionsAsync } = useCollections();
 
-    await loadCollections();
+    await loadCollectionsAsync();
 
     return {
       collections: collectionsById,

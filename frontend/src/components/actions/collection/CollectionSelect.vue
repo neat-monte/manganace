@@ -22,7 +22,7 @@ export default {
   emits: ["collection-id-set"],
 
   async setup(_, context) {
-    const { collectionsById, loadCollections } = useCollections();
+    const { collectionsById, loadCollectionsAsync } = useCollections();
 
     const collectionsOptions = ref([]);
     const dropdownOptions = ref([]);
@@ -59,7 +59,7 @@ export default {
       }
     }
 
-    await loadCollections();
+    await loadCollectionsAsync();
 
     return {
       onSearch,

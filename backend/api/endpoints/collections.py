@@ -62,4 +62,4 @@ def delete_collection(id_: int, db: Session = Depends(get_db)) -> Any:
     collection = crud.collection.get(db, id_)
     if not collection:
         raise HTTPException(status_code=404, detail="Collection not found")
-    return crud.collection.remove(db, id_)
+    return crud.collection.delete(db, id_)

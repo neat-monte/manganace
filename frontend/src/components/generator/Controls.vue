@@ -1,33 +1,36 @@
 <template>
   <section id="controls">
-    <div class="wrapper">
-      <div class="header">
-        <span class="title">Controls</span>
-      </div>
-      <a-form>
-        <a-form-item>
-          <a-input
-            :value="generateRequest.seed"
-            @change="seedOnChange"
-            :maxlength="10"
-            :disabled="isGenerating"
-            placeholder="Enter a seed"
-          />
-        </a-form-item>
-        <a-form-item v-for="vector in vectors" :key="vector.id">
-          <Slider
-            :label="vector.name"
-            :tooltip="`Make the face look ${vector.effect}`"
-            :enableInput="true"
-            :min="vector.min"
-            :max="vector.max"
-            @change="vectorOnChange(vector.id, $event)"
-          />
-        </a-form-item>
-      </a-form>
+    <div class="header">
+      <span class="title">Controls</span>
+    </div>
+    <a-form class="request-form">
+      <a-form-item>
+        <a-input
+          :value="generateRequest.seed"
+          @change="seedOnChange"
+          :maxlength="10"
+          :disabled="isGenerating"
+          placeholder="Enter a seed"
+        />
+      </a-form-item>
+      <a-form-item v-for="vector in vectors" :key="vector.id">
+        <Slider
+          :label="vector.name"
+          :tooltip="`Make the face look ${vector.effect}`"
+          :enableInput="true"
+          :min="vector.min"
+          :max="vector.max"
+          @change="vectorOnChange(vector.id, $event)"
+        />
+      </a-form-item>
+    </a-form>
+    <div class="controls">
+      <a-button @click="clearGenerateRequest" type="secondary">
+        Clear
+      </a-button>
       <a-button
-        @click="generate(generateRequest)"
-        :disabled="isGenerating"
+        @click="generateAsync(generateRequest)"
+        :disabled="isGenerating || !generateRequest.seed"
         type="primary"
       >
         Generate
@@ -46,12 +49,22 @@ export default {
   name: "Controls",
 
   async setup() {
-    const { isGenerating, initGenerator, generate, vectors } = useGenerator();
+    const {
+      isGenerating,
+      initGeneratorAsync,
+      generateAsync,
+      vectors,
+    } = useGenerator();
 
     const generateRequest = reactive({
       seed: "",
       vectors: [],
     });
+
+    function clearGenerateRequest() {
+      generateRequest.seed = "";
+      generateRequest.vectors = [];
+    }
 
     function seedOnChange(e) {
       const { value } = e.target;
@@ -77,13 +90,14 @@ export default {
       }
     }
 
-    await initGenerator();
+    await initGeneratorAsync();
 
     return {
-      vectors,
       generateRequest,
+      clearGenerateRequest,
+      vectors,
       isGenerating,
-      generate,
+      generateAsync,
       seedOnChange,
       vectorOnChange,
     };
@@ -98,6 +112,19 @@ export default {
 <style lang="scss" scoped>
 #controls {
   padding: 20px;
+  display: flex;
+  flex-direction: column;
+
+  .request-form {
+    flex: 1;
+  }
+
+  .controls {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 20px 0;
+  }
 }
 
 @include tablet {

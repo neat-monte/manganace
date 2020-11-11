@@ -41,7 +41,7 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         self._update_properties(db_obj, obj_in)
         return self._add_save(db, db_obj)
 
-    def remove(self, db: Session, id_: int) -> ModelType:
+    def delete(self, db: Session, id_: int) -> ModelType:
         """ Deletes an object by the provided id """
         db_obj = db.query(self.model).get(id_)
         return self._delete_save(db, db_obj)

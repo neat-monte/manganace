@@ -47,13 +47,13 @@ export default {
       visible.value = true;
     }
 
-    const { addCollection } = useCollections();
+    const { addCollectionAsync } = useCollections();
     const newCollection = reactive({
       name: null,
       description: null,
     });
     async function handleCreate() {
-      await addCollection(newCollection);
+      await addCollectionAsync(newCollection);
       visible.value = false;
     }
 

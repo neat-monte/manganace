@@ -50,7 +50,7 @@ export default {
 
   async setup(props) {
     const { collectionsById, collectionsLoaded } = useCollections();
-    const { imagesByCollectionId, loadImagesOfCollection } = useImages();
+    const { imagesByCollectionId, loadImagesOfCollectionAsync } = useImages();
     const collection = ref(null);
     const images = ref([]);
     const filterTags = ref([]);
@@ -58,7 +58,7 @@ export default {
     watchEffect(async () => {
       if (props.collectionId && collectionsLoaded) {
         collection.value = collectionsById[props.collectionId];
-        await loadImagesOfCollection(props.collectionId);
+        await loadImagesOfCollectionAsync(props.collectionId);
 
         if (imagesByCollectionId[props.collectionId]) {
           images.value = imagesByCollectionId[props.collectionId];

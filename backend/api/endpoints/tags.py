@@ -46,4 +46,4 @@ def delete_tag(id_: int, db: Session = Depends(get_db)) -> Any:
     tag = crud.tag.get(db, id_)
     if not tag:
         raise HTTPException(status_code=404, detail="Tag not found")
-    return crud.tag.remove(db, id_)
+    return crud.tag.delete(db, id_)

@@ -23,9 +23,8 @@ export default {
   position: relative;
 
   .dual-ring {
-    display: inline-block;
-    width: 80px;
-    height: 80px;
+    width: 36px;
+    height: 36px;
     position: absolute;
     top: 50%;
     left: 50%;
@@ -34,11 +33,10 @@ export default {
     &:after {
       content: " ";
       display: block;
-      width: 48px;
-      height: 48px;
-      margin: 12px;
+      width: 36px;
+      height: 36px;
       border-radius: 50%;
-      border: 6px solid #fff;
+      border: 2px solid #fff;
       border-color: $primary transparent $primary transparent;
       animation: dual-ring 1.2s linear infinite;
     }
@@ -47,12 +45,6 @@ export default {
   @keyframes dual-ring {
     0% {
       transform: rotate(0deg);
-    }
-    50% {
-      transform: rotate(180deg);
-      width: 64px;
-      height: 64px;
-      margin: 8px;
     }
     100% {
       transform: rotate(360deg);

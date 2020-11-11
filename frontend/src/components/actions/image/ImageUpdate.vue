@@ -57,7 +57,7 @@ export default {
       visible.value = true;
     }
 
-    const { updateImage } = useImages();
+    const { updateImageAsync } = useImages();
     const updatedImage = reactive({
       id: props.image.id,
       description: props.image.description,
@@ -68,7 +68,7 @@ export default {
       updatedImage.tagsIds = tagsIds;
     }
     async function handleUpdate() {
-      await updateImage(updatedImage);
+      await updateImageAsync(updatedImage);
       visible.value = false;
     }
 

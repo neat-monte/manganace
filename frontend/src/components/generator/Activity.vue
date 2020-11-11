@@ -27,9 +27,9 @@ export default {
   name: "Activity",
 
   async setup() {
-    const { generatedImages, loadActivity, swapImage } = useGenerator();
+    const { generatedImages, loadActivityAsync, swapImage } = useGenerator();
 
-    await loadActivity();
+    await loadActivityAsync();
 
     return {
       swapImage,

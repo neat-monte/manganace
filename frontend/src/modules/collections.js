@@ -1,76 +1,82 @@
 import { ref, reactive, readonly } from "vue"
-import moment from "moment"
 import api from "@/services/api"
 import notification from "@/services/notification"
+import moment from "moment"
+import AwaitLock from 'await-lock';
 
-const loaded = ref(false);
+const hasLoaded = ref(false);
+const loadLock = new AwaitLock();
+
 const collectionsById = reactive({});
 
-function insertCollection(collection) {
-  collection.created = moment(collection.created).format("YYYY-MM-DD HH:mm");
-  collection.updated = collection.updated !== null ? moment(collection.updated).format("YYYY-MM-DD HH:mm") : null;
-  collectionsById[collection.id] = collection;
+const insertCollection = (collection) => {
+    collection.created = moment(collection.created).format("YYYY-MM-DD HH:mm");
+    collection.updated = collection.updated !== null ? moment(collection.updated).format("YYYY-MM-DD HH:mm") : null;
+    collectionsById[collection.id] = collection;
 }
 
 export default function useCollections() {
 
-  const loadCollections = async () => {
-    try {
-      if (collectionsById !== undefined && loaded.value) {
-        return;
-      }
-      const collections = await api.collections.getAll();
-      collections.forEach(collection => insertCollection(collection));
-      loaded.value = true;
-    } catch {
-      notification.collections.failedToLoad();
+    const loadCollectionsAsync = async () => {
+        await loadLock.acquireAsync();
+        try {
+            if (hasLoaded.value) {
+                return;
+            }
+            const collections = await api.collections.getAll();
+            collections.forEach(collection => insertCollection(collection));
+            hasLoaded.value = true;
+        } catch {
+            notification.collections.failedToLoad();
+        } finally {
+            loadLock.release();
+        }
     }
-  }
 
-  const addCollection = async (newCollection) => {
-    try {
-      const collectionJson = JSON.stringify(newCollection);
-      const collection = await api.collections.create(collectionJson);
-      if (collection) {
-        insertCollection(collection);
-        notification.collections.created(collection);
-      }
-    } catch {
-      notification.collections.failedToAdd();
+    const addCollectionAsync = async (newCollection) => {
+        try {
+            const collectionJson = JSON.stringify(newCollection);
+            const collection = await api.collections.create(collectionJson);
+            if (collection) {
+                insertCollection(collection);
+                notification.collections.created(collection);
+            }
+        } catch {
+            notification.collections.failedToAdd();
+        }
     }
-  }
 
-  const updateCollection = async (updatedCollection) => {
-    try {
-      const collectionJson = JSON.stringify(updatedCollection);
-      const collection = await api.collections.update(updatedCollection.id, collectionJson);
-      if (collection) {
-        insertCollection(collection);
-        notification.collections.updated(collection);
-      }
-    } catch {
-      notification.collections.failedToUpdate();
+    const updateCollectionAsync = async (updatedCollection) => {
+        try {
+            const collectionJson = JSON.stringify(updatedCollection);
+            const collection = await api.collections.update(updatedCollection.id, collectionJson);
+            if (collection) {
+                insertCollection(collection);
+                notification.collections.updated(collection);
+            }
+        } catch {
+            notification.collections.failedToUpdate();
+        }
     }
-  }
 
-  const deleteCollection = async (collectionId) => {
-    try {
-      const collection = await api.collections.destroy(collectionId);
-      if (collection) {
-        delete collectionsById[collection.id];
-        notification.collections.deleted(collection);
-      }
-    } catch {
-      notification.collections.failedToDelete();
+    const deleteCollectionAsync = async (collectionId) => {
+        try {
+            const collection = await api.collections.destroy(collectionId);
+            if (collection) {
+                delete collectionsById[collection.id];
+                notification.collections.deleted(collection);
+            }
+        } catch {
+            notification.collections.failedToDelete();
+        }
     }
-  }
 
-  return {
-    collectionsLoaded: readonly(loaded),
-    collectionsById: readonly(collectionsById),
-    loadCollections,
-    addCollection,
-    updateCollection,
-    deleteCollection
-  }
+    return {
+        collectionsLoaded: readonly(hasLoaded),
+        collectionsById: readonly(collectionsById),
+        loadCollectionsAsync,
+        addCollectionAsync,
+        updateCollectionAsync,
+        deleteCollectionAsync
+    }
 }

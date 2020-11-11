@@ -50,12 +50,12 @@ export default {
       visible.value = true;
     }
 
-    const { addTag } = useTags();
+    const { addTagAsync } = useTags();
     const newTag = reactive({
       name: null,
     });
     async function handleCreate() {
-      await addTag(newTag);
+      await addTagAsync(newTag);
       visible.value = false;
     }
 

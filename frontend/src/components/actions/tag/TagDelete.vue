@@ -40,9 +40,9 @@ export default {
       visible.value = true;
     }
 
-    const { deleteTag } = useTags();
+    const { deleteTagAsync } = useTags();
     async function handleDelete() {
-      await deleteTag(props.tagId);
+      await deleteTagAsync(props.tagId);
       visible.value = false;
     }
 
