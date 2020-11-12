@@ -9,7 +9,6 @@ class CollectionBase(CamelModel):
     """ Properties that are shared """
     name: Optional[constr(max_length=64)] = None
     description: Optional[str] = None
-    is_archived: Optional[bool] = False
 
 
 class CollectionCreate(CollectionBase):
@@ -26,7 +25,6 @@ class CollectionInDb(CollectionBase):
     """ Properties that are stored in the database """
     id: int
     name: constr(max_length=64)
-    is_archived: bool
     created: datetime
     updated: Optional[datetime] = None
 

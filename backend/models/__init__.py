@@ -1,5 +1,10 @@
-from .collection import *
+from .session import *
 from .image import *
-from .tag import *
+from .image_vector import *
 from .vector import *
-from .associations import *
+from .collection import *
+from .collection_image import *
+from .collection_image_tag import *
+from .tag import *
+
+

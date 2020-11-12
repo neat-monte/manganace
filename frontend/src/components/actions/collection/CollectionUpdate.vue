@@ -29,9 +29,6 @@
           :rows="2"
         />
       </a-form-item>
-      <a-form-item label="Archive collection">
-        <a-switch v-model:checked="updatedCollection.isArchived" />
-      </a-form-item>
     </a-form>
   </a-modal>
 </template>
@@ -59,7 +56,6 @@ export default {
       id: props.collection.id,
       name: props.collection.name,
       description: props.collection.description,
-      isArchived: props.collection.isArchived,
     });
     async function handleUpdate() {
       await updateCollectionAsync(updatedCollection);

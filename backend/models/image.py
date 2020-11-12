@@ -11,8 +11,8 @@ class Image(Base):
     seed = Column(Integer, nullable=False)
     filename = Column(String(51), nullable=False)
     description = Column(Text)
-    collection_id = Column(Integer, ForeignKey('collections.id'))
+    session_id = Column(Integer, ForeignKey('sessions.id'))
 
-    collection = relationship("Collection", back_populates="images")
-    tags = relationship("Tag", secondary='image_tag', back_populates="images")
+    session = relationship("Session", back_populates="images")
     vectors = relationship("ImageVector", back_populates="image")
+    collection_images = relationship("CollectionImage", back_populates="image")

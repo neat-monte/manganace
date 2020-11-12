@@ -1,8 +1,8 @@
-from sqlalchemy import Boolean, Column, Integer, String, Text
+from sqlalchemy import Column, Integer, String, Text, ForeignKey
 from sqlalchemy.orm import relationship
 
 from database import Base
-from .mixins import Timestamp
+from ._mixins import Timestamp
 
 
 class Collection(Base, Timestamp):
@@ -11,6 +11,5 @@ class Collection(Base, Timestamp):
     id = Column(Integer, primary_key=True)
     name = Column(String(64), nullable=False)
     description = Column(Text)
-    is_archived = Column(Boolean, default=False)
 
-    images = relationship("Image", back_populates="collection")
+    images = relationship("CollectionImage", back_populates="collection")
