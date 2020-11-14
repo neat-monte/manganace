@@ -2,7 +2,7 @@
   <section id="activity">
     <swiper
       :slides-per-view="6"
-      :space-between="0"
+      :space-between="20"
       :lazy="true"
       navigation
       :pagination="{ clickable: true }"
@@ -16,7 +16,14 @@
 </template>
 
 <script>
+import "swiper/swiper.scss";
+import "swiper/components/lazy/lazy.scss";
+import "swiper/components/navigation/navigation.scss";
+import "swiper/components/scrollbar/scrollbar.scss";
+
+import { ref, watchEffect } from "vue";
 import useGenerator from "@/modules/generator";
+import useActivity from "@/modules/activity";
 
 import SwiperCore, { Navigation, Scrollbar } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/vue";
@@ -26,10 +33,19 @@ SwiperCore.use([Navigation, Scrollbar]);
 export default {
   name: "Activity",
 
-  async setup() {
-    const { generatedImages, loadActivityAsync, swapImage } = useGenerator();
+  setup() {
+    const { currentSession, swapImage } = useGenerator();
+    const { imagesBySessionId, loadImagesOfSessionAsync } = useActivity();
 
-    await loadActivityAsync();
+    const generatedImages = ref([]);
+
+    watchEffect(async () => {
+      const sessionId = currentSession.id;
+      if (sessionId !== undefined) {
+        await loadImagesOfSessionAsync(currentSession.id);
+        generatedImages.value = imagesBySessionId[currentSession.id];
+      }
+    });
 
     return {
       swapImage,
@@ -42,19 +58,11 @@ export default {
     SwiperSlide,
   },
 };
-
-import "swiper/swiper.scss";
-import "swiper/components/lazy/lazy.scss";
-import "swiper/components/navigation/navigation.scss";
-import "swiper/components/scrollbar/scrollbar.scss";
 </script>
 
 <style lang="scss" scoped>
 #activity {
-  max-width: 100%;
-
   .swiper-container {
-    padding: 20px 0;
     border-radius: 2px;
     min-height: 110px;
 
@@ -71,14 +79,6 @@ import "swiper/components/scrollbar/scrollbar.scss";
       &:hover {
         z-index: 1;
       }
-    }
-  }
-}
-
-@include tablet {
-  #activity {
-    .swiper-container {
-      box-shadow: $box-double-shadow;
     }
   }
 }

@@ -4,3 +4,4 @@ from .crud_image import image
 from .crud_tag import tag
 from .crud_vector import vector
 from .crud_session import session
+from .crud_g_session import g_session

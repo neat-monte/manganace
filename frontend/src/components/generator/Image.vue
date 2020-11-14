@@ -127,7 +127,6 @@ export default {
     height: calc(100vw - 2 * #{$tablet-x-padding});
     border-radius: 2px;
     box-shadow: $box-double-shadow;
-    margin-bottom: 20px;
   }
 }
 

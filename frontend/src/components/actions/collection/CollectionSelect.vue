@@ -1,5 +1,5 @@
 <template>
-  <div class="image-create">
+  <div class="collection-select">
     <a-auto-complete
       :data-source="dropdownOptions"
       placeholder="Select collection"
@@ -72,7 +72,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.image-create {
+.collection-select {
   display: flex;
   width: 100%;
 

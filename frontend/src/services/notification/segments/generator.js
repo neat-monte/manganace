@@ -1,10 +1,16 @@
-import { success, error } from './base';
+import { success, error, warning } from './base';
 
 
 export const loaded = () => {
     const message = "Generator is ready";
     const description = "The generator was started successfully";
     success(message, description);
+}
+
+export const selectSessionFirst = () => {
+    const message = "Select session first";
+    const description = "Session is required to generate an image";
+    warning(message, description);
 }
 
 export const failedToLoad = () => {

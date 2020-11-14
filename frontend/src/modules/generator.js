@@ -1,7 +1,12 @@
 import { ref, reactive, readonly } from "vue"
 import api from "@/services/api"
 import notification from "@/services/notification"
+import useActivity from "./activity";
+import useSessions from "./sessions";
 import AwaitLock from 'await-lock';
+
+const { sessionsById } = useSessions();
+const { imagesBySessionId, addGeneratedImage } = useActivity();
 
 const isInitialized = ref(false);
 const initializeLock = new AwaitLock();
@@ -9,10 +14,8 @@ const initializeLock = new AwaitLock();
 const isGenerating = ref(false);
 const generateLock = new AwaitLock();
 
-const activityHasLoaded = ref(false);
-const activityLock = new AwaitLock();
+const currentSession = reactive({});
 
-const generatedImages = reactive([]);
 const vectors = reactive({});
 const currentImage = reactive({
     seed: "",
@@ -55,11 +58,16 @@ export default function useGenerator() {
         await generateLock.acquireAsync();
         try {
             isGenerating.value = true;
+            if (!currentSession.id) {
+                notification.generator.selectSessionFirst();
+                return;
+            }
+            request["sessionId"] = currentSession.id;
             const requestJson = JSON.stringify(request);
             const generatedImage = await api.generator.generate(requestJson);
             if (generatedImage) {
+                addGeneratedImage(generatedImage);
                 setCurrentImage(generatedImage);
-                generatedImages.unshift(generatedImage);
             }
         } catch (e) {
             notification.generator.failedToGenerate();
@@ -69,38 +77,26 @@ export default function useGenerator() {
         }
     }
 
-    const loadActivityAsync = async () => {
-        await activityLock.acquireAsync();
-        try {
-            if (activityHasLoaded.value) {
-                return;
-            }
-            const sessionActivity = await api.generator.getActivity();
-            if (sessionActivity) {
-                sessionActivity.forEach(image => {
-                    generatedImages.push(image);
-                });
-                activityHasLoaded.value = true;
-            }
-        } catch (e) {
-            notification.generator.failedToLoadActivity();
-        } finally {
-            activityLock.release();
+    const setCurrentSession = (sessionId) => {
+        const session = sessionsById[sessionId];
+        if (session) {
+            currentSession.id = session.id;
+            currentSession.name = session.name;
         }
     }
 
     const swapImage = (index) => {
-        setCurrentImage(generatedImages[index])
+        setCurrentImage(imagesBySessionId[currentSession.id][index])
     }
 
     return {
         currentImage: readonly(currentImage),
+        currentSession: readonly(currentSession),
         isGenerating: readonly(isGenerating),
-        generatedImages: readonly(generatedImages),
         vectors: readonly(vectors),
         initGeneratorAsync,
-        loadActivityAsync,
         generateAsync,
-        swapImage
+        setCurrentSession,
+        swapImage,
     }
 }

@@ -41,9 +41,9 @@
 
 <script>
 import { reactive } from "vue";
-import Slider from "@/components/shared/Slider";
 
 import useGenerator from "@/modules/generator";
+import Slider from "@/components/shared/Slider";
 
 export default {
   name: "Controls",
@@ -131,7 +131,6 @@ export default {
   #controls {
     border-radius: 2px;
     box-shadow: $box-double-shadow;
-    margin-bottom: 20px;
   }
 }
 </style>

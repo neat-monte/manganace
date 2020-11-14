@@ -27,6 +27,7 @@ class GeneratorSessionCreate(CamelModel):
 
 class GeneratorSessionUpdate(CamelModel):
     """ Properties that are available/required for an update """
+    id: conint(gt=0)
     name: Optional[constr(max_length=64)]
 
 

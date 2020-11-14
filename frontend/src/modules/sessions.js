@@ -4,7 +4,7 @@ import notification from "@/services/notification"
 import AwaitLock from 'await-lock';
 
 const hasLoaded = ref(false);
-const loadLock = new AwaitLock();
+const loadSessionsLock = new AwaitLock();
 
 const sessionsById = reactive({});
 
@@ -15,7 +15,7 @@ const insertSession = (session) => {
 export default function useSessions() {
 
     const loadSessionsAsync = async () => {
-        await loadLock.acquireAsync();
+        await loadSessionsLock.acquireAsync();
         try {
             if (hasLoaded.value) {
                 return;
@@ -28,7 +28,7 @@ export default function useSessions() {
         } catch {
             notification.sessions.failedToLoad();
         } finally {
-            loadLock.release();
+            loadSessionsLock.release();
         }
     }
 

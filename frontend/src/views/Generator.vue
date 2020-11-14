@@ -2,10 +2,10 @@
   <div id="generator" class="content">
     <Suspense>
       <template #default>
-        <Controls />
+        <Sessions />
       </template>
       <template #fallback>
-        <Loading id="controls" />
+        <Loading id="sessions" />
       </template>
     </Suspense>
 
@@ -13,10 +13,10 @@
 
     <Suspense>
       <template #default>
-        <Activity />
+        <Controls />
       </template>
       <template #fallback>
-        <Loading id="activity" />
+        <Loading id="controls" />
       </template>
     </Suspense>
   </div>
@@ -25,7 +25,7 @@
 <script>
 import Image from "@/components/generator/Image";
 import Controls from "@/components/generator/Controls";
-import Activity from "@/components/generator/Activity";
+import Sessions from "@/components/generator/Sessions";
 import Loading from "@/components/shared/Loading";
 
 export default {
@@ -33,7 +33,7 @@ export default {
   components: {
     Image,
     Controls,
-    Activity,
+    Sessions,
     Loading,
   },
 };
@@ -44,24 +44,46 @@ export default {
   display: flex;
   flex-flow: row wrap;
 
+  #sessions,
   #controls,
-  #generated-image,
-  #activity {
+  #generated-image {
     flex: 100%;
+  }
+
+  #generated-image {
+    order: 1;
+  }
+}
+
+@include tablet {
+  #generator {
+    #sessions,
+    #controls {
+      margin-bottom: 20px;
+    }
+
+    #generated-image {
+      margin-bottom: 10px;
+      order: initial;
+    }
   }
 }
 
 @include sm-desktop {
   #generator {
+    #sessions {
+      flex: 0 100%;
+      margin-bottom: 20px;
+    }
+
     #controls {
       flex: 1 300px;
-      margin-right: 20px;
+      margin-left: 20px;
     }
+
     #generated-image {
       flex: 1;
-    }
-    #activity {
-      flex: 0 100%;
+      margin-bottom: 20px;
     }
   }
 }

@@ -3,5 +3,6 @@ export default {
     images: require('./segments/images'),
     tags: require('./segments/tags'),
     generator: require('./segments/generator'),
-    sessions: require('./segments/sessions')
+    sessions: require('./segments/sessions'),
+    activity: require('./segments/activity'),
 }

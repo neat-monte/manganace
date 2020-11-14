@@ -17,3 +17,7 @@ export const update = async (id, data) => {
 export const destroy = async (id) => {
     return await fetchJSON(`${sessionsEndpoint}/${id}`, methods.DELETE);
 }
+
+export const getImagesOfSession = async (id) => {
+    return await fetchJSON(`${sessionsEndpoint}/${id}/images`, methods.GET);
+}
