@@ -3,8 +3,8 @@ from .image import *
 from .image_vector import *
 from .vector import *
 from .collection import *
-from .collection_image import *
-from .collection_image_tag import *
+from .c_image import *
+from .c_image_tag import *
 from .tag import *
 
 

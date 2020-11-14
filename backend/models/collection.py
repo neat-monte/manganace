@@ -12,4 +12,4 @@ class Collection(Base, Timestamp):
     name = Column(String(64), nullable=False)
     description = Column(Text)
 
-    images = relationship("CollectionImage", back_populates="collection")
+    c_images = relationship("CImage", back_populates="collection")

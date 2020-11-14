@@ -2,36 +2,33 @@ from datetime import datetime
 from typing import Optional
 
 from fastapi_camelcase import CamelModel
-from pydantic import constr
+from pydantic import constr, conint
 
 
-class CollectionBase(CamelModel):
-    """ Properties that are shared """
-    name: Optional[constr(max_length=64)] = None
-    description: Optional[str] = None
-
-
-class CollectionCreate(CollectionBase):
+class CollectionCreate(CamelModel):
     """ Properties that are available/required for the creation """
     name: constr(max_length=64)
+    description: Optional[str]
 
 
-class CollectionUpdate(CollectionBase):
+class CollectionUpdate(CamelModel):
     """ Properties that are available/required for an update """
-    pass
+    name: Optional[constr(max_length=64)]
+    description: Optional[str]
 
 
-class CollectionInDb(CollectionBase):
+class CollectionInDb(CamelModel):
     """ Properties that are stored in the database """
-    id: int
+    id: conint(gt=0)
     name: constr(max_length=64)
+    description: Optional[str]
     created: datetime
-    updated: Optional[datetime] = None
+    updated: Optional[datetime]
 
     class Config:
         orm_mode = True
 
 
 class Collection(CollectionInDb):
-    """ Properties without any relations that are returned via the API """
+    """ Properties that are returned via the API """
     pass

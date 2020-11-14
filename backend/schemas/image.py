@@ -1,45 +1,16 @@
-from typing import Optional, List
+from typing import List
 
 from fastapi_camelcase import CamelModel
-from pydantic import constr, HttpUrl
+from pydantic import HttpUrl
+from pydantic.types import conint
 
-from .vector import VectorMultiplier
-
-
-class ImageBase(CamelModel):
-    """ Properties that are shared """
-    description: Optional[str] = None
-    collection_id: Optional[int] = None
+from schemas import ImageVector
 
 
-class ImageCreate(ImageBase):
-    """ Properties that are available/required for the creation """
-    seed: int
-    filename: constr(max_length=51)
-    collection_id: int
-    vectors: Optional[List[VectorMultiplier]]
-    tags_ids: Optional[List[int]]
-
-
-class ImageUpdate(ImageBase):
-    """ Properties that are available/required for an update """
-    tags_ids: Optional[List[int]]
-
-
-class ImageInDb(ImageBase):
-    """ Properties that are in the database """
-    id: int
-    seed: int
-    filename: constr(max_length=51)
-    collection_id: int
-
-    class Config:
-        orm_mode = True
-
-
-class Image(ImageInDb):
-    """ Properties without any relations that are returned via the API """
+class Image(CamelModel):
+    """ Properties that are returned via the API """
+    id: conint(gt=0)
+    seed: conint(ge=0, lt=4294967296)  # maximum seed number is 2^31 - 1 (because starts from 0)
+    session_id: conint(gt=0)
     url: HttpUrl
-    vectors: List[VectorMultiplier]
-    tags_ids: List[int]
-    pass
+    vectors: List[ImageVector]

@@ -1,28 +1,20 @@
-from typing import Optional
-
 from fastapi_camelcase import CamelModel
-from pydantic import constr
+from pydantic import constr, conint
 
 
-class TagBase(CamelModel):
-    """ Properties that are shared """
-    name: Optional[constr(max_length=32)] = None
-
-
-class TagCreate(TagBase):
+class TagCreate(CamelModel):
     """ Properties that are available/required for the creation """
     name: constr(max_length=32)
 
 
-class TagUpdate(TagBase):
+class TagUpdate(CamelModel):
     """ Properties that are available/required for an update """
-    id: int
     name: constr(max_length=32)
 
 
-class TagInDb(TagBase):
+class TagInDb(CamelModel):
     """ Properties that are in the database """
-    id: int
+    id: conint(gt=0)
     name: constr(max_length=32)
 
     class Config:

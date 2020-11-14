@@ -1,6 +1,6 @@
 import { fetchJSON as fetchJSON, methods } from './base'
 
-const imagesEndpoint = "/images";
+const imagesEndpoint = "/cimages";
 
 export const create = async (data) => {
   return await fetchJSON(imagesEndpoint, methods.POST, data);

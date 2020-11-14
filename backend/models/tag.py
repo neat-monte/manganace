@@ -10,4 +10,4 @@ class Tag(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String(32), nullable=False)
 
-    images = relationship("CollectionImage", secondary='collection_image_tag', back_populates="tags")
+    c_images = relationship("CImage", secondary='c_image_tag', back_populates="tags")

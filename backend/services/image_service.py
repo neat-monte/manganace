@@ -3,53 +3,36 @@ from typing import List, Optional
 from sqlalchemy.orm import Session
 
 import crud
-from schemas import Image, ImageUpdate, ImageCreate, VectorMultiplier
-from .image_file_service import ImageFileService
+import models as m
+import schemas as s
+from .image_file_service import image_file as image_file_service
 
 
 class ImageService:
-    @staticmethod
-    def get_image(db: Session, id_: int) -> Optional[Image]:
+    def get_all_of_session(self, db: Session, session_id: int) -> List[s.Image]:
+        db_images = crud.image.get_all_of_session(db, session_id)
+        return [self.construct_image(i) for i in db_images]
+
+    def get(self, db: Session, id_: int) -> Optional[s.Image]:
         db_image = crud.image.get(db, id_)
         if not db_image:
             return None
-        return ImageService.construct_image(db_image)
+        return self.construct_image(db_image)
+
+    def create(self, db: Session, request: s.GenerateRequest, filename: str) -> s.Image:
+        db_image = crud.image.create_with_vectors(db, request.seed, filename, request.session_id, request.vectors)
+        return self.construct_image(db_image)
 
     @staticmethod
-    def get_images_of_collection(db: Session, collection_id: int) -> List[Image]:
-        db_images = crud.image.get_all_of(db, collection_id)
-        return [ImageService.construct_image(db_image) for db_image in db_images]
-
-    @staticmethod
-    def create_image(db: Session, image_in: ImageCreate) -> Optional[Image]:
-        db_image = crud.image.create_with_relations(db, image_in)
-        return ImageService.construct_image(db_image)
-
-    @staticmethod
-    def update_image(db: Session, id_: int, image_in: ImageUpdate) -> Optional[Image]:
-        db_image = crud.image.get(db, id_)
-        if not db_image:
-            return None
-        db_image = crud.image.update_with_tags(db, db_image, image_in)
-        return ImageService.construct_image(db_image)
-
-    @staticmethod
-    def delete_image(db: Session, id_: int) -> Optional[Image]:
-        db_image = crud.image.get(db, id_)
-        if not db_image:
-            return None
-        _ = crud.image.delete_with_relations(db, db_image)
-        return ImageService.construct_image(db_image)
-
-    @staticmethod
-    def construct_image(image):
-        return Image.construct(
-            id=image.id,
-            seed=image.seed,
-            filename=image.filename,
-            description=image.description,
-            collection_id=image.collection_id,
-            vectors=[VectorMultiplier.construct(id=v.vector_id, multiplier=v.multiplier) for v in image.vectors],
-            tags_ids=[tag.id for tag in image.tags],
-            url=ImageFileService.make_image_url(image.filename)
+    def construct_image(db_image: m.Image) -> s.Image:
+        return s.Image.construct(
+            id=db_image.id,
+            seed=db_image.seed,
+            session_id=db_image.session_id,
+            url=image_file_service.make_url(db_image.filename, db_image.session_id),
+            vectors=[s.ImageVector.construct(id=v.vector_id, multiplier=v.multiplier)
+                     for v in db_image.vectors]
         )
+
+
+image = ImageService()

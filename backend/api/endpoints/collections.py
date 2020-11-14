@@ -4,9 +4,9 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 import crud
+import services
 from api.dependencies import get_db
-from schemas import Collection, Image, CollectionCreate, CollectionUpdate
-from services import ImageService
+from schemas import Collection, CImage, CollectionCreate, CollectionUpdate
 
 router = APIRouter()
 
@@ -26,19 +26,13 @@ def get_collection(id_: int, db: Session = Depends(get_db)) -> Any:
     return collection
 
 
-@router.get('/{id_}/images', response_model=List[Image])
+@router.get('/{id_}/images', response_model=List[CImage])
 def get_collection_images(id_, db: Session = Depends(get_db)) -> Any:
     """ Get all images of a collection by id """
     collection = crud.collection.get(db, id_)
     if not collection:
         raise HTTPException(status_code=404, detail="Collection not found")
-    return ImageService.get_images_of_collection(db, id_)
-
-
-# @router.get('/', response_model=List[Image])
-# def get_images(skip: int = 0, limit: int = 100, db: Session = Depends(deps.get_db)) -> Any:
-#     """ Get a limited list of images """
-#     return crud.image.get_multi(db, skip, limit)
+    return services.c_image.get_all_of_collection(db, id_)
 
 
 @router.post('/', response_model=Collection)
