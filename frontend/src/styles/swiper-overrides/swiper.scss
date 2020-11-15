@@ -1,10 +1,6 @@
 .swiper-button-prev,
 .swiper-button-next {
-    color: $filler !important;
-
-    &.swiper-button-disabled {
-        color: $filler-50;
-    }
+    color: $primary;
 }
 
 .swiper-scrollbar {

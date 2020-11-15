@@ -5,7 +5,7 @@
     </template>
     <a-button
       @click="showModal()"
-      :disabled="!currentImage.filename"
+      :disabled="!currentImage.seed"
       type="primary"
       shape="circle"
     >
@@ -70,8 +70,9 @@ export default {
     });
 
     watchEffect(() => {
+      newImage.image_id = currentImage.id;
+      newImage.session_id = currentImage.session_id;
       newImage.seed = currentImage.seed;
-      newImage.filename = currentImage.filename;
       newImage.vectors = currentImage.vectors;
     });
 

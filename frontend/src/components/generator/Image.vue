@@ -11,6 +11,7 @@
         />
       </div>
       <div class="controls">
+        <ImageDownload :imageUrl="currentImage.url" />
         <Suspense>
           <template #default>
             <ImageSave />
@@ -19,7 +20,6 @@
             <Loading />
           </template>
         </Suspense>
-        <ImageDownload :imageUrl="currentImage.url" />
       </div>
     </div>
   </section>
@@ -75,7 +75,6 @@ export default {
 <style lang="scss" scoped>
 #generated-image {
   padding: 20px;
-  height: 100vw;
 
   .wrapper {
     margin: auto;
@@ -124,7 +123,6 @@ export default {
 
 @include tablet {
   #generated-image {
-    height: calc(100vw - 2 * #{$tablet-x-padding});
     border-radius: 2px;
     box-shadow: $box-double-shadow;
   }

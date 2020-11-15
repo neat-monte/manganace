@@ -49,7 +49,6 @@ export default {
 
 <style lang="scss" scoped>
 #header {
-  height: $header-height;
   padding: 20px initial;
 
   .brand {
@@ -99,14 +98,16 @@ export default {
   }
 
   .navigation {
-    display: none;
+    flex: 100%;
+    display: flex;
 
     a {
       flex: 1;
       display: flex;
       align-items: center;
-      justify-content: right;
+      justify-content: center;
       transition: all 0.2s ease;
+      margin: 20px 0;
 
       .link {
         display: flex;
@@ -127,12 +128,14 @@ export default {
         }
 
         .anticon {
+          display: block;
           margin-right: 10px;
           font-size: 1.8rem;
           color: $secondary;
         }
 
         span {
+          display: none;
           font-size: 1rem;
           font-weight: bold;
           text-transform: uppercase;
@@ -155,6 +158,7 @@ export default {
 
 @include tablet {
   #header {
+    height: $header-height;
     display: flex;
 
     .brand {
@@ -165,8 +169,15 @@ export default {
       flex: 3;
       display: flex;
 
-      > * {
+      a {
+        justify-content: right;
         margin-right: 10px;
+
+        .link {
+          span {
+            display: block;
+          }
+        }
       }
 
       :last-child {
@@ -187,7 +198,7 @@ export default {
     }
 
     .navigation {
-      > * {
+      a {
         margin-right: 40px;
       }
 

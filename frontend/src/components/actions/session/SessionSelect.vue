@@ -1,9 +1,9 @@
 <template>
   <div class="session-select">
     <a-select
-      v-model:value="value"
+      :value="currentSession.id"
       show-search
-      placeholder="Select a session"
+      :placeholder="placeholder"
       option-filter-prop="children"
       :filter-option="filterOption"
       @change="handleChange"
@@ -20,13 +20,17 @@
 </template>
 
 <script>
-import { ref } from "vue";
 import useSessions from "@/modules/sessions";
+import useGenerator from "@/modules/generator";
 
 export default {
   name: "SessionSelect",
 
   props: {
+    placeholder: {
+      type: String,
+      default: "Select a session",
+    },
     showCreate: {
       type: Boolean,
       default: true,
@@ -37,11 +41,10 @@ export default {
 
   async setup(_, context) {
     const { loadSessionsAsync, sessionsById } = useSessions();
-
-    const value = ref(undefined);
+    const { currentSession } = useGenerator();
 
     function filterOption(input, option) {
-      return option.props.value.toLowerCase().indexOf(input.toLowerCase()) >= 0;
+      return option.props.key.toLowerCase().includes(input);
     }
 
     function handleChange(value) {
@@ -51,7 +54,7 @@ export default {
     await loadSessionsAsync();
 
     return {
-      value,
+      currentSession,
       sessionsById,
       filterOption,
       handleChange,

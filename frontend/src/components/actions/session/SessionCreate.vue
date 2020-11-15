@@ -3,7 +3,16 @@
     <template v-slot:title>
       <span>Create new session</span>
     </template>
-    <a-button v-if="isAddon" type="primary" @click="showModal()" class="addon">
+    <a-button v-if="buttonText" type="primary" @click="showModal()">
+      {{ buttonText }}
+    </a-button>
+
+    <a-button
+      v-else-if="isAddon"
+      type="primary"
+      @click="showModal()"
+      class="addon"
+    >
       <template v-slot:icon>
         <PlusOutlined />
       </template>
@@ -38,6 +47,10 @@ export default {
   name: "SessionCreate",
 
   props: {
+    buttonText: {
+      type: String,
+      default: null,
+    },
     isAddon: {
       type: Boolean,
       default: false,

@@ -13,7 +13,7 @@ router = APIRouter()
 @router.get("/{id_}", response_model=CImage)
 def get_collection_image(id_: int, db: Session = Depends(get_db)) -> Any:
     """ Get a collection image by id """
-    c_image = services.c_image.get_c_image(db, id_)
+    c_image = services.c_image.get(db, id_)
     if not c_image:
         raise HTTPException(status_code=404, detail="Collection image not found")
     return c_image
@@ -25,13 +25,13 @@ def create_collection_image(image_in: CImageCreate, db: Session = Depends(get_db
     image = services.image.get(db, image_in.image_id)
     if not image:
         raise HTTPException(status_code=404, detail="Image not found")
-    return services.c_image.create_c_image(db, image_in)
+    return services.c_image.create(db, image_in)
 
 
 @router.put('/{id_}', response_model=CImage)
 def update_collection_image(id_: int, image_in: CImageUpdate, db: Session = Depends(get_db)) -> Any:
     """ Modify an existing collection image """
-    c_image = services.c_image.update_c_image(db, id_, image_in)
+    c_image = services.c_image.update(db, id_, image_in)
     if not c_image:
         raise HTTPException(status_code=404, detail="Collection image not found")
     return c_image
@@ -40,7 +40,7 @@ def update_collection_image(id_: int, image_in: CImageUpdate, db: Session = Depe
 @router.delete("/{id_}", response_model=CImage)
 def delete_collection_image(id_: int, db: Session = Depends(get_db)) -> Any:
     """ Delete a collection image """
-    c_image = services.c_image.delete_c_image(db, id_)
+    c_image = services.c_image.delete(db, id_)
     if not c_image:
         raise HTTPException(status_code=404, detail="Collection image not found")
     return c_image

@@ -9,9 +9,9 @@
       </template>
     </Suspense>
 
-    <Image />
+    <Image v-if="currentSession.id" />
 
-    <Suspense>
+    <Suspense v-if="currentSession.id">
       <template #default>
         <Controls />
       </template>
@@ -27,9 +27,19 @@ import Image from "@/components/generator/Image";
 import Controls from "@/components/generator/Controls";
 import Sessions from "@/components/generator/Sessions";
 import Loading from "@/components/shared/Loading";
+import useGenerator from "@/modules/generator";
 
 export default {
   name: "Generator",
+
+  setup() {
+    const { currentSession } = useGenerator();
+
+    return {
+      currentSession,
+    };
+  },
+
   components: {
     Image,
     Controls,
@@ -58,13 +68,9 @@ export default {
 @include tablet {
   #generator {
     #sessions,
-    #controls {
-      margin-bottom: 20px;
-    }
-
+    #controls,
     #generated-image {
-      margin-bottom: 10px;
-      order: initial;
+      margin-bottom: 20px;
     }
   }
 }
@@ -84,6 +90,7 @@ export default {
     #generated-image {
       flex: 1;
       margin-bottom: 20px;
+      order: initial;
     }
   }
 }

@@ -147,7 +147,6 @@ export default {
   #images {
     .upper-controls {
       margin-bottom: 20px;
-      box-shadow: $box-double-shadow;
     }
 
     .images-list {

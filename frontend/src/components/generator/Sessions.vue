@@ -1,43 +1,76 @@
 <template>
   <div id="sessions">
-    <div class="controls">
+    <div v-if="!currentSession.id" class="no-session-selected">
+      <span class="message">Choose</span>
       <Suspense>
         <template #default>
-          <SessionSelect @session-id-set="setCurrentSession" />
+          <SessionSelect
+            placeholder="an already existing"
+            @session-id-set="setSession"
+          />
+        </template>
+        <template #fallback>
+          <span class="message">an already existing</span>
+        </template>
+      </Suspense>
+      <span class="message">session or</span>
+      <SessionCreate buttonText="Create" />
+      <span class="message">new session</span>
+    </div>
+
+    <div v-else class="session-selected">
+      <div class="header">
+        <span class="title">{{ currentSession.name }}</span>
+        <a-button type="primary" @click="nullifySession" class="change-session">
+          Change session
+        </a-button>
+      </div>
+      <Suspense>
+        <template #default>
+          <Activity />
+        </template>
+        <template #fallback>
+          <Loading id="activity" />
         </template>
       </Suspense>
     </div>
-    <Suspense>
-      <template #default>
-        <Activity />
-      </template>
-      <template #fallback>
-        <Loading id="activity" />
-      </template>
-    </Suspense>
   </div>
 </template>
 
 <script>
 import Activity from "@/components/generator/Activity";
 import SessionSelect from "@/components/actions/session/SessionSelect";
+import SessionCreate from "@/components/actions/session/SessionCreate";
 import Loading from "@/components/shared/Loading";
 import useGenerator from "@/modules/generator";
+import useSessions from "@/modules/sessions";
 
 export default {
   name: "Sessions",
 
   async setup() {
-    const { setCurrentSession } = useGenerator();
+    const { sessionsById } = useSessions();
+    const { setCurrentSession, currentSession } = useGenerator();
+
+    function setSession(sessionId) {
+      setCurrentSession(sessionsById[sessionId]);
+    }
+
+    function nullifySession() {
+      setCurrentSession(null);
+    }
 
     return {
-      setCurrentSession,
+      currentSession,
+      setSession,
+      nullifySession,
     };
   },
 
   components: {
     Loading,
     SessionSelect,
+    SessionCreate,
     Activity,
   },
 };
@@ -46,20 +79,41 @@ export default {
 <style lang="scss" scoped>
 #sessions {
   max-width: 100%;
-  padding: 20px;
+  padding: 20px 0;
   display: flex;
   flex-direction: column;
 
-  .controls {
-    margin-bottom: 20px;
+  .no-session-selected {
     display: flex;
-  }
-}
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
 
-@include tablet {
-  #sessions {
-    border-radius: 2px;
-    box-shadow: $box-double-shadow;
+    .message {
+      font-size: 1.4rem;
+      font-weight: bold;
+      color: $primary;
+      margin: 0 10px;
+    }
+
+    .session-select {
+      width: 200px;
+    }
+  }
+
+  .session-selected {
+    .header {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 20px;
+      position: relative;
+
+      .change-session {
+        position: absolute;
+        right: 0;
+      }
+    }
   }
 }
 </style>

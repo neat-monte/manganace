@@ -57,9 +57,10 @@ export default {
   width: 100vw;
 
   .tags-header {
+    padding: 20px;
     display: flex;
     position: relative;
-    margin: 8px 24px;
+    margin: 0 24px;
 
     .title {
       width: 100%;
@@ -70,13 +71,6 @@ export default {
       align-self: center;
       right: 10px;
     }
-  }
-}
-
-@include tablet {
-  #tags {
-    width: 100%;
-    box-shadow: $box-double-shadow;
   }
 }
 </style>

@@ -2,10 +2,8 @@ import { ref, reactive, readonly } from "vue"
 import api from "@/services/api"
 import notification from "@/services/notification"
 import useActivity from "./activity";
-import useSessions from "./sessions";
 import AwaitLock from 'await-lock';
 
-const { sessionsById } = useSessions();
 const { imagesBySessionId, addGeneratedImage } = useActivity();
 
 const isInitialized = ref(false);
@@ -17,16 +15,12 @@ const generateLock = new AwaitLock();
 const currentSession = reactive({});
 
 const vectors = reactive({});
-const currentImage = reactive({
-    seed: "",
-    filename: "",
-    url: "",
-    vectors: [],
-});
+const currentImage = reactive({});
 
 const setCurrentImage = (image) => {
+    currentImage.id = image.id;
+    currentImage.session_id = image.session_id;
     currentImage.seed = image.seed;
-    currentImage.filename = image.filename;
     currentImage.url = image.url;
     currentImage.vectors = image.vectors;
 }
@@ -77,11 +71,13 @@ export default function useGenerator() {
         }
     }
 
-    const setCurrentSession = (sessionId) => {
-        const session = sessionsById[sessionId];
-        if (session) {
+    const setCurrentSession = (session) => {
+        if (session && session.id && session.name) {
             currentSession.id = session.id;
             currentSession.name = session.name;
+        } else if (session == null) {
+            currentSession.id = undefined;
+            currentSession.name = undefined;
         }
     }
 

@@ -34,8 +34,9 @@ class CImageService:
         db_c_image = crud.c_image.get(db, id_)
         if not db_c_image:
             return None
-        db_c_image = crud.c_image.delete(db, db_c_image)
-        return self.construct_c_image(db_c_image)
+        deleted = self.construct_c_image(db_c_image)
+        _ = crud.c_image.delete(db, id_)
+        return deleted
 
     @staticmethod
     def construct_c_image(db_c_image: m.CImage):

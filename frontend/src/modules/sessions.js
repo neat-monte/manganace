@@ -1,7 +1,10 @@
 import { ref, reactive, readonly } from 'vue'
 import api from '@/services/api'
 import notification from "@/services/notification"
+import useGenerator from "./generator";
 import AwaitLock from 'await-lock';
+
+const { setCurrentSession } = useGenerator();
 
 const hasLoaded = ref(false);
 const loadSessionsLock = new AwaitLock();
@@ -39,6 +42,7 @@ export default function useSessions() {
             if (session) {
                 insertSession(session);
                 notification.sessions.created(session);
+                setCurrentSession(sessionsById[session.id])
             }
         } catch {
             notification.sessions.failedToAdd();
