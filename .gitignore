@@ -33,4 +33,4 @@ yarn-error.log*
 
 backend/static/
 backend/_pickles/
-*.sqlite
+*.sqlite3
