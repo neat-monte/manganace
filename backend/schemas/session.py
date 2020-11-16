@@ -2,14 +2,13 @@ from datetime import datetime
 from typing import Optional
 
 from fastapi_camelcase import CamelModel
+from pydantic.class_validators import validator
 from pydantic.types import conint, constr
 
 
 class SessionInDb(CamelModel):
     """ Properties that are stored in the database """
     id: conint(gt=0)
-    created: datetime
-    updated: Optional[datetime]
 
     class Config:
         orm_mode = True
@@ -34,8 +33,33 @@ class GeneratorSessionUpdate(CamelModel):
 class GeneratorSessionInDb(SessionInDb):
     """ Properties that are stored in the database """
     name: constr(max_length=64)
+    created: datetime
+    updated: Optional[datetime]
 
 
 class GeneratorSession(GeneratorSessionInDb):
     """ Properties that are returned via the API """
     pass
+
+
+class ResearchSessionCreate(CamelModel):
+    """ Properties that are required for the research session initialization """
+    total_amount: conint(gt=0)
+    overlap_amount: conint(ge=0)
+    slider_steps: Optional[conint(ge=2)] = 21
+    equalize_gender: bool
+
+    @validator("overlap_amount")
+    def validate_overlap(cls, value, values):
+        if value > values["total_amount"]:
+            raise ValueError("Overlapping amount cannot be larger than total")
+        return value
+
+
+class ResearchSession(SessionInDb):
+    """ Properties that are stored in the database """
+    total_amount: conint(gt=0)
+    overlap_amount: conint(ge=0)
+    equalize_gender: bool
+    slider_steps: conint(ge=2)
+    created: datetime

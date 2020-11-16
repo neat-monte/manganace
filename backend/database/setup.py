@@ -1,13 +1,18 @@
 import json
 from pathlib import Path
+from typing import TypeVar
 
 from sqlalchemy.orm import Session
 
+from models.education import Education
+from models.gender import Gender
 from models.vector import Vector
 from . import LocalSession, Base, engine
 
-SETUP_DATA = Path.cwd() / "_preexisting_data"
+SETUP_DATA = Path.cwd() / "_setup_data"
 VECTORS = SETUP_DATA / "vectors.json"
+GENDERS = SETUP_DATA / "genders.json"
+EDUCATIONS = SETUP_DATA / "educations.json"
 
 
 def database_setup():
@@ -15,20 +20,23 @@ def database_setup():
     Base.metadata.create_all(bind=engine)
     db = LocalSession()
     try:
-        populate_vectors(db)
+        populate_from_json(db, Vector, str(VECTORS))
+        populate_from_json(db, Gender, str(GENDERS))
+        populate_from_json(db, Education, str(EDUCATIONS))
     finally:
         db.close()
 
 
-def populate_vectors(db: Session):
-    """ Read the JSON file and populate emotions table or update weights """
-    with open(VECTORS, "r") as file:
-        vectors = json.loads(file.read())
-    for vector in vectors:
-        vector_db = db.query(Vector).filter(Vector.name == vector["name"]).first()
-        if vector_db:
-            if vector_db.weight != vector["weight"]:
-                vector_db.weight = vector["weight"]
-            continue
-        db.add(Vector(**vector))
+DatabaseModel = TypeVar("DatabaseModel", bound=Base)
+
+
+def populate_from_json(db: Session, model: DatabaseModel, json_file: str):
+    """ Read the JSON file and populate provided model table if table is empty """
+    data_exists = db.query(model).first()
+    if data_exists:
+        return
+    with open(json_file, "r") as file:
+        data = json.loads(file.read())
+        for obj in data:
+            db.add(model(**obj))
     db.commit()

@@ -5,6 +5,3 @@ from schemas import TagCreate, TagUpdate
 
 class CRUDTag(CRUDBase[Tag, TagCreate, TagUpdate]):
     pass
-
-
-tag = CRUDTag(Tag)

@@ -31,6 +31,3 @@ class CRUDImage(CRUDBase[Image, None, None]):
         for vector in [v for v in vectors if v.id in valid_vectors_ids]:
             image_vectors.append(ImageVector(vector_id=vector.id, multiplier=vector.multiplier))
         return image_vectors
-
-
-image = CRUDImage(Image)

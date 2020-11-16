@@ -5,7 +5,9 @@ from sqlalchemy.orm import Session
 import crud
 import models as m
 import schemas as s
-from .image_file_service import image_file as image_file_service
+from .image_file_service import ImageFileService
+
+image_file_service = ImageFileService()
 
 
 class CImageService:
@@ -52,6 +54,3 @@ class CImageService:
             vectors=[s.ImageVector.construct(id=v.vector_id, multiplier=v.multiplier)
                      for v in db_c_image.image.vectors]
         )
-
-
-c_image = CImageService()

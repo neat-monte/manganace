@@ -26,6 +26,3 @@ class CRUDCImage(CRUDBase[CImage, CImageCreate, CImageUpdate]):
         if c_image_schema.tags_ids:
             return db.query(Tag).filter(Tag.id.in_(c_image_schema.tags_ids)).all()
         return []
-
-
-c_image = CRUDCImage(CImage)
