@@ -1,0 +1,28 @@
+.ant-tabs {
+    color: $darkness !important;
+
+    .ant-tabs-nav-container {
+        .ant-tabs-nav-wrap {
+            .ant-tabs-nav-scroll {
+                .ant-tabs-nav {
+                    .ant-tabs-tab {
+                        text-transform: uppercase;
+                        font-weight: bold;
+
+                        &:hover {
+                            color: $primary !important;
+                        }
+
+                        &.ant-tabs-tab-active {
+                            color: $primary !important;
+                        }
+                    }
+
+                    .ant-tabs-ink-bar {
+                        background: $primary !important;
+                    }
+                }
+            }
+        }
+    }
+}

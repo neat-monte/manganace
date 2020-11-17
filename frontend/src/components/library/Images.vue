@@ -56,7 +56,11 @@ export default {
     const filterTags = ref([]);
 
     watchEffect(async () => {
-      if (props.collectionId && collectionsLoaded) {
+      if (
+        props.collectionId &&
+        props.collectionId in collectionsById &&
+        collectionsLoaded
+      ) {
         collection.value = collectionsById[props.collectionId];
         await loadImagesOfCollectionAsync(props.collectionId);
 

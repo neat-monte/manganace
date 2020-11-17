@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import { computed, ref, onErrorCaptured } from "vue";
+import { computed } from "vue";
 import { useRoute } from "vue-router";
 import Collections from "@/components/library/Collections";
 import Images from "@/components/library/Images";
@@ -44,13 +44,7 @@ export default {
 
     const collectionId = computed(() => Number(route.params.collectionId));
 
-    const error = ref(null);
-    onErrorCaptured((e) => {
-      error.value = e;
-    });
-
     return {
-      error,
       collectionId,
     };
   },

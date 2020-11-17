@@ -38,7 +38,7 @@ export default {
     }
 
     > .content {
-      padding: 10px $tablet-x-padding ($footer-height + 10px) $tablet-x-padding;
+      padding: 0 $tablet-x-padding ($footer-height + 10px) $tablet-x-padding;
     }
 
     #footer {
@@ -54,7 +54,7 @@ export default {
     }
 
     > .content {
-      padding: 20px $sm-x-padding ($footer-height + 20px) $sm-x-padding;
+      padding: 0 $sm-x-padding ($footer-height + 20px) $sm-x-padding;
     }
 
     #footer {
@@ -70,7 +70,7 @@ export default {
     }
 
     > .content {
-      padding: 40px $lg-x-padding ($footer-height + 40px) $lg-x-padding;
+      padding: 0 $lg-x-padding ($footer-height + 40px) $lg-x-padding;
     }
 
     #footer {

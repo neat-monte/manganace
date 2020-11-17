@@ -26,6 +26,7 @@ import { useRouter } from "vue-router";
 import Collection from "@/components/library/Collection";
 import CollectionCreate from "@/components/actions/collection/CollectionCreate";
 import useCollections from "@/modules/collections";
+import { watchEffect } from "vue";
 
 export default {
   name: "Collections",
@@ -34,7 +35,7 @@ export default {
     collectionId: Number,
   },
 
-  async setup() {
+  async setup(props) {
     const router = useRouter();
 
     function renderImages(collectionId) {
@@ -45,6 +46,19 @@ export default {
     }
 
     const { collectionsById, loadCollectionsAsync } = useCollections();
+
+    watchEffect(() => {
+      console.log(props.collectionId);
+      if (
+        props.collectionId &&
+        collectionsById &&
+        !(props.collectionId in collectionsById)
+      ) {
+        router.push({
+          name: "NotFound",
+        });
+      }
+    });
 
     await loadCollectionsAsync();
 

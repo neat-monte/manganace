@@ -1,7 +1,7 @@
 <template>
   <div id="tags">
     <div class="tags-header">
-      <span class="title">Tags manager</span>
+      <span class="title">Tags</span>
       <div class="controls">
         <TagCreate />
       </div>
