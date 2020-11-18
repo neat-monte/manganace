@@ -47,8 +47,8 @@ export default {
     const { deleteCollectionAsync } = useCollections();
     async function handleDelete() {
       await deleteCollectionAsync(props.collectionId);
-      visible.value = false;
       router.push({ name: "Collections" });
+      visible.value = false;
     }
 
     return {

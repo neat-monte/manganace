@@ -30,6 +30,8 @@
         </template>
       </Suspense>
     </div>
+
+    <Empty v-if="images.length == 0" />
   </section>
 </template>
 
@@ -38,6 +40,8 @@ import { defineAsyncComponent, ref, watchEffect } from "vue";
 
 import TagSelect from "@/components/actions/tag/TagSelect";
 import Loading from "@/components/shared/Loading";
+import Empty from "@/components/shared/Empty";
+
 import useImages from "@/modules/images";
 import useCollections from "@/modules/collections";
 
@@ -105,6 +109,7 @@ export default {
   components: {
     TagSelect,
     Loading,
+    Empty,
     ImageCardAsync: defineAsyncComponent({
       loader: () => import("@/components/library/ImageCard"),
       delay: 200,

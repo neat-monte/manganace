@@ -1,5 +1,5 @@
 <template>
-  <section v-if="collections" id="collections">
+  <section id="collections">
     <div class="collections-header">
       <span class="title">Collections</span>
       <div class="controls">
@@ -17,16 +17,20 @@
         <Collection :collection="collection" />
       </a-collapse-panel>
     </a-collapse>
+
+    <Empty v-if="collections.length == 0" />
   </section>
 </template>
 
 <script>
+import { ref, watchEffect } from "vue";
 import { useRouter } from "vue-router";
 
 import Collection from "@/components/library/Collection";
 import CollectionCreate from "@/components/actions/collection/CollectionCreate";
+import Empty from "@/components/shared/Empty";
+
 import useCollections from "@/modules/collections";
-import { watchEffect } from "vue";
 
 export default {
   name: "Collections",
@@ -37,18 +41,10 @@ export default {
 
   async setup(props) {
     const router = useRouter();
-
-    function renderImages(collectionId) {
-      router.push({
-        name: "ImagesOfCollection",
-        params: { collectionId: collectionId },
-      });
-    }
-
     const { collectionsById, loadCollectionsAsync } = useCollections();
+    const collections = ref([]);
 
     watchEffect(() => {
-      console.log(props.collectionId);
       if (
         props.collectionId &&
         collectionsById &&
@@ -58,12 +54,21 @@ export default {
           name: "NotFound",
         });
       }
+
+      collections.value = Object.values(collectionsById);
     });
+
+    function renderImages(collectionId) {
+      router.push({
+        name: "ImagesOfCollection",
+        params: { collectionId: collectionId },
+      });
+    }
 
     await loadCollectionsAsync();
 
     return {
-      collections: collectionsById,
+      collections,
       renderImages,
     };
   },
@@ -71,6 +76,7 @@ export default {
   components: {
     Collection,
     CollectionCreate,
+    Empty,
   },
 };
 </script>

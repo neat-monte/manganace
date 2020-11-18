@@ -56,10 +56,16 @@ class ResearchSessionCreate(CamelModel):
         return value
 
 
-class ResearchSession(SessionInDb):
+class ResearchSessionInDb(SessionInDb):
     """ Properties that are stored in the database """
     total_amount: conint(gt=0)
     overlap_amount: conint(ge=0)
     equalize_gender: bool
     slider_steps: conint(ge=2)
     created: datetime
+
+
+class ResearchSession(ResearchSessionInDb):
+    """ Properties that are returned via the API """
+    trials: conint(ge=0)
+    progress: conint(ge=0)  # done trials

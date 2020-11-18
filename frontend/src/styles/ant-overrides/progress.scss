@@ -1,0 +1,14 @@
+.ant-progress {
+    .ant-progress-outer {
+        .ant-progress-inner {
+            background: $darkness-20 !important;
+            .ant-progress-bg {
+                background: $primary !important;
+            }
+        }
+    }
+
+    .ant-progress-text {
+        color: $darkness !important;
+    }
+}

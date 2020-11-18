@@ -6,7 +6,7 @@
         <TagCreate />
       </div>
     </div>
-    <a-list bordered>
+    <a-list :bordered="false">
       <a-list-item v-for="tag in tags" :key="tag.id">
         <span>{{ tag.name }}</span>
         <template v-slot:actions>
@@ -19,12 +19,13 @@
 </template>
 
 <script>
+import { ref, watchEffect } from "vue";
+
 import TagCreate from "@/components/actions/tag/TagCreate";
 import TagUpdate from "@/components/actions/tag/TagUpdate";
 import TagDelete from "@/components/actions/tag/TagDelete";
 
 import useTags from "@/modules/tags";
-import { ref, watchEffect } from "vue";
 
 export default {
   name: "Tags",

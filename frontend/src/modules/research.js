@@ -1,6 +1,7 @@
 import { ref, reactive, readonly } from "vue"
 import api from "@/services/api"
 import notification from "@/services/notification"
+import moment from "moment"
 import AwaitLock from 'await-lock';
 
 const hasLoaded = ref(false);
@@ -9,6 +10,7 @@ const loadLock = new AwaitLock();
 const sessionsById = reactive({});
 
 const insertSession = (session) => {
+    session.created = moment(session.created).format("YYYY-MM-DD HH:mm");
     sessionsById[session.id] = session;
 }
 

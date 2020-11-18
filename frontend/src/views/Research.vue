@@ -7,7 +7,7 @@
             <Sessions />
           </template>
           <template #fallback>
-            <Loading />
+            <Loading id="sessions" />
           </template>
         </Suspense>
       </a-tab-pane>
@@ -34,6 +34,12 @@ export default {
 #research {
   &.content {
     padding-top: 0;
+  }
+
+  .ant-tabs-content {
+    .ant-tabs-tabpane {
+      min-height: 200px;
+    }
   }
 }
 </style>

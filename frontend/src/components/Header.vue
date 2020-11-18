@@ -129,7 +129,6 @@ export default {
 
         .anticon {
           display: block;
-          margin-right: 10px;
           font-size: 1.8rem;
           color: $secondary;
         }
@@ -174,6 +173,10 @@ export default {
         margin-right: 10px;
 
         .link {
+          .anticon {
+            margin-right: 10px;
+          }
+
           span {
             display: block;
           }
