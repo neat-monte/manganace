@@ -91,3 +91,14 @@
         }
     }
 }
+
+.ant-radio,
+.ant-radio.ant-radio-checked {
+    .ant-radio-inner {
+        border-color: $primary !important;
+
+        &::after {
+            background-color: $primary !important;
+        }
+    }
+}

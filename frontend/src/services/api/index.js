@@ -5,4 +5,5 @@ export default {
     generator: require('./segments/generator'),
     sessions: require('./segments/sessions'),
     research: require('./segments/research'),
+    extras: require('./segments/extras'),
 }

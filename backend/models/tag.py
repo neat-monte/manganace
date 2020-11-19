@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Integer, String, Boolean
 from sqlalchemy.orm import relationship
 
 from database import Base
@@ -9,5 +9,6 @@ class Tag(Base):
 
     id = Column(Integer, primary_key=True)
     name = Column(String(32), nullable=False)
+    hidden = Column(Boolean, default=False)
 
     c_images = relationship("CImage", secondary='c_image_tag', back_populates="tags")

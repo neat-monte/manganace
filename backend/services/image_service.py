@@ -2,7 +2,7 @@ from typing import List, Optional
 
 from sqlalchemy.orm import Session
 
-import crud
+import data
 import models as m
 import schemas as s
 from .image_file_service import ImageFileService
@@ -12,17 +12,17 @@ image_file_service = ImageFileService()
 
 class ImageService:
     def get_all_of_session(self, db: Session, session_id: int) -> List[s.Image]:
-        db_images = crud.image.get_all_of_session(db, session_id)
+        db_images = data.image.get_all_of_session(db, session_id)
         return [self.construct_image(i) for i in db_images]
 
     def get(self, db: Session, id_: int) -> Optional[s.Image]:
-        db_image = crud.image.get(db, id_)
+        db_image = data.image.get(db, id_)
         if not db_image:
             return None
         return self.construct_image(db_image)
 
     def create(self, db: Session, request: s.GenerateRequest, filename: str) -> s.Image:
-        db_image = crud.image.create_with_vectors(db, request.seed, filename, request.session_id, request.vectors)
+        db_image = data.image.create_with_vectors(db, request.seed, filename, request.session_id, request.vectors)
         return self.construct_image(db_image)
 
     @staticmethod

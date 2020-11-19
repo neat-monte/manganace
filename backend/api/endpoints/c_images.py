@@ -5,6 +5,7 @@ from sqlalchemy.orm import Session
 
 import services
 from api.dependencies import get_db
+from models import Collection
 from schemas import CImage, CImageCreate, CImageUpdate
 
 router = APIRouter()
@@ -25,6 +26,9 @@ def create_collection_image(image_in: CImageCreate, db: Session = Depends(get_db
     image = services.image.get(db, image_in.image_id)
     if not image:
         raise HTTPException(status_code=404, detail="Image not found")
+    db_collection = db.query(Collection).get(image_in.collection_id)
+    if not db_collection:
+        raise HTTPException(status_code=400, detail="Collection not found")
     return services.c_image.create(db, image_in)
 
 

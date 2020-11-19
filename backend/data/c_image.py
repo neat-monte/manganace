@@ -1,7 +1,7 @@
 from fastapi.encoders import jsonable_encoder
 from sqlalchemy.orm import Session
 
-from crud.base import CRUDBase
+from data._crud_base import CRUDBase
 from models import CImage, Tag
 from schemas import CImageCreate, CImageUpdate
 

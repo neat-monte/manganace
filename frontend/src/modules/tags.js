@@ -8,10 +8,6 @@ const loadLock = new AwaitLock();
 
 const tagsById = reactive({});
 
-const insertTag = (tag) => {
-    tagsById[tag.id] = tag;
-}
-
 export default function useTags() {
 
     const loadTagsAsync = async () => {
@@ -22,7 +18,7 @@ export default function useTags() {
             }
             const tags = await api.tags.getAll();
             if (tags) {
-                tags.forEach(tag => insertTag(tag));
+                tags.forEach(tag => tagsById[tag.id] = tag);
                 hasLoaded.value = true;
             }
         } catch {
@@ -37,7 +33,7 @@ export default function useTags() {
             const tagJson = JSON.stringify(newTag);
             const tag = await api.tags.create(tagJson);
             if (tag) {
-                insertTag(tag);
+                tagsById[tag.id] = tag;
                 notification.tags.created(tag);
             }
         } catch {
@@ -50,7 +46,7 @@ export default function useTags() {
             const tagJson = JSON.stringify(updatedTag);
             const tag = await api.tags.update(updatedTag.id, tagJson);
             if (tag) {
-                insertTag(tag);
+                tagsById[tag.id] = tag;
                 notification.tags.updated(tag);
             }
         } catch {

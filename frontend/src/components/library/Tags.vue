@@ -35,7 +35,7 @@ export default {
     const tags = ref([]);
 
     watchEffect(() => {
-      tags.value = Object.values(tagsById);
+      tags.value = Object.values(tagsById).filter((tag) => !tag.hidden);
     });
 
     await loadTagsAsync();

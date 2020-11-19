@@ -3,7 +3,7 @@ from typing import List
 from sqlalchemy.orm import Session
 
 import schemas as s
-from crud.base import CRUDBase
+from data._crud_base import CRUDBase
 from models import Image, Vector, ImageVector
 
 

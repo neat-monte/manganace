@@ -1,6 +1,8 @@
+from typing import List
+
 from sqlalchemy.orm import Session
 
-import crud
+import data
 import models as m
 import schemas as s
 from .vector_service import VectorService
@@ -13,8 +15,8 @@ class ResearchService:
         vectors_count = len(vector_service.get_ids(db))
         return self.construct_research_session(db_session_r, vectors_count)
 
-    def get_sessions(self, db: Session):
-        db_sessions_r = crud.session_r.get_all(db)
+    def get_sessions(self, db: Session) -> List[s.ResearchSession]:
+        db_sessions_r = data.session_r.get_all(db)
         vectors_count = len(vector_service.get_ids(db))
         return [self.construct_research_session(ses, vectors_count) for ses in db_sessions_r]
 
@@ -23,7 +25,7 @@ class ResearchService:
         trials = vectors_count * db_session_r.total_amount
         progress = 0
         if db_session_r.participant and db_session_r.participant.collection:
-            progress = len(db_session_r.participant.collection.images)
+            progress = len(db_session_r.participant.collection.c_images)
         return s.ResearchSession.construct(
             id=db_session_r.id,
             total_amount=db_session_r.total_amount,
@@ -32,5 +34,6 @@ class ResearchService:
             slider_steps=db_session_r.slider_steps,
             created=db_session_r.created,
             trials=trials,
-            progress=progress
+            progress=progress,
+            participant=db_session_r.participant
         )

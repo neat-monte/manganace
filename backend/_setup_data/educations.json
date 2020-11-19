@@ -1,26 +1,22 @@
 [
   {
-    "name": "Secondary",
-    "explanation": "Currently studying in high school"
-  },
-  {
-    "name": "Completed secondary",
-    "explanation": "Graduated from high school"
+    "name": "Secondary or less",
+    "explanation": "Current high school student or graduated high school"
   },
   {
     "name": "Undergraduate",
     "explanation": "Bachelor's degree in progress"
   },
   {
-    "name": "Completed undergraduate",
-    "explanation": "Obtained Bachelor's degree"
+    "name": "Graduate",
+    "explanation": "Obtained bachelor's degree"
   },
   {
     "name": "Postgraduate",
-    "explanation": "Master's or Doctorate degree in progress"
+    "explanation": "Obtained master's degree"
   },
   {
-    "name": "Completed postgraduate",
-    "explanation": "Obtained Master's or Doctorate degree"
+    "name": "Doctoral/PhD degree",
+    "explanation": "Obtained doctoral degree"
   }
 ]

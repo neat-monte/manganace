@@ -2,6 +2,7 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 import Generator from '@/views/Generator.vue'
 import Library from '@/views/Library.vue'
 import Research from '@/views/Research.vue'
+import Session from '@/views/Session.vue'
 import NotFound from '@/views/NotFound.vue'
 
 const routes = [
@@ -25,6 +26,11 @@ const routes = [
     path: "/research",
     name: "Research",
     component: Research
+  },
+  {
+    path: "/session",
+    name: "ResearchSession",
+    component: Session
   },
   {
     path: "/:pathMatch(.*)*",

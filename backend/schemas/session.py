@@ -5,6 +5,8 @@ from fastapi_camelcase import CamelModel
 from pydantic.class_validators import validator
 from pydantic.types import conint, constr
 
+from schemas import Participant
+
 
 class SessionInDb(CamelModel):
     """ Properties that are stored in the database """
@@ -69,3 +71,4 @@ class ResearchSession(ResearchSessionInDb):
     """ Properties that are returned via the API """
     trials: conint(ge=0)
     progress: conint(ge=0)  # done trials
+    participant: Optional[Participant]

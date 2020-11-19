@@ -1,4 +1,4 @@
-from crud.base import CRUDBase
+from data._crud_base import CRUDBase
 from models import GeneratorSession
 from schemas import GeneratorSessionCreate, GeneratorSessionUpdate
 

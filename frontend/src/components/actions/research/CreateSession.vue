@@ -109,7 +109,7 @@
           </li>
           <li>
             <p>
-              It will require <i>approximately</i>
+              It will require <i>approximately </i>
               <strong>{{ storage }}</strong> of space.
             </p>
           </li>
@@ -209,7 +209,7 @@ export default {
 .create-session {
   display: flex;
   flex-wrap: wrap;
-  text-align: left;
+  text-align: justify;
 
   .help {
     flex: 1 100%;

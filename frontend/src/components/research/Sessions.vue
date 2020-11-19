@@ -32,15 +32,28 @@
               </a-descriptions-item>
             </a-descriptions>
           </div>
-
           <div class="progress">
             <a-progress
-              :percent="item.progress > 0 ? item.trials / item.progress : 0"
+              :percent="
+                item.progress > 0 ? Math.floor(item.progress / item.trials) : 0
+              "
             />
             <div class="actions">
-              <a-button type="primary" :disabled="item.trials == item.progress">
-                {{ item.progress == 0 ? "Begin" : "Continue" }}
-              </a-button>
+              <a-tooltip placement="top">
+                <template v-slot:title>
+                  {{ item.progress == 0 ? "Begin" : "Continue" }}
+                </template>
+                <a-button
+                  type="primary"
+                  shape="circle"
+                  :disabled="item.trials == item.progress"
+                  @click="startSession(item.id)"
+                >
+                  <template v-slot:icon>
+                    <CaretRightOutlined />
+                  </template>
+                </a-button>
+              </a-tooltip>
             </div>
           </div>
         </a-list-item>
@@ -51,7 +64,9 @@
 
 <script>
 import { watchEffect, ref } from "vue";
+import { useRouter } from "vue-router";
 
+import { CaretRightOutlined } from "@ant-design/icons-vue";
 import CreateSession from "@/components/actions/research/CreateSession";
 
 import useResearch from "@/modules/research";
@@ -60,22 +75,37 @@ export default {
   name: "Sessions",
 
   async setup() {
-    const { sessionsById, loadSessionsAsync } = useResearch();
+    const router = useRouter();
+    const {
+      sessionsById,
+      loadSessionsAsync,
+      setCurrentSession,
+    } = useResearch();
+
     const sessions = ref([]);
 
     watchEffect(() => {
       sessions.value = Object.values(sessionsById);
     });
 
+    function startSession(sessionId) {
+      setCurrentSession(sessionId);
+      router.push({
+        name: "ResearchSession",
+      });
+    }
+
     await loadSessionsAsync();
 
     return {
       sessions,
+      startSession,
     };
   },
 
   components: {
     CreateSession,
+    CaretRightOutlined,
   },
 };
 </script>
@@ -87,18 +117,18 @@ export default {
 
   .controls {
     text-align: right;
-    margin-bottom: 20px;
+    margin: 0 18% 20px 0;
   }
 
   .session-content {
-    padding: 0 20px;
+    box-shadow: $box-double-shadow;
 
     .progress {
       align-items: center;
       display: flex;
+      padding: 0 20%;
 
       .actions {
-        width: 35%;
         margin-left: 20px;
         text-align: right;
       }
@@ -109,6 +139,16 @@ export default {
 @include tablet {
   #sessions {
     margin: 0;
+
+    .controls {
+      margin-right: 0;
+    }
+
+    .session-content {
+      .progress {
+        padding: 0 9%;
+      }
+    }
   }
 }
 </style>

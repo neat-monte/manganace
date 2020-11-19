@@ -11,10 +11,6 @@ const loadSessionsLock = new AwaitLock();
 
 const sessionsById = reactive({});
 
-const insertSession = (session) => {
-    sessionsById[session.id] = session;
-}
-
 export default function useSessions() {
 
     const loadSessionsAsync = async () => {
@@ -25,7 +21,7 @@ export default function useSessions() {
             }
             const sessions = await api.sessions.getAll();
             if (sessions) {
-                sessions.forEach(session => insertSession(session));
+                sessions.forEach(ses => sessionsById[ses.id] = ses);
                 hasLoaded.value = true;
             }
         } catch {
@@ -40,7 +36,7 @@ export default function useSessions() {
             const sessionJson = JSON.stringify(newSession);
             const session = await api.sessions.create(sessionJson);
             if (session) {
-                insertSession(session);
+                sessionsById[session.id] = session;
                 notification.sessions.created(session);
                 setCurrentSession(sessionsById[session.id])
             }
@@ -54,7 +50,7 @@ export default function useSessions() {
             const sessionJson = JSON.stringify(updatedSession);
             const session = await api.sessions.update(updatedSession.id, sessionJson);
             if (session) {
-                insertSession(session);
+                sessionsById[session.id] = session;
                 notification.sessions.updated(session);
             }
         } catch {
@@ -66,7 +62,7 @@ export default function useSessions() {
         try {
             const session = await api.sessions.destroy(sessionId);
             if (session) {
-                delete insertSession[session.id];
+                delete sessionsById[session.id];
                 notification.sessions.deleted(session);
             }
         } catch {

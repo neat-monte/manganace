@@ -1,0 +1,26 @@
+[
+  {
+    "name": "Naturally happy",
+    "hidden": true
+  },
+  {
+    "name": "Naturally sad",
+    "hidden": true
+  },
+  {
+    "name": "Naturally angry",
+    "hidden": true
+  },
+  {
+    "name": "Naturally disgusted",
+    "hidden": true
+  },
+  {
+    "name": "Naturally fearful",
+    "hidden": true
+  },
+  {
+    "name": "Naturally surprised",
+    "hidden": true
+  }
+]

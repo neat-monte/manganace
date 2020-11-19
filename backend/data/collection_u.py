@@ -1,4 +1,4 @@
-from crud.base import CRUDBase
+from data._crud_base import CRUDBase
 from models import UserCollection
 from schemas import CollectionCreate, CollectionUpdate
 

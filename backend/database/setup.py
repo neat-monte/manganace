@@ -4,6 +4,7 @@ from typing import TypeVar
 
 from sqlalchemy.orm import Session
 
+from models import Tag
 from models.education import Education
 from models.gender import Gender
 from models.vector import Vector
@@ -13,6 +14,7 @@ SETUP_DATA = Path.cwd() / "_setup_data"
 VECTORS = SETUP_DATA / "vectors.json"
 GENDERS = SETUP_DATA / "genders.json"
 EDUCATIONS = SETUP_DATA / "educations.json"
+TAGS = SETUP_DATA / "tags.json"
 
 
 def database_setup():
@@ -23,6 +25,7 @@ def database_setup():
         populate_from_json(db, Vector, str(VECTORS))
         populate_from_json(db, Gender, str(GENDERS))
         populate_from_json(db, Education, str(EDUCATIONS))
+        populate_from_json(db, Tag, str(TAGS))
     finally:
         db.close()
 

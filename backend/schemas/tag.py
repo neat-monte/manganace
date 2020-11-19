@@ -16,6 +16,7 @@ class TagInDb(CamelModel):
     """ Properties that are in the database """
     id: conint(gt=0)
     name: constr(max_length=32)
+    hidden: bool
 
     class Config:
         orm_mode = True

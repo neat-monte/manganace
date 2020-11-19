@@ -2,7 +2,7 @@ from typing import List, Optional
 
 from sqlalchemy.orm import Session
 
-import crud
+import data
 import models as m
 import schemas as s
 from .image_file_service import ImageFileService
@@ -12,32 +12,32 @@ image_file_service = ImageFileService()
 
 class CImageService:
     def get_all_of_collection(self, db: Session, collection_id: int) -> List[s.CImage]:
-        db_c_images = crud.c_image.get_all_of_collection(db, collection_id)
+        db_c_images = data.c_image.get_all_of_collection(db, collection_id)
         return [self.construct_c_image(i) for i in db_c_images]
 
     def get(self, db: Session, id_: int) -> Optional[s.CImage]:
-        db_c_image = crud.c_image.get(db, id_)
+        db_c_image = data.c_image.get(db, id_)
         if not db_c_image:
             return None
         return self.construct_c_image(db_c_image)
 
     def create(self, db: Session, c_image_in: s.CImageCreate) -> s.CImage:
-        db_c_image = crud.c_image.create_with_tags(db, c_image_in)
+        db_c_image = data.c_image.create_with_tags(db, c_image_in)
         return self.construct_c_image(db_c_image)
 
     def update(self, db: Session, id_: int, c_image_in: s.CImageUpdate) -> Optional[s.CImage]:
-        db_c_image = crud.c_image.get(db, id_)
+        db_c_image = data.c_image.get(db, id_)
         if not db_c_image:
             return None
-        db_c_image = crud.c_image.update_with_tags(db, db_c_image, c_image_in)
+        db_c_image = data.c_image.update_with_tags(db, db_c_image, c_image_in)
         return self.construct_c_image(db_c_image)
 
     def delete(self, db: Session, id_: int) -> Optional[s.CImage]:
-        db_c_image = crud.c_image.get(db, id_)
+        db_c_image = data.c_image.get(db, id_)
         if not db_c_image:
             return None
         deleted = self.construct_c_image(db_c_image)
-        _ = crud.c_image.delete(db, id_)
+        _ = data.c_image.delete(db, id_)
         return deleted
 
     @staticmethod

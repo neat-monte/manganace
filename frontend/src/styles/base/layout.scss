@@ -4,6 +4,7 @@
 
 html {
     text-align: center;
+    scrollbar-color: $primary;
 
     body {
         font-family: Avenir, Helvetica, Arial, sans-serif;
@@ -15,5 +16,15 @@ html {
             text-transform: uppercase;
             color: $primary;
         }
+    }
+
+    *::-webkit-scrollbar {
+        width: 0.8rem;
+    }
+    *::-webkit-scrollbar-thumb {
+        background-color: $primary-dark;
+    }
+    *::-webkit-scrollbar-track {
+        background-color: $darkness-20;
     }
 }

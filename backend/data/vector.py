@@ -2,7 +2,7 @@ from typing import List
 
 from sqlalchemy.orm import Session
 
-from crud.base import CRUDBase
+from data._crud_base import CRUDBase
 from models import Vector
 
 

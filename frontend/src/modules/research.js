@@ -8,6 +8,7 @@ const hasLoaded = ref(false);
 const loadLock = new AwaitLock();
 
 const sessionsById = reactive({});
+const currentSessionId = ref(null);
 
 const insertSession = (session) => {
     session.created = moment(session.created).format("YYYY-MM-DD HH:mm");
@@ -47,10 +48,18 @@ export default function useResearch() {
         }
     }
 
+    const setCurrentSession = (sessionId) => {
+        if (sessionsById[sessionId]) {
+            currentSessionId.value = sessionId;
+        }
+    }
+
     return {
         sessionsLoaded: readonly(hasLoaded),
         sessionsById: readonly(sessionsById),
+        currentSessionId: readonly(currentSessionId),
         loadSessionsAsync,
-        addSessionAsync
+        addSessionAsync,
+        setCurrentSession
     }
 }
