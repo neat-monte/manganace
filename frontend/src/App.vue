@@ -1,14 +1,31 @@
 <template>
-  <Header />
+  <Header v-if="showHeader" />
   <router-view />
   <Footer />
 </template>
 
 <script>
+import { ref, watchEffect } from "vue";
+import { useRoute } from "vue-router";
+
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
 export default {
+  setup() {
+    const route = useRoute();
+    const showHeader = ref(true);
+
+    watchEffect(() => {
+      showHeader.value = route.name !== "ResearchSession";
+    });
+
+    return {
+      showHeader,
+      route,
+    };
+  },
+
   components: {
     Header,
     Footer,
@@ -33,48 +50,45 @@ export default {
 
 @include tablet {
   #app {
-    #header {
-      padding: 0 $tablet-x-padding;
+    #header,
+    #footer,
+    > .content {
+      padding-left: $tablet-x-padding;
+      padding-right: $tablet-x-padding;
     }
 
     > .content {
-      padding: 0 $tablet-x-padding ($footer-height + 10px) $tablet-x-padding;
-    }
-
-    #footer {
-      padding: 0 $tablet-x-padding;
+      padding-bottom: $footer-height + 10px;
     }
   }
 }
 
 @include sm-desktop {
   #app {
-    #header {
-      padding: 0 $sm-x-padding;
+    #header,
+    #footer,
+    > .content {
+      padding-left: $sm-x-padding;
+      padding-right: $sm-x-padding;
     }
 
     > .content {
-      padding: 0 $sm-x-padding ($footer-height + 20px) $sm-x-padding;
-    }
-
-    #footer {
-      padding: 0 $sm-x-padding;
+      padding-bottom: $footer-height + 20px;
     }
   }
 }
 
 @include lg-desktop {
   #app {
-    #header {
-      padding: 0 $lg-x-padding;
+    #header,
+    #footer,
+    > .content {
+      padding-left: $lg-x-padding;
+      padding-right: $lg-x-padding;
     }
 
     > .content {
-      padding: 0 $lg-x-padding ($footer-height + 40px) $lg-x-padding;
-    }
-
-    #footer {
-      padding: 0 $lg-x-padding;
+      padding-bottom: $footer-height + 40px;
     }
   }
 }

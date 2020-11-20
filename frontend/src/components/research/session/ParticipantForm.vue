@@ -1,6 +1,6 @@
 <template>
   <div id="participant-form">
-    <h3>INTRODUCTION</h3>
+    <div class="title">INTRODUCTION</div>
     <p>
       You are invited to participate in a research project which is being
       conducted by a bachelor's student at Radboud University. The procedure
@@ -9,7 +9,7 @@
       this research study is voluntary and you may withdraw at any time.
       <strong>The data collected will be made fully anonymous.</strong>
     </p>
-    <h3>INSTRUCTIONS</h3>
+    <div class="title">INSTRUCTIONS</div>
     <p>
       The pursose of this study is to investigate the natural perception of
       emotion. You will be provided with a single emotion, a slider and an image
@@ -54,6 +54,12 @@
       </a-form-item>
     </a-form>
     <div class="controls">
+      <router-link :to="{ name: 'Research' }">
+        <a-button type="default">
+          <RollbackOutlined />
+          Exit
+        </a-button>
+      </router-link>
       <a-button type="primary" :disabled="!isValid()" @click="beginSession()">
         Begin
         <CaretRightOutlined />
@@ -65,7 +71,7 @@
 <script>
 import { reactive, ref, watchEffect } from "vue";
 
-import { CaretRightOutlined } from "@ant-design/icons-vue";
+import { CaretRightOutlined, RollbackOutlined } from "@ant-design/icons-vue";
 
 import useResearch from "@/modules/research";
 import useExtras from "@/modules/extras";
@@ -74,7 +80,7 @@ export default {
   name: "ParticipantForm",
 
   async setup() {
-    const { currentSessionId, assignParticipant } = useResearch();
+    const { currentSession, assignParticipantAsync } = useResearch();
     const {
       loadGendersAsync,
       loadEducationsAsync,
@@ -94,7 +100,7 @@ export default {
       age: null,
       genderId: null,
       educationId: null,
-      sessionId: currentSessionId,
+      sessionId: currentSession.id,
     });
 
     const isValid = () =>
@@ -104,7 +110,7 @@ export default {
       participant.educationId;
 
     async function beginSession() {
-      await assignParticipant(participant);
+      await assignParticipantAsync(participant);
     }
 
     await Promise.all([loadGendersAsync(), loadEducationsAsync()]);
@@ -120,14 +126,13 @@ export default {
 
   components: {
     CaretRightOutlined,
+    RollbackOutlined,
   },
 };
 </script>
 
 <style lang="scss" scoped>
 #participant-form {
-  padding: 0 50px;
-
   p {
     text-align: justify;
   }
@@ -147,14 +152,8 @@ export default {
 
   .controls {
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
     margin-bottom: 20px;
-  }
-}
-
-@include sm-desktop {
-  #participant-form {
-    padding: 0 15%;
   }
 }
 </style>

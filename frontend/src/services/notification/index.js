@@ -6,4 +6,5 @@ export default {
     sessions: require('./segments/sessions'),
     activity: require('./segments/activity'),
     extras: require('./segments/extras'),
+    research: require('./segments/research'),
 }

@@ -41,3 +41,15 @@ export const failedToDelete = () => {
     const description = "The request to delete session failed...";
     error(message, description);
 }
+
+export const cannotAssignParticipant = () => {
+    const message = "Cannot assign participant";
+    const description = "Either the provided session does not exist or participant is already assigned...";
+    error(message, description);
+}
+
+export const failedToAssignParticipant = () => {
+    const message = "Failed to assign participant";
+    const description = "The request to assign participant failed...";
+    error(message, description);
+}

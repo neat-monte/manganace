@@ -30,6 +30,9 @@
               <a-descriptions-item label="Done trials">
                 <span>{{ item.progress }}</span>
               </a-descriptions-item>
+              <a-descriptions-item label="Has participant">
+                <span>{{ item.participant ? "Yes" : "No" }}</span>
+              </a-descriptions-item>
             </a-descriptions>
           </div>
           <div class="progress">
@@ -41,7 +44,7 @@
             <div class="actions">
               <a-tooltip placement="top">
                 <template v-slot:title>
-                  {{ item.progress == 0 ? "Begin" : "Continue" }}
+                  {{ !item.participant ? "Begin" : "Continue" }}
                 </template>
                 <a-button
                   type="primary"

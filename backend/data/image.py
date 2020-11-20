@@ -1,6 +1,6 @@
 from typing import List
 
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 
 import schemas as s
 from data._crud_base import CRUDBase
@@ -11,6 +11,16 @@ from models import Image, Vector, ImageVector
 class CRUDImage(CRUDBase[Image, None, None]):
     def get_all_of_session(self, db: Session, session_id: int) -> List[Image]:
         return db.query(Image).filter(Image.session_id == session_id).all()
+
+    def get_seeds_of_session(self, db: Session, session_id: int) -> List[int]:
+        return [seed for (seed,) in db.query(Image.seed).filter(Image.session_id == session_id).distinct().all()]
+
+    def get_all_of_trial(self, db: Session, session_id: int, seed: int, vector_id: int) -> List[Image]:
+        return db.query(Image).filter(
+            Image.session_id == session_id,
+            Image.seed == seed,
+            ImageVector.vector_id == vector_id
+        ).join(ImageVector).options(joinedload('vectors')).all()
 
     def create_with_vectors(self, db: Session, seed: int, filename: str,
                             session_id: int, vectors: List[s.ImageVector]) -> Image:

@@ -1,14 +1,29 @@
 .ant-progress {
-    .ant-progress-outer {
-        .ant-progress-inner {
-            background: $darkness-20 !important;
-            .ant-progress-bg {
-                background: $primary !important;
-            }
+    .ant-progress-inner {
+        background: $darkness-20 !important;
+
+        .ant-progress-bg {
+            background: $primary !important;
         }
     }
 
     .ant-progress-text {
         color: $darkness !important;
+    }
+}
+
+.ant-progress.ant-progress-circle {
+    .ant-progress-inner {
+        background: transparent !important;
+
+        .ant-progress-circle {
+            .ant-progress-circle-trail {
+                stroke: $darkness-20 !important;
+            }
+
+            .ant-progress-circle-path {
+                stroke: $primary !important;
+            }
+        }
     }
 }

@@ -7,19 +7,19 @@
       </router-link>
     </div>
     <nav class="navigation">
-      <router-link to="/">
+      <router-link :to="{ name: 'Collections' }">
         <div class="link">
           <PictureOutlined />
           <span>Library</span>
         </div>
       </router-link>
-      <router-link to="/generator">
+      <router-link :to="{ name: 'Generator' }">
         <div class="link">
           <InteractionOutlined />
           <span>Generator</span>
         </div>
       </router-link>
-      <router-link to="/research">
+      <router-link :to="{ name: 'Research' }">
         <div class="link">
           <ExperimentOutlined />
           <span>Research</span>

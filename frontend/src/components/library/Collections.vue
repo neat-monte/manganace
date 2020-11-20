@@ -60,7 +60,7 @@ export default {
 
     function renderImages(collectionId) {
       router.push({
-        name: "ImagesOfCollection",
+        name: "CollectionImages",
         params: { collectionId: collectionId },
       });
     }

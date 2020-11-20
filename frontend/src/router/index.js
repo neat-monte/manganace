@@ -2,7 +2,7 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 import Generator from '@/views/Generator.vue'
 import Library from '@/views/Library.vue'
 import Research from '@/views/Research.vue'
-import Session from '@/views/Session.vue'
+import ResearchSession from '@/views/ResearchSession.vue'
 import NotFound from '@/views/NotFound.vue'
 
 const routes = [
@@ -14,7 +14,7 @@ const routes = [
   },
   {
     path: "/library/:collectionId",
-    name: "ImagesOfCollection",
+    name: "CollectionImages",
     component: Library
   },
   {
@@ -28,9 +28,9 @@ const routes = [
     component: Research
   },
   {
-    path: "/session",
+    path: "/research/session",
     name: "ResearchSession",
-    component: Session
+    component: ResearchSession
   },
   {
     path: "/:pathMatch(.*)*",

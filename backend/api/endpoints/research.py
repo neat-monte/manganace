@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Any
 
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
@@ -6,8 +6,8 @@ from sqlalchemy.orm import Session
 import data
 import services
 from api.dependencies import get_db
-from schemas import ResearchSessionCreate, ResearchSession
-from schemas import Participant, ParticipantCreate
+from schemas import Participant, ParticipantCreate, TrialImage
+from schemas import ResearchSessionCreate, ResearchSession, TrialMeta
 
 router = APIRouter()
 
@@ -38,3 +38,18 @@ def assign_participant(participant_in: ParticipantCreate, db: Session = Depends(
         raise HTTPException(status_code=400, detail="Session already contains a participant")
     return data.participant.create_for_session(db, participant_in, db_session_r)
 
+
+@router.get('/{id_}/trials', response_model=List[TrialMeta])
+def get_trials_meta_info(id_: int, db: Session = Depends(get_db)) -> Any:
+    db_session_r = data.session_r.get(db, id_)
+    if not db_session_r:
+        raise HTTPException(status_code=400, detail="Session not found")
+    return services.trial.get_trials_meta(db, id_)
+
+
+@router.post('/trial-images', response_model=List[TrialImage])
+def request_trial_images(meta: TrialMeta, db: Session = Depends(get_db)) -> Any:
+    db_session_r = data.session_r.get(db, meta.session_id)
+    if not db_session_r:
+        raise HTTPException(status_code=400, detail="Session not found")
+    return services.trial.get_trial_images(db, meta)
