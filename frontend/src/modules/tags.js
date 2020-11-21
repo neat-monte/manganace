@@ -6,7 +6,11 @@ import AwaitLock from 'await-lock';
 const hasLoaded = ref(false);
 const loadLock = new AwaitLock();
 
+const researchTagsLoaded = ref(false);
+const researchTagsLoadLock = new AwaitLock();
+
 const tagsById = reactive({});
+const researchTagsById = reactive({});
 
 export default function useTags() {
 
@@ -25,6 +29,24 @@ export default function useTags() {
             notification.tags.failedToLoad();
         } finally {
             loadLock.release();
+        }
+    }
+
+    const loadResearchTagsAsync = async () => {
+        await researchTagsLoadLock.acquireAsync();
+        try {
+            if (researchTagsLoaded.value) {
+                return;
+            }
+            const tags = await api.tags.getResearchTags();
+            if (tags) {
+                tags.forEach(tags => researchTagsById[tags.id] = tags);
+                researchTagsLoaded.value = true;
+            }
+        } catch {
+            notification.tags.failedToLoadResearchTags();
+        } finally {
+            researchTagsLoadLock.release();
         }
     }
 
@@ -69,7 +91,9 @@ export default function useTags() {
     return {
         areLoaded: readonly(hasLoaded),
         tagsById: readonly(tagsById),
+        researchTagsById: readonly(researchTagsById),
         loadTagsAsync,
+        loadResearchTagsAsync,
         addTagAsync,
         updateTagAsync,
         deleteTagAsync

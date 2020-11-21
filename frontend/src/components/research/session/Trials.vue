@@ -1,38 +1,79 @@
 <template>
-  <div class="progress">
-    <a-progress
-      :percent="(currentSession.progress / currentSession.trials) * 100"
-      :format="() => `${currentSession.progress} / ${currentSession.trials}`"
-    />
-  </div>
+  <div id="trials">
+    <div class="progress">
+      <a-progress
+        :percent="(currentSession.progress / currentSession.trials) * 100"
+        :format="() => `${currentSession.progress} / ${currentSession.trials}`"
+      />
+    </div>
+    <div v-if="!completed" class="trial">
+      <div class="trial-description">
+        <h1>
+          Put the slider where <u>you think</u> the face looks <i>naturally </i>
+          <strong>{{ trial.emotion }}</strong>
+        </h1>
+      </div>
+      <ZoomableImage v-if="currentImage" :url="currentImage.url">
+        <template v-slot:controls>
+          <Slider
+            v-model:value="selection"
+            :min="0"
+            :max="currentSession.sliderSteps - 1"
+            :step="1"
+            :showSliderTooltip="false"
+          />
+        </template>
+      </ZoomableImage>
+    </div>
 
-  <Trial v-if="!completed" :trial="trial" @complete="nextRandomTrial()" />
+    <div v-else class="thank-you-message">
+      <h1>Thank you for your participation!</h1>
+      <p>
+        Should you want more information on the research project, please feel
+        free to contact the student at
+        <strong>m.makelis@student.ru.nl</strong>
+      </p>
+    </div>
 
-  <div v-else>
-    <div class="title">Completed</div>
-  </div>
+    <div class="trial-controls">
+      <div v-if="!completed" class="trial">
+        <router-link :to="{ name: 'Research' }">
+          <a-button type="default">
+            <rollback-outlined />
+            Exit
+          </a-button>
+        </router-link>
+        <a-button type="primary" @click="next()">
+          Next
+          <caret-right-outlined />
+        </a-button>
+      </div>
 
-  <div class="controls">
-    <router-link :to="{ name: 'Research' }">
-      <a-button type="default">
-        <rollback-outlined />
-        Exit
-      </a-button>
-    </router-link>
-    <a-button type="primary" @click="next()">
-      Next
-      <caret-right-outlined />
-    </a-button>
+      <div v-else class="final">
+        <router-link :to="{ name: 'Research' }">
+          <a-button type="primary">
+            Finish
+            <check-outlined />
+          </a-button>
+        </router-link>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import { ref, watchEffect } from "vue";
 
-import { CaretRightOutlined, RollbackOutlined } from "@ant-design/icons-vue";
-import Trial from "@/components/research/session/Trial";
+import {
+  CaretRightOutlined,
+  RollbackOutlined,
+  CheckOutlined,
+} from "@ant-design/icons-vue";
+import ZoomableImage from "@/components/shared/ZoomableImage";
+import Slider from "@/components/shared/Slider";
 
 import useResearch from "@/modules/research";
+import useTags from "@/modules/tags";
 
 export default {
   name: "Trials",
@@ -42,62 +83,107 @@ export default {
       currentSession,
       getTrialsMetaInfoAsync,
       saveChoiceAsync,
+      getTrialImagesAsync,
     } = useResearch();
+    const { loadResearchTagsAsync } = useTags();
 
-    const progress = ref();
     const completed = ref(false);
+
     const trials = ref([]);
+
     const trial = ref();
+    const selection = ref();
+
+    const trialImages = ref();
+    const currentImage = ref();
 
     watchEffect(() => {
-      progress.value = (currentSession.progress / currentSession.trials) * 100;
+      if (trialImages.value) {
+        currentImage.value = trialImages.value[selection.value];
+      }
     });
 
-    function nextRandomTrial() {
+    async function next() {
+      if (trial.value) {
+        await saveChoiceAsync();
+      }
       if (trials.value.length === 0) {
         completed.value = true;
       } else {
-        const randomIndex = Math.floor(Math.random() * trials.value.length);
-        trial.value = trials.value[randomIndex];
-        trials.value.splice(randomIndex, 1);
+        await nextTrial();
       }
     }
 
-    async function next() {
-      await saveChoiceAsync();
-      nextRandomTrial();
+    async function nextTrial() {
+      const randomTrial = Math.floor(Math.random() * trials.value.length);
+      trial.value = trials.value[randomTrial];
+      trials.value.splice(randomTrial, 1);
+      trialImages.value = await getTrialImagesAsync(trial.value);
+      selection.value = Math.floor(Math.random() * currentSession.sliderSteps);
     }
 
     trials.value = await getTrialsMetaInfoAsync();
-    nextRandomTrial();
+    await loadResearchTagsAsync();
+    next();
 
     return {
       currentSession,
-      progress,
       completed,
-      trial,
       trials,
+      trial,
+      selection,
+      currentImage,
       next,
     };
   },
 
   components: {
-    Trial,
+    ZoomableImage,
+    Slider,
     CaretRightOutlined,
     RollbackOutlined,
+    CheckOutlined,
   },
 };
 </script>
 
 <style lang="scss" scoped>
-.progress {
-  // position: absolute;
-  // right: -50px;
-}
-
-.controls {
+#trials {
+  flex: 100%;
+  position: relative;
   display: flex;
-  justify-content: space-between;
-  margin-bottom: 20px;
+  flex-direction: column;
+  height: 100%;
+
+  .progress {
+    width: 100%;
+    position: absolute;
+    top: -50px;
+  }
+
+  .trial {
+    margin-bottom: 20px;
+  }
+
+  .thank-you-message {
+    flex: 100%;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .trial-controls {
+    margin-bottom: 20px;
+
+    .trial {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .final {
+      display: flex;
+      justify-content: flex-end;
+    }
+  }
 }
 </style>

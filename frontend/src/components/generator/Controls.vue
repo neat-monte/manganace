@@ -20,7 +20,7 @@
           :enableInput="true"
           :min="vector.min"
           :max="vector.max"
-          @change="vectorOnChange(vector.id, $event)"
+          @update:value="vectorOnChange(vector.id, $event)"
         />
       </a-form-item>
     </a-form>

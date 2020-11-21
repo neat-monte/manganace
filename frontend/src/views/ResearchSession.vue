@@ -59,18 +59,14 @@ export default {
 <style lang="scss" scoped>
 #research-session {
   padding-top: $header-height / 2;
+  display: flex;
   height: 100%;
+  align-content: center;
+  justify-content: center;
 
   .session-wrapper {
-    padding: 0 50px;
     position: relative;
-  }
-}
-@include sm-desktop {
-  #research-session {
-    .session-wrapper {
-      padding: 0 15%;
-    }
+    flex: 100%;
   }
 }
 </style>

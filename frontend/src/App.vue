@@ -46,6 +46,10 @@ export default {
     min-height: calc(100vh - #{$header-height});
     width: 100%;
   }
+
+  #research-session.content {
+    min-height: 100vh;
+  }
 }
 
 @include tablet {

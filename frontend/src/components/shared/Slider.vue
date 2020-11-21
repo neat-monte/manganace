@@ -5,16 +5,16 @@
     </a-tooltip>
     <div v-if="!tooltip && label" class="label">{{ label }}</div>
     <a-slider
-      v-model:value="value"
+      :value="internalValue"
       :min="min"
       :max="max"
       :step="step"
-      :tooltipVisible="false"
+      :tooltipVisible="showSliderTooltip"
       @change="onValueChange"
     />
     <a-input-number
       v-if="enableInput"
-      :value="value"
+      :value="internalValue"
       :min="min"
       :max="max"
       :step="step"
@@ -24,12 +24,20 @@
 </template>
 
 <script>
-import { ref } from "vue";
+import { ref, watchEffect } from "vue";
 
 export default {
   name: "Slider",
 
   props: {
+    value: {
+      type: Number,
+      default: 0,
+    },
+    showSliderTooltip: {
+      type: Boolean,
+      default: undefined,
+    },
     label: {
       type: String,
       default: null,
@@ -56,25 +64,30 @@ export default {
     },
   },
 
-  emits: ["change"],
+  emits: ["update:value", "change"],
 
   setup(props, context) {
-    const value = ref(props.min);
+    const internalValue = ref();
+
+    watchEffect(() => {
+      internalValue.value = props.value;
+    });
 
     function onValueChange(newValue) {
       const onlyFloat = /^\d+(\.\d+)?$/;
       if (!isNaN(newValue) && onlyFloat.test(newValue)) {
         const num = Number(newValue);
         if (props.min <= num && num <= props.max) {
-          value.value = num;
+          internalValue.value = num;
           context.emit("change", num);
+          context.emit("update:value", num);
         }
       }
     }
 
     return {
-      value,
       onValueChange,
+      internalValue,
     };
   },
 };
@@ -82,6 +95,7 @@ export default {
 
 <style lang="scss" scoped>
 .slider {
+  width: 100%;
   display: flex;
   align-items: center;
 
