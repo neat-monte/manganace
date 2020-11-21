@@ -6,6 +6,10 @@ export const getAll = async () => {
   return await fetchJSON(tagsEndpoint, methods.GET);
 }
 
+export const getResearchTags = async () => {
+  return await fetchJSON(`${tagsEndpoint}/research`, methods.GET);
+}
+
 export const create = async (data) => {
   return await fetchJSON(tagsEndpoint, methods.POST, data);
 }

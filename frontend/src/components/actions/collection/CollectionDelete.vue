@@ -3,9 +3,9 @@
     <template v-slot:title>
       <span>Delete collection</span>
     </template>
-    <a-button type="danger" shape="circle" @click="showModal()">
+    <a-button type="danger" @click="showModal()">
       <template v-slot:icon>
-        <DeleteOutlined />
+        <delete-outlined />
       </template>
     </a-button>
   </a-tooltip>

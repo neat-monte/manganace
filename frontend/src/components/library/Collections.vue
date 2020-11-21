@@ -83,31 +83,25 @@ export default {
 
 <style lang="scss" scoped>
 #collections {
-  display: none;
-}
+  display: initial;
+  padding: 0 20px 10px 20px;
+  height: 100%;
 
-@include sm-desktop {
-  #collections {
-    display: initial;
-    padding: 0 20px 10px 20px;
-    height: 100%;
+  .collections-header {
+    display: flex;
+    position: relative;
+    margin: 8px 16px;
 
-    .collections-header {
-      display: flex;
-      position: relative;
-      margin: 8px 16px;
+    .title {
+      width: 100%;
+      margin: 0;
+      padding: 10px;
+    }
 
-      .title {
-        width: 100%;
-        margin: 0;
-        padding: 10px;
-      }
-
-      .controls {
-        position: absolute;
-        align-self: center;
-        right: 0;
-      }
+    .controls {
+      position: absolute;
+      align-self: center;
+      right: 0;
     }
   }
 }

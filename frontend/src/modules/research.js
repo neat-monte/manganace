@@ -93,7 +93,6 @@ export default function useResearch() {
         await generalLock.acquireAsync();
         try {
             const trialMetaJson = JSON.stringify(trialMeta);
-            console.log(trialMetaJson);
             return await api.research.getTrialImages(trialMetaJson)
         } catch {
             notification.research.failedToLoadTrialImages();

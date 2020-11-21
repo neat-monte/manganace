@@ -24,6 +24,7 @@ import { watchEffect } from "vue";
 
 export default {
   name: "ImageCard",
+
   props: {
     image: Object,
   },

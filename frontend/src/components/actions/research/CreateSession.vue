@@ -14,13 +14,13 @@
       class="addon"
     >
       <template v-slot:icon>
-        <PlusOutlined />
+        <plus-outlined />
       </template>
     </a-button>
 
-    <a-button v-else type="primary" shape="circle" @click="showModal()">
+    <a-button v-else type="primary" @click="showModal()">
       <template v-slot:icon>
-        <PlusOutlined />
+        <plus-outlined />
       </template>
     </a-button>
   </a-tooltip>

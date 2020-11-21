@@ -7,10 +7,9 @@
       @click="showModal()"
       :disabled="!currentImage.seed"
       type="primary"
-      shape="circle"
     >
       <template v-slot:icon>
-        <SaveOutlined />
+        <save-outlined />
       </template>
     </a-button>
   </a-tooltip>

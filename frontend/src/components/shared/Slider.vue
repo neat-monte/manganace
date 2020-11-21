@@ -9,7 +9,8 @@
       :min="min"
       :max="max"
       :step="step"
-      @afterChange="onValueChange"
+      :tooltipVisible="false"
+      @change="onValueChange"
     />
     <a-input-number
       v-if="enableInput"

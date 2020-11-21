@@ -9,19 +9,19 @@
     <nav class="navigation">
       <router-link :to="{ name: 'Collections' }">
         <div class="link">
-          <PictureOutlined />
+          <picture-outlined />
           <span>Library</span>
         </div>
       </router-link>
       <router-link :to="{ name: 'Generator' }">
         <div class="link">
-          <InteractionOutlined />
+          <interaction-outlined />
           <span>Generator</span>
         </div>
       </router-link>
       <router-link :to="{ name: 'Research' }">
         <div class="link">
-          <ExperimentOutlined />
+          <experiment-outlined />
           <span>Research</span>
         </div>
       </router-link>

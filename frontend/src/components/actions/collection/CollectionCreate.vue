@@ -3,9 +3,9 @@
     <template v-slot:title>
       <span>Create new collection</span>
     </template>
-    <a-button type="primary" shape="circle" @click="showModal()">
+    <a-button type="primary" @click="showModal()">
       <template v-slot:icon>
-        <PlusOutlined />
+        <plus-outlined />
       </template>
     </a-button>
   </a-tooltip>

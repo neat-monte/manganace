@@ -1,26 +1,26 @@
 [
   {
-    "name": "Naturally happy",
-    "hidden": true
+    "name": "Happy",
+    "for_research": true
   },
   {
-    "name": "Naturally sad",
-    "hidden": true
+    "name": "Sad",
+    "for_research": true
   },
   {
-    "name": "Naturally angry",
-    "hidden": true
+    "name": "Angry",
+    "for_research": true
   },
   {
-    "name": "Naturally disgusted",
-    "hidden": true
+    "name": "Disgusted",
+    "for_research": true
   },
   {
-    "name": "Naturally fearful",
-    "hidden": true
+    "name": "Fearful",
+    "for_research": true
   },
   {
-    "name": "Naturally surprised",
-    "hidden": true
+    "name": "Surprised",
+    "for_research": true
   }
 ]

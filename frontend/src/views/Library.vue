@@ -63,18 +63,23 @@ export default {
 #library {
   display: flex;
   flex-wrap: wrap;
+  justify-content: space-between;
+
+  #collections {
+    flex: 100%;
+  }
+
+  #images,
+  #tags {
+    flex: 1;
+  }
 }
 
-@include sm-desktop {
+@include tablet {
   #library {
     #collections {
       flex: 0 380px;
       margin-right: 20px;
-    }
-
-    #images,
-    #tags {
-      flex: 1;
     }
   }
 }

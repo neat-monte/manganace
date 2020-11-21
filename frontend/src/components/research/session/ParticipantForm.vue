@@ -56,13 +56,13 @@
     <div class="controls">
       <router-link :to="{ name: 'Research' }">
         <a-button type="default">
-          <RollbackOutlined />
+          <rollback-outlined />
           Exit
         </a-button>
       </router-link>
       <a-button type="primary" :disabled="!isValid()" @click="beginSession()">
         Begin
-        <CaretRightOutlined />
+        <caret-right-outlined />
       </a-button>
     </div>
   </div>

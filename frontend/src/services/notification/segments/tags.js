@@ -24,6 +24,12 @@ export const failedToLoad = () => {
     error(message, description);
 }
 
+export const failedToLoadResearchTags = () => {
+    const message = "Failed to load research tags";
+    const description = "The request to load research tags failed...";
+    error(message, description);
+}
+
 export const failedToAdd = () => {
     const message = "Failed to add tag";
     const description = "The request to add new tag failed...";

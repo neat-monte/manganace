@@ -9,6 +9,6 @@ class Tag(Base):
 
     id = Column(Integer, primary_key=True)
     name = Column(String(32), nullable=False)
-    hidden = Column(Boolean, default=False)
+    for_research = Column(Boolean, default=False)
 
     c_images = relationship("CImage", secondary='c_image_tag', back_populates="tags")

@@ -48,12 +48,11 @@
                 </template>
                 <a-button
                   type="primary"
-                  shape="circle"
                   :disabled="item.trials == item.progress"
                   @click="startSession(item.id)"
                 >
                   <template v-slot:icon>
-                    <CaretRightOutlined />
+                    <caret-right-outlined />
                   </template>
                 </a-button>
               </a-tooltip>

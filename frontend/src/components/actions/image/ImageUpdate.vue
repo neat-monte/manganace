@@ -3,9 +3,9 @@
     <template v-slot:title>
       <span>Edit image</span>
     </template>
-    <a-button type="primary" shape="circle" @click="showModal()">
+    <a-button type="primary" @click="showModal()">
       <template v-slot:icon>
-        <EditOutlined />
+        <edit-outlined />
       </template>
     </a-button>
   </a-tooltip>

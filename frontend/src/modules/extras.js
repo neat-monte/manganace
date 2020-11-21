@@ -9,8 +9,12 @@ const gendersLoadLock = new AwaitLock();
 const educationsLoaded = ref(false);
 const educationsLoadLock = new AwaitLock();
 
+const researchTagsLoaded = ref(false);
+const researchTagsLoadLock = new AwaitLock();
+
 const gendersById = reactive({});
 const educationsById = reactive({});
+const researchTagsById = reactive({});
 
 export default function useExtras() {
 
@@ -50,10 +54,30 @@ export default function useExtras() {
         }
     }
 
+    const loadResearchTagsAsync = async () => {
+        await researchTagsLoadLock.acquireAsync();
+        try {
+            if (researchTagsLoaded.value) {
+                return;
+            }
+            const tags = await api.tags.getResearchTags();
+            if (tags) {
+                tags.forEach(tags => researchTagsById[tags.id] = tags);
+                researchTagsLoaded.value = true;
+            }
+        } catch {
+            notification.tags.failedToLoadResearchTags();
+        } finally {
+            researchTagsLoadLock.release();
+        }
+    }
+
     return {
         gendersById: readonly(gendersById),
         educationsById: readonly(educationsById),
+        researchTagsById: readonly(researchTagsById),
         loadGendersAsync,
         loadEducationsAsync,
+        loadResearchTagsAsync
     }
 }

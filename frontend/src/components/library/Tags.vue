@@ -6,13 +6,9 @@
         <TagCreate />
       </div>
     </div>
-    <a-list :bordered="false">
+    <a-list :grid="{ gutter: 20, xs: 2, md: 2, lg: 3, xl: 4, xxl: 6 }">
       <a-list-item v-for="tag in tags" :key="tag.id">
-        <span>{{ tag.name }}</span>
-        <template v-slot:actions>
-          <TagUpdate :tag="tag" />
-          <TagDelete :tagId="tag.id" />
-        </template>
+        <TagCard :tag="tag" />
       </a-list-item>
     </a-list>
   </div>
@@ -22,8 +18,7 @@
 import { ref, watchEffect } from "vue";
 
 import TagCreate from "@/components/actions/tag/TagCreate";
-import TagUpdate from "@/components/actions/tag/TagUpdate";
-import TagDelete from "@/components/actions/tag/TagDelete";
+import TagCard from "@/components/library/TagCard";
 
 import useTags from "@/modules/tags";
 
@@ -35,7 +30,7 @@ export default {
     const tags = ref([]);
 
     watchEffect(() => {
-      tags.value = Object.values(tagsById).filter((tag) => !tag.hidden);
+      tags.value = Object.values(tagsById);
     });
 
     await loadTagsAsync();
@@ -47,31 +42,39 @@ export default {
 
   components: {
     TagCreate,
-    TagUpdate,
-    TagDelete,
+    TagCard,
   },
 };
 </script>
 
 <style lang="scss" scoped>
 #tags {
-  width: 100vw;
+  display: initial;
+  padding: 0 20px 10px 20px;
+  height: 100%;
 
   .tags-header {
-    padding: 20px;
     display: flex;
     position: relative;
-    margin: 0 24px;
+    margin: 8px 16px;
 
     .title {
       width: 100%;
+      margin: 0;
+      padding: 10px;
     }
 
     .controls {
       position: absolute;
       align-self: center;
-      right: 10px;
+      right: 0;
     }
+  }
+}
+
+@include tablet {
+  #tags {
+    padding: 0 20px 10px 20px;
   }
 }
 </style>

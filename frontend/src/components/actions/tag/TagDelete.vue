@@ -1,11 +1,8 @@
 <template>
-  <a-tooltip placement="top">
-    <template v-slot:title>
-      <span>Delete tag</span>
-    </template>
-    <a-button type="danger" shape="circle" @click="showModal()">
+  <a-tooltip placement="top" :title="tooltip">
+    <a-button type="danger" :disabled="disabled" @click="showModal()">
       <template v-slot:icon>
-        <DeleteOutlined />
+        <delete-outlined />
       </template>
     </a-button>
   </a-tooltip>
@@ -32,6 +29,14 @@ export default {
 
   props: {
     tagId: Number,
+    disabled: {
+      type: Boolean,
+      default: false,
+    },
+    tooltip: {
+      type: String,
+      default: "Delete tag",
+    },
   },
 
   setup(props) {

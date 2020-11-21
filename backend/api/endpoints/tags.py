@@ -22,6 +22,12 @@ def get_tags(db: Session = Depends(get_db)) -> Any:
     return data.tag.get_all(db)
 
 
+@router.get("/research", response_model=List[Tag])
+def get_research_tags(db: Session = Depends(get_db)) -> Any:
+    """ Get a list of available education options """
+    return data.tag.get_all_research()
+
+
 @router.get("/{id_}", response_model=Tag)
 def get_tag(id_: int, db: Session = Depends(get_db)) -> Any:
     """ Get a tag by id """
@@ -46,6 +52,6 @@ def delete_tag(id_: int, db: Session = Depends(get_db)) -> Any:
     tag = data.tag.get(db, id_)
     if not tag:
         raise HTTPException(status_code=404, detail="Tag not found")
-    if tag.hidden:
+    if tag.for_research:
         raise HTTPException(status_code=403, detail="Tag is hidden and immutable")
     return data.tag.delete(db, id_)

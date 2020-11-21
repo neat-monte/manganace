@@ -1,7 +1,6 @@
 <template>
   <div class="progress">
     <a-progress
-      type="circle"
       :percent="(currentSession.progress / currentSession.trials) * 100"
       :format="() => `${currentSession.progress} / ${currentSession.trials}`"
     />
@@ -16,13 +15,13 @@
   <div class="controls">
     <router-link :to="{ name: 'Research' }">
       <a-button type="default">
-        <RollbackOutlined />
+        <rollback-outlined />
         Exit
       </a-button>
     </router-link>
     <a-button type="primary" @click="next()">
       Next
-      <CaretRightOutlined />
+      <caret-right-outlined />
     </a-button>
   </div>
 </template>
