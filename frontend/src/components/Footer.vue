@@ -4,7 +4,8 @@
       {{ new Date().getFullYear() }} © Radboud University
     </div>
     <div class="radboud">
-      <img src="/radboud.png" alt="Radboud University" />
+      <img class="full" src="/radboud.png" alt="Radboud University" />
+      <img class="logo" src="/radboud-logo.png" alt="Radboud University" />
     </div>
   </footer>
 </template>
@@ -19,32 +20,55 @@ export default {
 #footer {
   width: 100%;
   height: $footer-height;
-  padding: 16px 20px;
-
+  padding: 0 20px;
   background: $primary;
   color: $filler;
 
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
 
   position: absolute;
   bottom: 0;
 
   .copyright {
-    flex: 1 200px;
     text-align: left;
   }
 
   .radboud {
-    flex: 1 200px;
-    min-width: 200px;
-    max-width: 300px;
+    .full,
+    .logo {
+      img {
+        width: 100%;
+        height: 100%;
+      }
+    }
 
-    img {
-      width: 100%;
-      height: auto;
+    .full {
+      display: none;
+      max-height: 60px;
+    }
+
+    .logo {
+      min-width: 50px;
+      max-width: 50px;
+    }
+  }
+}
+
+@include tablet {
+  #footer {
+    padding: 0;
+
+    .radboud {
+      .full {
+        display: block;
+      }
+
+      .logo {
+        display: none;
+      }
     }
   }
 }

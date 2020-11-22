@@ -58,7 +58,7 @@ export default {
 
 <style lang="scss" scoped>
 #research-session {
-  padding-top: $header-height / 2;
+  padding-top: $header-height;
   display: flex;
   height: 100%;
   align-content: center;
@@ -67,6 +67,15 @@ export default {
   .session-wrapper {
     position: relative;
     flex: 100%;
+    padding: 20px;
+  }
+}
+
+@include tablet {
+  #research-session {
+    .session-wrapper {
+      padding: 0 15%;
+    }
   }
 }
 </style>

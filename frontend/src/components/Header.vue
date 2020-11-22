@@ -49,8 +49,6 @@ export default {
 
 <style lang="scss" scoped>
 #header {
-  padding: 20px initial;
-
   .brand {
     display: flex;
     align-items: center;
@@ -67,16 +65,15 @@ export default {
         font-weight: bold;
         text-transform: uppercase;
         color: $primary;
-        text-shadow: $text-shadow-hard;
+        text-shadow: $text-shadow-soft;
         transition: all 0.2s ease;
       }
 
       .subtitle {
         flex: 100%;
-        margin-top: -18px;
+        margin-top: -28px;
         font-size: 1.2rem;
         color: $primary-dark;
-        text-shadow: $text-shadow-soft;
         transition: all 0.2s ease;
       }
 
@@ -84,14 +81,9 @@ export default {
       &:focus {
         box-shadow: none !important;
 
-        .title {
-          text-shadow: $text-shadow-soft;
-        }
-
         .subtitle {
-          color: $darkness;
-          text-shadow: $text-shadow-hard;
-          transform: scale(1.2);
+          color: $darkness-80;
+          transform: scale(1.1);
         }
       }
     }
