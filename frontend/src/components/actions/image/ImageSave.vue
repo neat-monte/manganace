@@ -69,10 +69,7 @@ export default {
     });
 
     watchEffect(() => {
-      newImage.image_id = currentImage.id;
-      newImage.session_id = currentImage.session_id;
-      newImage.seed = currentImage.seed;
-      newImage.vectors = currentImage.vectors;
+      newImage.imageId = currentImage.id;
     });
 
     function setCollectionId(id) {

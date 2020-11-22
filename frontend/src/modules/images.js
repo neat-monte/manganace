@@ -9,13 +9,6 @@ const loadLock = new AwaitLock();
 
 const imagesByCollectionId = reactive({});
 
-const insertImage = (image) => {
-    if (imagesByCollectionId[image.collectionId] === undefined) {
-        imagesByCollectionId[image.collectionId] = {};
-    }
-    imagesByCollectionId[image.collectionId][image.id] = image;
-}
-
 export default function useImages() {
 
     const loadImagesOfCollectionAsync = async (collectionId) => {
@@ -24,8 +17,11 @@ export default function useImages() {
             if (hasLoaded(collectionId)) {
                 return;
             }
-            const images = await api.collections.getImagesOfCollecton(collectionId);
-            images.forEach(image => insertImage(image));
+            const images = await api.collections.getImages(collectionId);
+            if (imagesByCollectionId[collectionId] === undefined) {
+                imagesByCollectionId[collectionId] = {};
+            }
+            images.forEach(image => imagesByCollectionId[image.collectionId][image.id] = image);
             hasLoaded[collectionId] = true;
         } catch {
             notification.images.failedToLoad();
@@ -39,7 +35,7 @@ export default function useImages() {
             const imageJson = JSON.stringify(newImage);
             const image = await api.images.create(imageJson);
             if (image) {
-                insertImage(image);
+                imagesByCollectionId[image.collectionId][image.id] = image
                 notification.images.added(image);
             }
         } catch {
@@ -52,7 +48,7 @@ export default function useImages() {
             const imageJson = JSON.stringify(updatedImage);
             const image = await api.images.update(updatedImage.id, imageJson)
             if (image) {
-                insertImage(image);
+                imagesByCollectionId[image.collectionId][image.id] = image
                 notification.images.updated(image);
             }
         } catch {
@@ -64,7 +60,7 @@ export default function useImages() {
         try {
             const image = await api.images.destroy(imageId);
             if (image) {
-                delete imagesByCollectionId[image.collectionId][imageId];
+                delete imagesByCollectionId[image.collectionId][image.id];
                 notification.images.deleted(image);
             }
         } catch {

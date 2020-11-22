@@ -8,9 +8,9 @@
         <div class="tags"></div>
       </div>
       <div class="card-controls">
-        <ImageDelete :imageId="image.id" />
-        <ImageDownload :imageUrl="image.url" />
-        <ImageUpdate :image="image" />
+        <ImageDelete v-if="allowDelete" :imageId="image.id" />
+        <ImageDownload v-if="allowDownload" :imageUrl="image.url" />
+        <ImageUpdate v-if="allowUpdate" :image="image" />
       </div>
     </div>
   </a-tooltip>
@@ -27,6 +27,18 @@ export default {
 
   props: {
     image: Object,
+    allowDelete: {
+      type: Boolean,
+      default: true,
+    },
+    allowUpdate: {
+      type: Boolean,
+      default: true,
+    },
+    allowDownload: {
+      type: Boolean,
+      default: true,
+    },
   },
 
   setup(props) {

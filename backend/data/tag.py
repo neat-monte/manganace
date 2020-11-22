@@ -10,4 +10,4 @@ from schemas import TagCreate, TagUpdate
 # noinspection PyMethodMayBeStatic
 class CRUDTag(CRUDBase[Tag, TagCreate, TagUpdate]):
     def get_all_research(self, db: Session) -> List[Tag]:
-        return db.query(Tag).filter(Tag.for_research is True).all()
+        return db.query(Tag).filter(Tag.for_research).all()

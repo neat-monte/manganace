@@ -1,45 +1,20 @@
 <template>
   <section id="images">
-    <div v-if="collection" class="upper-controls">
-      <div class="title-and-meta">
-        <span class="title">
-          {{ collection.name }}
-        </span>
-        <span class="meta">{{ Object.keys(images).length }} images</span>
-      </div>
-      <div class="image-filter">
-        <Suspense>
-          <template #default>
-            <TagSelect
-              @tag-id-set="filterImagesByTags"
-              :initialTags="filterTags"
-              :showCreate="false"
-              placeholder="Filter by tags"
-            />
-          </template>
-        </Suspense>
-      </div>
+    <div v-if="collection" class="title-and-meta">
+      <span class="title">
+        {{ collection.name }}
+      </span>
+      <span class="meta">{{ Object.keys(images).length }} images</span>
     </div>
-    <div class="images-list">
-      <Suspense v-for="image in images" :key="image.id">
-        <template #default>
-          <ImageCardAsync :image="image" />
-        </template>
-        <template #fallback>
-          <Loading id="image-card" />
-        </template>
-      </Suspense>
-    </div>
-
+    <ImagesList :images="images" />
     <Empty v-if="images.length == 0" />
   </section>
 </template>
 
 <script>
-import { defineAsyncComponent, ref, watchEffect } from "vue";
+import { ref, watchEffect } from "vue";
 
-import TagSelect from "@/components/actions/tag/TagSelect";
-import Loading from "@/components/shared/Loading";
+import ImagesList from "@/components/shared/ImagesList";
 import Empty from "@/components/shared/Empty";
 
 import useImages from "@/modules/images";
@@ -76,101 +51,39 @@ export default {
       }
     });
 
-    function includesAll(array, values) {
-      for (var i = 0; i < values.length; i++) {
-        if (!array.includes(values[i])) {
-          return false;
-        }
-      }
-      return true;
-    }
-
-    function filterImagesByTags(tags) {
-      if (tags.length > 0) {
-        images.value = Object.assign(
-          {},
-          Object.values(images.value).filter((image) =>
-            includesAll(image.tagsIds, tags)
-          )
-        );
-      } else if (imagesByCollectionId[props.collectionId]) {
-        images.value = imagesByCollectionId[props.collectionId];
-      }
-    }
-
     return {
       filterTags,
       images,
       collection,
-      filterImagesByTags,
     };
   },
 
   components: {
-    TagSelect,
-    Loading,
+    ImagesList,
     Empty,
-    ImageCardAsync: defineAsyncComponent({
-      loader: () => import("@/components/library/ImageCard"),
-      delay: 200,
-      suspensible: true,
-    }),
   },
 };
 </script>
 
 <style lang="scss" scoped>
 #images {
-  .upper-controls {
-    min-height: 50px;
+  .title-and-meta {
+    flex: 100%;
     display: flex;
-    flex-wrap: wrap;
+    padding: 20px 0;
     align-items: center;
-    padding: 20px;
+    margin-bottom: 10px;
 
-    .title-and-meta {
-      flex: 100%;
-      display: flex;
-      align-items: center;
-      margin-bottom: 10px;
-
-      .title {
-        flex: 1 70%;
-        text-align: left;
-      }
-
-      .meta {
-        flex: 1;
-        font-style: italic;
-        text-align: right;
-      }
+    .title {
+      flex: 1 70%;
+      text-align: left;
+      margin: 0;
     }
 
-    .image-filter {
-      width: 100%;
-    }
-  }
-}
-
-@include tablet {
-  #images {
-    .upper-controls {
-      margin-bottom: 20px;
-    }
-
-    .images-list {
-      display: grid;
-      grid-gap: 10px;
-      grid-template-columns: repeat(3, 1fr);
-    }
-  }
-}
-
-@include sm-desktop {
-  #images {
-    .images-list {
-      grid-gap: 20px;
-      grid-template-columns: repeat(3, 1fr);
+    .meta {
+      flex: 1;
+      font-style: italic;
+      text-align: right;
     }
   }
 }

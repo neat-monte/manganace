@@ -2,22 +2,30 @@ import { fetchJSON, methods } from './base'
 
 const sessionsEndpoint = "/sessions";
 
-export const getAll = async () => {
-    return await fetchJSON(sessionsEndpoint, methods.GET);
+export const getAllGenerator = async () => {
+    return await fetchJSON(`${sessionsEndpoint}/generator`, methods.GET);
 }
 
-export const create = async (data) => {
-    return await fetchJSON(sessionsEndpoint, methods.POST, data);
+export const createGenerator = async (data) => {
+    return await fetchJSON(`${sessionsEndpoint}/generator`, methods.POST, data);
 }
 
-export const update = async (id, data) => {
-    return await fetchJSON(`${sessionsEndpoint}/${id}`, methods.PUT, data);
+export const updateGenerator = async (id, data) => {
+    return await fetchJSON(`${sessionsEndpoint}/generator/${id}`, methods.PUT, data);
 }
 
-export const destroy = async (id) => {
-    return await fetchJSON(`${sessionsEndpoint}/${id}`, methods.DELETE);
+export const destroyGenerator = async (id) => {
+    return await fetchJSON(`${sessionsEndpoint}/generator/${id}`, methods.DELETE);
 }
 
-export const getImagesOfSession = async (id) => {
+export const getAllResearch = async () => {
+    return await fetchJSON(`${sessionsEndpoint}/research/`, methods.GET);
+}
+
+export const createResearch = async (data) => {
+    return await fetchJSON(`${sessionsEndpoint}/research/`, methods.POST, data);
+}
+
+export const getImages = async (id) => {
     return await fetchJSON(`${sessionsEndpoint}/${id}/images`, methods.GET);
 }

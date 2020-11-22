@@ -26,7 +26,7 @@ export default function useResearch() {
             if (hasLoaded.value) {
                 return;
             }
-            const sessions = await api.research.getSessions();
+            const sessions = await api.sessions.getAllResearch();
             if (sessions) {
                 sessions.forEach(session => insertSession(session));
                 hasLoaded.value = true;
@@ -41,7 +41,7 @@ export default function useResearch() {
     const addSessionAsync = async (newSession) => {
         try {
             const newSessionJson = JSON.stringify(newSession);
-            const session = await api.research.initializeSession(newSessionJson);
+            const session = await api.sessions.createResearch(newSessionJson);
             if (session) {
                 insertSession(session);
                 notification.sessions.created(session);
@@ -101,8 +101,18 @@ export default function useResearch() {
         }
     }
 
-    const saveChoiceAsync = async () => {
-        currentSession.progress += 1;
+    const saveChosenTrialImage = async (chosenImage) => {
+        generalLock.acquireAsync();
+        try {
+            const imageJson = JSON.stringify(chosenImage);
+            const image = await api.images.create(imageJson);
+            if (image) {
+                currentSession.progress += 1;
+                sessionsById[currentSession.id].progress += 1;
+            }
+        } finally {
+            generalLock.release();
+        }
     }
 
     const setCurrentSession = (sessionId) => {
@@ -122,6 +132,6 @@ export default function useResearch() {
         setCurrentSession,
         getTrialsMetaInfoAsync,
         getTrialImagesAsync,
-        saveChoiceAsync
+        saveChosenTrialImage
     }
 }

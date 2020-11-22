@@ -1,0 +1,29 @@
+.ant-descriptions {
+    .ant-descriptions-view {
+        .ant-descriptions-row {
+            .ant-descriptions-item-label {
+                color: $darkness !important;
+            }
+            .ant-descriptions-item-content {
+                color: $darkness-80 !important;
+            }
+        }
+    }
+
+    &.ant-descriptions-bordered {
+        .ant-descriptions-view {
+            border-color: $darkness-05 !important;
+
+            .ant-descriptions-row {
+                border-bottom-color: $darkness-05 !important;
+
+                .ant-descriptions-item-label {
+                    background: $darkness-05 !important;
+                }
+                .ant-descriptions-item-content {
+                    background: $filler-50 !important;
+                }
+            }
+        }
+    }
+}

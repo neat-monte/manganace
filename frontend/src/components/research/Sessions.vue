@@ -5,59 +5,12 @@
     </div>
 
     <a-list
-      :grid="{ gutter: 50, xs: 1, md: 2, lg: 2, xl: 3, xxl: 4 }"
+      :grid="{ gutter: 20, xs: 1, md: 2, lg: 2, xl: 3, xxl: 4 }"
       :data-source="sessions"
     >
       <template #renderItem="{ item, index }">
-        <a-list-item :key="index" class="session-content">
-          <div class="options">
-            <a-descriptions size="small" :column="2">
-              <a-descriptions-item label="Images count">
-                <span>{{ item.totalAmount }}</span>
-              </a-descriptions-item>
-              <a-descriptions-item label="Overlapping">
-                <span>{{ item.overlapAmount }}</span>
-              </a-descriptions-item>
-              <a-descriptions-item label="Gender eq.">
-                <span>{{ item.equalizeGender ? "Yes" : "No" }}</span>
-              </a-descriptions-item>
-              <a-descriptions-item label="Slider steps">
-                <span>{{ item.sliderSteps }}</span>
-              </a-descriptions-item>
-              <a-descriptions-item label="Trials count">
-                <span>{{ item.trials }}</span>
-              </a-descriptions-item>
-              <a-descriptions-item label="Done trials">
-                <span>{{ item.progress }}</span>
-              </a-descriptions-item>
-              <a-descriptions-item label="Has participant">
-                <span>{{ item.participant ? "Yes" : "No" }}</span>
-              </a-descriptions-item>
-            </a-descriptions>
-          </div>
-          <div class="progress">
-            <a-progress
-              :percent="
-                item.progress > 0 ? Math.floor(item.progress / item.trials) : 0
-              "
-            />
-            <div class="actions">
-              <a-tooltip placement="top">
-                <template v-slot:title>
-                  {{ !item.participant ? "Begin" : "Continue" }}
-                </template>
-                <a-button
-                  type="primary"
-                  :disabled="item.trials == item.progress"
-                  @click="startSession(item.id)"
-                >
-                  <template v-slot:icon>
-                    <caret-right-outlined />
-                  </template>
-                </a-button>
-              </a-tooltip>
-            </div>
-          </div>
+        <a-list-item :key="index">
+          <SessionCard :session="item" />
         </a-list-item>
       </template>
     </a-list>
@@ -66,10 +19,9 @@
 
 <script>
 import { watchEffect, ref } from "vue";
-import { useRouter } from "vue-router";
 
-import { CaretRightOutlined } from "@ant-design/icons-vue";
 import CreateSession from "@/components/actions/research/CreateSession";
+import SessionCard from "@/components/research/SessionCard";
 
 import useResearch from "@/modules/research";
 
@@ -77,12 +29,7 @@ export default {
   name: "Sessions",
 
   async setup() {
-    const router = useRouter();
-    const {
-      sessionsById,
-      loadSessionsAsync,
-      setCurrentSession,
-    } = useResearch();
+    const { sessionsById, loadSessionsAsync } = useResearch();
 
     const sessions = ref([]);
 
@@ -90,24 +37,16 @@ export default {
       sessions.value = Object.values(sessionsById);
     });
 
-    function startSession(sessionId) {
-      setCurrentSession(sessionId);
-      router.push({
-        name: "ResearchSession",
-      });
-    }
-
     await loadSessionsAsync();
 
     return {
       sessions,
-      startSession,
     };
   },
 
   components: {
     CreateSession,
-    CaretRightOutlined,
+    SessionCard,
   },
 };
 </script>
@@ -121,21 +60,6 @@ export default {
     text-align: right;
     margin: 0 18% 20px 0;
   }
-
-  .session-content {
-    box-shadow: $box-double-shadow;
-
-    .progress {
-      align-items: center;
-      display: flex;
-      padding: 0 20%;
-
-      .actions {
-        margin-left: 20px;
-        text-align: right;
-      }
-    }
-  }
 }
 
 @include tablet {
@@ -144,12 +68,6 @@ export default {
 
     .controls {
       margin-right: 0;
-    }
-
-    .session-content {
-      .progress {
-        padding: 0 9%;
-      }
     }
   }
 }

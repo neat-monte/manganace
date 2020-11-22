@@ -82,10 +82,10 @@ export default {
     const {
       currentSession,
       getTrialsMetaInfoAsync,
-      saveChoiceAsync,
+      saveChosenTrialImage,
       getTrialImagesAsync,
     } = useResearch();
-    const { loadResearchTagsAsync } = useTags();
+    const { researchTagsById, loadResearchTagsAsync } = useTags();
 
     const completed = ref(false);
 
@@ -103,6 +103,15 @@ export default {
       }
     });
 
+    trials.value = await getTrialsMetaInfoAsync();
+    await next();
+
+    await loadResearchTagsAsync();
+    const tagsByEmotion = {};
+    Object.values(researchTagsById).forEach((tag) => {
+      tagsByEmotion[tag.name.toLowerCase()] = tag.id;
+    });
+
     async function next() {
       if (trial.value) {
         await saveChoiceAsync();
@@ -110,21 +119,27 @@ export default {
       if (trials.value.length === 0) {
         completed.value = true;
       } else {
-        await nextTrial();
+        await nextTrialAsync();
       }
     }
 
-    async function nextTrial() {
+    async function saveChoiceAsync() {
+      const chosenImage = {
+        imageId: currentImage.value.id,
+        description: `Participant found this naturally ${trial.value.emotion}`,
+        collectionId: currentSession.participant.collectionId,
+        tagsIds: [tagsByEmotion[trial.value.emotion]],
+      };
+      await saveChosenTrialImage(chosenImage);
+    }
+
+    async function nextTrialAsync() {
       const randomTrial = Math.floor(Math.random() * trials.value.length);
       trial.value = trials.value[randomTrial];
       trials.value.splice(randomTrial, 1);
       trialImages.value = await getTrialImagesAsync(trial.value);
       selection.value = Math.floor(Math.random() * currentSession.sliderSteps);
     }
-
-    trials.value = await getTrialsMetaInfoAsync();
-    await loadResearchTagsAsync();
-    next();
 
     return {
       currentSession,

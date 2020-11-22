@@ -23,7 +23,7 @@ export default function useCollections() {
             if (hasLoaded.value) {
                 return;
             }
-            const collections = await api.collections.getAll();
+            const collections = await api.collections.getAllUser();
             collections.forEach(collection => insertCollection(collection));
             hasLoaded.value = true;
         } catch {
@@ -36,7 +36,7 @@ export default function useCollections() {
     const addCollectionAsync = async (newCollection) => {
         try {
             const collectionJson = JSON.stringify(newCollection);
-            const collection = await api.collections.create(collectionJson);
+            const collection = await api.collections.createUser(collectionJson);
             if (collection) {
                 insertCollection(collection);
                 notification.collections.created(collection);
@@ -49,7 +49,7 @@ export default function useCollections() {
     const updateCollectionAsync = async (updatedCollection) => {
         try {
             const collectionJson = JSON.stringify(updatedCollection);
-            const collection = await api.collections.update(updatedCollection.id, collectionJson);
+            const collection = await api.collections.updateUser(updatedCollection.id, collectionJson);
             if (collection) {
                 insertCollection(collection);
                 notification.collections.updated(collection);
@@ -61,7 +61,7 @@ export default function useCollections() {
 
     const deleteCollectionAsync = async (collectionId) => {
         try {
-            const collection = await api.collections.destroy(collectionId);
+            const collection = await api.collections.destroyUser(collectionId);
             if (collection) {
                 delete collectionsById[collection.id];
                 notification.collections.deleted(collection);

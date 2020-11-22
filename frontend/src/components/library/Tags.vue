@@ -6,10 +6,15 @@
         <TagCreate />
       </div>
     </div>
-    <a-list :grid="{ gutter: 20, xs: 2, md: 2, lg: 3, xl: 4, xxl: 6 }">
-      <a-list-item v-for="tag in tags" :key="tag.id">
-        <TagCard :tag="tag" />
-      </a-list-item>
+    <a-list
+      :grid="{ gutter: 20, xs: 2, md: 2, lg: 3, xl: 4, xxl: 6 }"
+      :data-source="tags"
+    >
+      <template #renderItem="{ item, index }">
+        <a-list-item :key="index">
+          <TagCard :tag="item" />
+        </a-list-item>
+      </template>
     </a-list>
   </div>
 </template>
@@ -56,7 +61,7 @@ export default {
   .tags-header {
     display: flex;
     position: relative;
-    margin: 8px 16px;
+    margin: 8px 0;
 
     .title {
       width: 100%;
@@ -74,7 +79,7 @@ export default {
 
 @include tablet {
   #tags {
-    padding: 0 20px 10px 20px;
+    padding: 0 0 10px 20px;
   }
 }
 </style>

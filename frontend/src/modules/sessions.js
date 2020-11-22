@@ -19,7 +19,7 @@ export default function useSessions() {
             if (hasLoaded.value) {
                 return;
             }
-            const sessions = await api.sessions.getAll();
+            const sessions = await api.sessions.getAllGenerator();
             if (sessions) {
                 sessions.forEach(ses => sessionsById[ses.id] = ses);
                 hasLoaded.value = true;
@@ -34,7 +34,7 @@ export default function useSessions() {
     const addSessionAsync = async (newSession) => {
         try {
             const sessionJson = JSON.stringify(newSession);
-            const session = await api.sessions.create(sessionJson);
+            const session = await api.sessions.createGenerator(sessionJson);
             if (session) {
                 sessionsById[session.id] = session;
                 notification.sessions.created(session);
@@ -48,7 +48,7 @@ export default function useSessions() {
     const updateSessionAsync = async (updatedSession) => {
         try {
             const sessionJson = JSON.stringify(updatedSession);
-            const session = await api.sessions.update(updatedSession.id, sessionJson);
+            const session = await api.sessions.updateGenerator(updatedSession.id, sessionJson);
             if (session) {
                 sessionsById[session.id] = session;
                 notification.sessions.updated(session);
@@ -60,7 +60,7 @@ export default function useSessions() {
 
     const deleteSessionAsync = async (sessionId) => {
         try {
-            const session = await api.sessions.destroy(sessionId);
+            const session = await api.sessions.destroyGenerator(sessionId);
             if (session) {
                 delete sessionsById[session.id];
                 notification.sessions.deleted(session);

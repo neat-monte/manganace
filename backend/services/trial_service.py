@@ -4,7 +4,7 @@ from typing import List
 from sqlalchemy.orm import Session
 
 import data
-from models import Image
+from models import Image, ResearchSession
 from schemas import TrialMeta, TrialImage
 from .image_file_service import ImageFileService
 
@@ -12,12 +12,20 @@ image_file_service = ImageFileService()
 
 
 class TrialService:
-    def get_trials_meta(self, db: Session, session_r_id: int) -> List[TrialMeta]:
+    def get_trials_meta(self, db: Session, db_session_r: ResearchSession,
+                        include_done: bool = False) -> List[TrialMeta]:
         vectors = data.vector.get_all(db)
-        seeds = data.image.get_seeds_of_session(db, session_r_id)
+        seeds = data.image.get_seeds_of_session(db, db_session_r.id)
+        if include_done:
+            return [self.construct_trial_meta(s_id, v.id, seed, v.effect)
+                    for (s_id, v, seed)
+                    in product([db_session_r.id], vectors, seeds)]
+        done_trial = [(c_im.image.vectors[0].vector_id, c_im.image.seed)
+                      for c_im in db_session_r.participant.collection.c_images]
         return [self.construct_trial_meta(s_id, v.id, seed, v.effect)
                 for (s_id, v, seed)
-                in product([session_r_id], vectors, seeds)]
+                in product([db_session_r.id], vectors, seeds)
+                if (v.id, seed) not in done_trial]
 
     def get_trial_images(self, db: Session, meta: TrialMeta) -> List[TrialImage]:
         db_images = data.image.get_all_of_trial(db, meta.session_id, meta.seed, meta.vector_id)

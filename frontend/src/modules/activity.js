@@ -24,7 +24,7 @@ export default function useActivity() {
             if (hasLoaded(sessionId)) {
                 return;
             }
-            const images = await api.sessions.getImagesOfSession(sessionId);
+            const images = await api.sessions.getImages(sessionId);
             images.forEach(image => insertImage(image));
             loaded[sessionId] = true;
         } catch {
