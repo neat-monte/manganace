@@ -13,7 +13,7 @@ router = APIRouter()
 
 
 @router.post('/participant', response_model=Participant)
-def assign_participant(participant_in: ParticipantCreate, db: Session = Depends(get_db)):
+def assign_participant(participant_in: ParticipantCreate, db: Session = Depends(get_db)) -> Any:
     """ Create participant for a particular session """
     db_session_r = data.session_r.get(db, participant_in.session_id)
     if not db_session_r:
@@ -40,3 +40,9 @@ def request_trial_images(meta: TrialMeta, db: Session = Depends(get_db)) -> Any:
     if not db_session_r:
         raise HTTPException(status_code=400, detail="Session not found")
     return services.trial.get_trial_images(db, meta)
+
+
+@router.get('/results')
+def get_results(db: Session = Depends(get_db)) -> Any:
+    services.research.get_results(db)
+    pass

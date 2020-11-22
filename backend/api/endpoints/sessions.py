@@ -54,13 +54,13 @@ def delete_generator_session(id_: int, db: Session = Depends(get_db)) -> Any:
 
 
 @router.get('/research', response_model=List[ResearchSession])
-def get_research_sessions(db: Session = Depends(get_db)):
+def get_research_sessions(db: Session = Depends(get_db)) -> Any:
     """ Get a list of research sessions """
     return services.research.get_sessions(db)
 
 
 @router.post('/research', response_model=ResearchSession)
-def create_research_session(session_r_in: ResearchSessionCreate, db: Session = Depends(get_db)):
+def create_research_session(session_r_in: ResearchSessionCreate, db: Session = Depends(get_db)) -> Any:
     """ Create a new research session by pre-generating all images with all emotion vectors \n
         NOTE: this might take a really long time! """
     if not services.generator.is_initialized():
@@ -71,7 +71,7 @@ def create_research_session(session_r_in: ResearchSessionCreate, db: Session = D
 
 
 @router.get('/{id_}/images', response_model=List[Image])
-def get_session_images(id_: int, db: Session = Depends(get_db)):
+def get_session_images(id_: int, db: Session = Depends(get_db)) -> Any:
     """ Gets all images of any session by id """
     session = db.query(m.Session).get(id_)
     if not session:

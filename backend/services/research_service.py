@@ -11,6 +11,9 @@ vector_service = VectorService()
 
 
 class ResearchService:
+    def get_results(self, db: Session):
+        db_sessions_r = data.session_r.get_all(db)
+
     def get_session_schema(self, db: Session, db_session_r: m.ResearchSession) -> s.ResearchSession:
         vectors_count = len(vector_service.get_ids(db))
         return self.construct_research_session(db_session_r, vectors_count)

@@ -11,13 +11,16 @@
           </template>
         </Suspense>
       </a-tab-pane>
-      <a-tab-pane key="2" tab="Results"> Results </a-tab-pane>
+      <a-tab-pane key="2" tab="Results">
+        <Results />
+      </a-tab-pane>
     </a-tabs>
   </div>
 </template>
 
 <script>
 import Sessions from "@/components/research/Sessions";
+import Results from "@/components/research/Results";
 import Loading from "@/components/shared/Loading";
 
 export default {
@@ -25,6 +28,7 @@ export default {
 
   components: {
     Sessions,
+    Results,
     Loading,
   },
 };
@@ -38,7 +42,7 @@ export default {
 
   .ant-tabs-content {
     .ant-tabs-tabpane {
-      min-height: 200px;
+      min-height: 300px;
     }
   }
 }
