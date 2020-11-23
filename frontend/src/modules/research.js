@@ -131,6 +131,15 @@ export default function useResearch() {
         }
     }
 
+    const getSessionResultsDataAsync = async (sessionId) => {
+        await generalLock.acquireAsync()
+        try {
+            return await api.research.getSessionResultsData(sessionId);
+        } finally {
+            generalLock.release();
+        }
+    }
+
     const getExportCsvAsync = async () => {
         await generalLock.acquireAsync()
         try {
@@ -152,6 +161,7 @@ export default function useResearch() {
         getTrialImagesAsync,
         saveChosenTrialImage,
         getResultsDataAsync,
+        getSessionResultsDataAsync,
         getExportCsvAsync
     }
 }

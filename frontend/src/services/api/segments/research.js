@@ -18,6 +18,10 @@ export const getResultsData = async () => {
     return await fetchJSON(`${researchEndpoint}/data`, methods.GET);
 }
 
+export const getSessionResultsData = async (sessionId) => {
+    return await fetchJSON(`${researchEndpoint}/data/${sessionId}`, methods.GET);
+}
+
 export const getExportCsv = async () => {
     return await fetchBlob(`${researchEndpoint}/data/export`, methods.GET);
 }

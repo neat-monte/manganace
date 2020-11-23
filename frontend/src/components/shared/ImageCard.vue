@@ -1,27 +1,21 @@
 <template>
-  <a-tooltip placement="top" :title="image.description">
-    <div class="image-card">
-      <div class="image-wrapper">
-        <img :src="image.url" />
-      </div>
-      <div class="info">
-        <div class="tags"></div>
-      </div>
-      <div class="card-controls">
-        <ImageDelete v-if="allowDelete" :imageId="image.id" />
-        <ImageDownload v-if="allowDownload" :imageUrl="image.url" />
-        <ImageUpdate v-if="allowUpdate" :image="image" />
-      </div>
+  <div class="image-card">
+    <a-tooltip v-lazyload placement="top" :title="image.description">
+      <LazyImage :src="image.url" :alt="image.description" />
+    </a-tooltip>
+    <div class="card-controls">
+      <ImageDelete v-if="allowDelete" :imageId="image.id" />
+      <ImageDownload v-if="allowDownload" :imageUrl="image.url" />
+      <ImageUpdate v-if="allowUpdate" :image="image" />
     </div>
-  </a-tooltip>
+  </div>
 </template>
 
 <script>
 import ImageDelete from "@/components/actions/image/ImageDelete";
 import ImageUpdate from "@/components/actions/image/ImageUpdate";
 import ImageDownload from "@/components/actions/image/ImageDownload";
-
-import lazyLoadImageCard from "@/directives/lazyLoadImageCard";
+import LazyImage from "@/components/shared/LazyImage";
 
 export default {
   name: "ImageCard",
@@ -42,14 +36,11 @@ export default {
     },
   },
 
-  directives: {
-    lazyload: lazyLoadImageCard,
-  },
-
   components: {
     ImageDelete,
     ImageUpdate,
     ImageDownload,
+    LazyImage,
   },
 };
 </script>
@@ -60,24 +51,6 @@ export default {
   position: relative;
   margin-bottom: 20px;
   box-shadow: $box-shadow-strong;
-
-  .image-wrapper {
-    display: block;
-    width: 100%;
-
-    img {
-      object-fit: cover;
-      width: 100%;
-      height: auto;
-    }
-  }
-  .info {
-    padding-bottom: 50px;
-
-    p {
-      margin: 0;
-    }
-  }
 
   .card-controls {
     width: 100%;
@@ -96,10 +69,6 @@ export default {
     margin: 0;
     border-radius: 2px 2px 2px 2px;
 
-    .image-wrapper img {
-      border-radius: 2px 2px 0 0;
-    }
-
     .card-controls {
       border-bottom: none;
     }
@@ -109,14 +78,6 @@ export default {
 @include sm-desktop {
   .image-card {
     overflow: hidden;
-
-    .info {
-      position: absolute;
-      top: 0;
-      left: 0;
-      visibility: hidden;
-      display: none;
-    }
 
     .card-controls {
       position: absolute;

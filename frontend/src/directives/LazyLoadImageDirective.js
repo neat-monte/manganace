@@ -1,5 +1,7 @@
+// Source: https://css-tricks.com/lazy-loading-images-with-vue-js-directives-and-intersection-observer/
+
 export default {
-    inserted: el => {
+    mounted: el => {
         function loadImage() {
             const imageElement = Array.from(el.children).find(
                 el => el.nodeName === "IMG"
@@ -30,6 +32,7 @@ export default {
             const observer = new IntersectionObserver(handleIntersect, options);
             observer.observe(el);
         }
+
         if (window["IntersectionObserver"]) {
             createObserver();
         } else {

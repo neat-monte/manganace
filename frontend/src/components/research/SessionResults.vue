@@ -8,11 +8,11 @@
     <info-circle-outlined />
   </a-button>
 
-  <a-modal
-    v-model:visible="visible"
-    title="Session results"
-    @ok="handleCreate()"
-  >
+  <a-modal v-model:visible="visible" title="Session results" :width="800">
+    <Boxplot
+      :data="data"
+      title="Chosen multipliers for each vector of a single participant"
+    />
     <ImagesList
       v-if="images"
       :images="images"
@@ -30,22 +30,26 @@
 import { ref } from "vue";
 
 import { InfoCircleOutlined } from "@ant-design/icons-vue";
+import Boxplot from "@/components/shared/Boxplot";
 import ImagesList from "@/components/shared/ImagesList";
 
 import useImages from "@/modules/images";
+import useResearch from "@/modules/research";
 
 export default {
   name: "SessionResults",
 
   props: {
-    session: Object,
+    session: { type: Object, required: true },
   },
 
-  setup(props) {
+  async setup(props) {
     const visible = ref();
     const { imagesByCollectionId, loadImagesOfCollectionAsync } = useImages();
+    const { getSessionResultsDataAsync } = useResearch();
 
     const images = ref([]);
+    const data = await getSessionResultsDataAsync(props.session.id);
 
     async function showModal() {
       visible.value = !visible.value;
@@ -56,6 +60,7 @@ export default {
     }
 
     return {
+      data,
       showModal,
       visible,
       images,
@@ -63,6 +68,7 @@ export default {
   },
 
   components: {
+    Boxplot,
     InfoCircleOutlined,
     ImagesList,
   },

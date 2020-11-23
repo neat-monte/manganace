@@ -27,6 +27,7 @@
     <div class="controls">
       <a-button @click="clearGenerateRequest" type="secondary">
         Clear
+        <clear-outlined />
       </a-button>
       <a-button
         @click="generateAsync(generateRequest)"
@@ -34,6 +35,7 @@
         type="primary"
       >
         Generate
+        <sync-outlined />
       </a-button>
     </div>
   </section>
@@ -42,6 +44,7 @@
 <script>
 import { reactive } from "vue";
 
+import { SyncOutlined, ClearOutlined } from "@ant-design/icons-vue";
 import useGenerator from "@/modules/generator";
 import Slider from "@/components/shared/Slider";
 
@@ -105,6 +108,8 @@ export default {
 
   components: {
     Slider,
+    SyncOutlined,
+    ClearOutlined,
   },
 };
 </script>

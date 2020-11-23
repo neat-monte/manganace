@@ -9,31 +9,32 @@
             placeholder="Filter by tags"
           />
         </template>
-      </Suspense>
-    </div>
-    <div class="images-list">
-      <Suspense v-for="image in internalImages" :key="image.id">
-        <template #default>
-          <ImageCard
-            :image="image"
-            :allowDelete="allowDelete"
-            :allowUpdate="allowUpdate"
-            :allowDownload="allowDownload"
-          />
-        </template>
         <template #fallback>
           <Loading />
         </template>
       </Suspense>
     </div>
+    <div class="images-list">
+      <ImageCard
+        v-for="image in internalImages"
+        :key="image.id"
+        :image="image"
+        :allowDelete="allowDelete"
+        :allowUpdate="allowUpdate"
+        :allowDownload="allowDownload"
+      />
+    </div>
+    <Empty v-if="images.length == 0" />
   </div>
 </template>
 
 <script>
-import { ref, defineAsyncComponent, watchEffect } from "vue";
+import { ref, watchEffect } from "vue";
 
+import ImageCard from "@/components/shared/ImageCard";
 import TagSelect from "@/components/actions/tag/TagSelect";
 import Loading from "@/components/shared/Loading";
+import Empty from "@/components/shared/Empty";
 
 export default {
   name: "ImagesList",
@@ -94,12 +95,8 @@ export default {
   components: {
     Loading,
     TagSelect,
-    ImageCard: defineAsyncComponent({
-      loader: () => import("@/components/shared/ImageCard"),
-      delay: 200,
-      timeout: 3000,
-      suspensible: false,
-    }),
+    ImageCard,
+    Empty,
   },
 };
 </script>

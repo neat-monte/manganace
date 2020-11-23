@@ -1,29 +1,14 @@
 <template>
-  <a-tooltip placement="top">
-    <template v-slot:title>
-      <span>Generate research session</span>
+  <a-button v-if="buttonText" type="primary" @click="showModal()">
+    {{ buttonText }}
+    <sync-outlined />
+  </a-button>
+
+  <a-button v-else type="primary" @click="showModal()">
+    <template v-slot:icon>
+      <sync-outlined />
     </template>
-    <a-button v-if="buttonText" type="primary" @click="showModal()">
-      {{ buttonText }}
-    </a-button>
-
-    <a-button
-      v-else-if="isAddon"
-      type="primary"
-      @click="showModal()"
-      class="addon"
-    >
-      <template v-slot:icon>
-        <plus-outlined />
-      </template>
-    </a-button>
-
-    <a-button v-else type="primary" @click="showModal()">
-      <template v-slot:icon>
-        <plus-outlined />
-      </template>
-    </a-button>
-  </a-tooltip>
+  </a-button>
 
   <a-modal
     v-model:visible="visible"
@@ -123,7 +108,7 @@
 import { ref, reactive, watchEffect } from "vue";
 import moment from "moment";
 
-import { PlusOutlined } from "@ant-design/icons-vue";
+import { SyncOutlined } from "@ant-design/icons-vue";
 import useResearch from "@/modules/research";
 
 export default {
@@ -133,10 +118,6 @@ export default {
     buttonText: {
       type: String,
       default: null,
-    },
-    isAddon: {
-      type: Boolean,
-      default: false,
     },
   },
 
@@ -194,17 +175,12 @@ export default {
   },
 
   components: {
-    PlusOutlined,
+    SyncOutlined,
   },
 };
 </script>
 
 <style lang="scss" scoped>
-.addon {
-  border-top-left-radius: 0;
-  border-bottom-left-radius: 0;
-}
-
 .create-session {
   display: flex;
   flex-wrap: wrap;

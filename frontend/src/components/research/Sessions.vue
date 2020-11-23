@@ -1,7 +1,7 @@
 <template>
   <div id="sessions">
     <div class="controls">
-      <CreateSession buttonText="Initialize new session" />
+      <CreateSession buttonText="Initialize session" />
     </div>
 
     <a-list

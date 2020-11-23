@@ -23,6 +23,7 @@
         <span class="title">{{ currentSession.name }}</span>
         <a-button type="primary" @click="nullifySession" class="change-session">
           Change session
+          <swap-outlined />
         </a-button>
       </div>
       <Suspense>
@@ -38,10 +39,12 @@
 </template>
 
 <script>
+import { SwapOutlined } from "@ant-design/icons-vue";
 import Activity from "@/components/generator/Activity";
 import SessionSelect from "@/components/actions/session/SessionSelect";
 import SessionCreate from "@/components/actions/session/SessionCreate";
 import Loading from "@/components/shared/Loading";
+
 import useGenerator from "@/modules/generator";
 import useSessions from "@/modules/sessions";
 
@@ -72,6 +75,7 @@ export default {
     SessionSelect,
     SessionCreate,
     Activity,
+    SwapOutlined,
   },
 };
 </script>

@@ -25,7 +25,6 @@
       </a-form-item>
 
       <a-form-item label="Tags">
-        {{ updatedImage.tagsIds }}
         <Suspense>
           <template #default>
             <TagSelect v-model="updatedImage.tagsIds" />

@@ -6,13 +6,19 @@
       </span>
       <span class="meta">{{ Object.keys(images).length }} images</span>
     </div>
-    <ImagesList
-      :images="images"
-      :allowDelete="true"
-      :allowUpdate="true"
-      :allowDownload="true"
-    />
-    <Empty v-if="images.length == 0" />
+    <Suspense>
+      <template #default>
+        <ImagesList
+          :images="images"
+          :allowDelete="true"
+          :allowUpdate="true"
+          :allowDownload="true"
+        />
+      </template>
+      <template #fallback>
+        <Loading />
+      </template>
+    </Suspense>
   </section>
 </template>
 
@@ -20,7 +26,6 @@
 import { ref, watchEffect } from "vue";
 
 import ImagesList from "@/components/shared/ImagesList";
-import Empty from "@/components/shared/Empty";
 
 import useImages from "@/modules/images";
 import useCollections from "@/modules/collections";
@@ -57,7 +62,6 @@ export default {
 
   components: {
     ImagesList,
-    Empty,
   },
 };
 </script>

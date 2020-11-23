@@ -3,16 +3,21 @@
     <div class="controls">
       <a-button type="primary" @click="downloadExportCsv()">
         Export data
+        <export-outlined />
       </a-button>
     </div>
-    <div id="data-plot"></div>
+    <Boxplot
+      :data="data"
+      title="Chosen multipliers for each vector of all the participants"
+    />
   </div>
 </template>
 
 <script>
-import { onMounted } from "vue";
 import download from "downloadjs";
-import Plotly from "plotly.js";
+
+import { ExportOutlined } from "@ant-design/icons-vue";
+import Boxplot from "@/components/shared/Boxplot";
 
 import useResearch from "@/modules/research";
 
@@ -27,59 +32,17 @@ export default {
       download(exportCsv, `export.csv`);
     }
 
-    onMounted(() => {
-      Plotly.newPlot("data-plot", results, layout);
-    });
-
     const data = await getResultsDataAsync();
 
-    var results = [];
-
-    for (var i = 0; i < data.length; i++) {
-      var result = {
-        type: "box",
-        y: data[i].points,
-        name: data[i].effect,
-        boxpoints: "all",
-        jitter: 0.1,
-        whiskerwidth: 0.5,
-        fillcolor: "cls",
-        marker: {
-          size: 2,
-        },
-        line: {
-          width: 1,
-        },
-      };
-      results.push(result);
-    }
-
-    var layout = {
-      title: "Chosen multipliers for each vector of all the participants",
-      yaxis: {
-        autorange: true,
-        showgrid: true,
-        zeroline: true,
-        dtick: 2,
-        gridcolor: "rgb(255, 255, 255)",
-        gridwidth: 1,
-        zerolinecolor: "rgb(255, 255, 255)",
-        zerolinewidth: 2,
-      },
-      margin: {
-        l: 40,
-        r: 30,
-        b: 80,
-        t: 100,
-      },
-      paper_bgcolor: "rgb(243, 243, 243)",
-      plot_bgcolor: "rgb(243, 243, 243)",
-      showlegend: false,
-    };
-
     return {
+      data,
       downloadExportCsv,
     };
+  },
+
+  components: {
+    Boxplot,
+    ExportOutlined,
   },
 };
 </script>

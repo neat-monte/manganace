@@ -31,7 +31,11 @@
       </a-descriptions>
     </div>
     <div class="card-controls">
-      <SessionResults :session="session" />
+      <Suspense>
+        <template #default>
+          <SessionResults :session="session" />
+        </template>
+      </Suspense>
       <a-button
         v-if="session.trials !== session.progress"
         type="primary"
