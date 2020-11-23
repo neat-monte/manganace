@@ -6,7 +6,12 @@
       </span>
       <span class="meta">{{ Object.keys(images).length }} images</span>
     </div>
-    <ImagesList :images="images" />
+    <ImagesList
+      :images="images"
+      :allowDelete="true"
+      :allowUpdate="true"
+      :allowDownload="true"
+    />
     <Empty v-if="images.length == 0" />
   </section>
 </template>
@@ -32,27 +37,19 @@ export default {
     const { imagesByCollectionId, loadImagesOfCollectionAsync } = useImages();
     const collection = ref(null);
     const images = ref([]);
-    const filterTags = ref([]);
 
     watchEffect(async () => {
-      if (
-        props.collectionId &&
-        props.collectionId in collectionsById &&
-        collectionsLoaded
-      ) {
+      if (props.collectionId && collectionsLoaded) {
         collection.value = collectionsById[props.collectionId];
         await loadImagesOfCollectionAsync(props.collectionId);
 
         if (imagesByCollectionId[props.collectionId]) {
           images.value = imagesByCollectionId[props.collectionId];
         }
-
-        filterTags.value = [];
       }
     });
 
     return {
-      filterTags,
       images,
       collection,
     };

@@ -27,9 +27,8 @@ $footer-height: 80px;
 /**
  * Shadows
  */
-$box-double-shadow: 0 10px 16px 0 $darkness-20, 0 6px 20px 0 $darkness-19;
-$text-shadow-hard: 0 2px 4px $darkness-50, 0 2px 2px $darkness-50;
-$text-shadow-soft: 0 2px 4px $darkness-20, 0 2px 2px $darkness-20;
+$box-shadow-strong: 0 10px 16px 0 $darkness-20, 0 6px 20px 0 $darkness-20;
+$box-shadow-soft: 0 2px 4px $darkness-20, 0 2px 2px $darkness-20;
 
 /**
  * Variables used in Generator page

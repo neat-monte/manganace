@@ -20,7 +20,8 @@
 import ImageDelete from "@/components/actions/image/ImageDelete";
 import ImageUpdate from "@/components/actions/image/ImageUpdate";
 import ImageDownload from "@/components/actions/image/ImageDownload";
-import { watchEffect } from "vue";
+
+import lazyLoadImageCard from "@/directives/lazyLoadImageCard";
 
 export default {
   name: "ImageCard",
@@ -29,20 +30,20 @@ export default {
     image: Object,
     allowDelete: {
       type: Boolean,
-      default: true,
+      default: false,
     },
     allowUpdate: {
       type: Boolean,
-      default: true,
+      default: false,
     },
     allowDownload: {
       type: Boolean,
-      default: true,
+      default: false,
     },
   },
 
-  setup(props) {
-    watchEffect(props.image);
+  directives: {
+    lazyload: lazyLoadImageCard,
   },
 
   components: {
@@ -55,9 +56,10 @@ export default {
 
 <style lang="scss" scoped>
 .image-card {
+  min-height: 40px;
   position: relative;
   margin-bottom: 20px;
-  box-shadow: $box-double-shadow;
+  box-shadow: $box-shadow-strong;
 
   .image-wrapper {
     display: block;

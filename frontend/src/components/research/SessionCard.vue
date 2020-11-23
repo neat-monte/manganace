@@ -33,8 +33,8 @@
     <div class="card-controls">
       <SessionResults :session="session" />
       <a-button
+        v-if="session.trials !== session.progress"
         type="primary"
-        :disabled="session.trials == session.progress"
         @click="startSession()"
       >
         {{ !session.participant ? "Begin" : "Continue" }}

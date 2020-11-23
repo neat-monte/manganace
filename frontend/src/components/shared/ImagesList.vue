@@ -4,8 +4,7 @@
       <Suspense>
         <template #default>
           <TagSelect
-            @tag-id-set="filterImagesByTags"
-            :initialTags="filterTags"
+            v-model="filterTags"
             :showCreate="false"
             placeholder="Filter by tags"
           />
@@ -15,7 +14,7 @@
     <div class="images-list">
       <Suspense v-for="image in internalImages" :key="image.id">
         <template #default>
-          <ImageCardAsync
+          <ImageCard
             :image="image"
             :allowDelete="allowDelete"
             :allowUpdate="allowUpdate"
@@ -23,7 +22,7 @@
           />
         </template>
         <template #fallback>
-          <Loading id="image-card" />
+          <Loading />
         </template>
       </Suspense>
     </div>
@@ -43,24 +42,21 @@ export default {
     images: [Object],
     allowDelete: {
       type: Boolean,
-      default: true,
+      default: false,
     },
     allowUpdate: {
       type: Boolean,
-      default: true,
+      default: false,
     },
     allowDownload: {
       type: Boolean,
-      default: true,
+      default: false,
     },
   },
 
   setup(props) {
     const internalImages = ref([]);
-
-    watchEffect(() => {
-      internalImages.value = props.images;
-    });
+    const filterTags = ref([]);
 
     function includesAll(array, values) {
       for (var i = 0; i < values.length; i++) {
@@ -71,12 +67,12 @@ export default {
       return true;
     }
 
-    function filterImagesByTags(tags) {
-      if (tags.length > 0) {
+    function filterImagesByTags() {
+      if (filterTags.value.length > 0) {
         internalImages.value = Object.assign(
           {},
           Object.values(internalImages.value).filter((image) =>
-            includesAll(image.tagsIds, tags)
+            includesAll(image.tagsIds, filterTags.value)
           )
         );
       } else if (props.images) {
@@ -84,8 +80,13 @@ export default {
       }
     }
 
+    watchEffect(() => {
+      internalImages.value = props.images;
+      filterImagesByTags();
+    });
+
     return {
-      filterImagesByTags,
+      filterTags,
       internalImages,
     };
   },
@@ -93,10 +94,11 @@ export default {
   components: {
     Loading,
     TagSelect,
-    ImageCardAsync: defineAsyncComponent({
+    ImageCard: defineAsyncComponent({
       loader: () => import("@/components/shared/ImageCard"),
       delay: 200,
-      suspensible: true,
+      timeout: 3000,
+      suspensible: false,
     }),
   },
 };

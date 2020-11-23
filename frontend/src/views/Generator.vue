@@ -78,8 +78,7 @@ export default {
 @include sm-desktop {
   #generator {
     #sessions {
-      flex: 0 100%;
-      margin-bottom: 20px;
+      flex: 100%;
     }
 
     #controls {
@@ -88,8 +87,7 @@ export default {
     }
 
     #generated-image {
-      flex: 1;
-      margin-bottom: 20px;
+      flex: 0;
       order: initial;
     }
   }

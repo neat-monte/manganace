@@ -58,7 +58,7 @@ export default {
 
   .controls {
     text-align: right;
-    margin: 0 18% 20px 0;
+    margin-bottom: 20px;
   }
 }
 

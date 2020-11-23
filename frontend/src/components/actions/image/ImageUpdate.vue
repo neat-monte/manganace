@@ -25,12 +25,10 @@
       </a-form-item>
 
       <a-form-item label="Tags">
+        {{ updatedImage.tagsIds }}
         <Suspense>
           <template #default>
-            <TagSelect
-              :initialTags="updatedImage.tagsIds"
-              @tag-id-set="setTagsIds"
-            />
+            <TagSelect v-model="updatedImage.tagsIds" />
           </template>
         </Suspense>
       </a-form-item>
@@ -64,9 +62,7 @@ export default {
       collectionId: props.image.collectionId,
       tagsIds: props.image.tagsIds,
     });
-    function setTagsIds(tagsIds) {
-      updatedImage.tagsIds = tagsIds;
-    }
+
     async function handleUpdate() {
       await updateImageAsync(updatedImage);
       visible.value = false;
@@ -75,7 +71,6 @@ export default {
     return {
       updatedImage,
       handleUpdate,
-      setTagsIds,
       showModal,
       visible,
     };

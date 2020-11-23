@@ -9,6 +9,13 @@ const loadLock = new AwaitLock();
 
 const imagesByCollectionId = reactive({});
 
+const insertImage = (image) => {
+    if (imagesByCollectionId[image.collectionId] === undefined) {
+        imagesByCollectionId[image.collectionId] = {};
+    }
+    imagesByCollectionId[image.collectionId][image.id] = image
+}
+
 export default function useImages() {
 
     const loadImagesOfCollectionAsync = async (collectionId) => {
@@ -18,10 +25,7 @@ export default function useImages() {
                 return;
             }
             const images = await api.collections.getImages(collectionId);
-            if (imagesByCollectionId[collectionId] === undefined) {
-                imagesByCollectionId[collectionId] = {};
-            }
-            images.forEach(image => imagesByCollectionId[image.collectionId][image.id] = image);
+            images.forEach(image => insertImage(image));
             hasLoaded[collectionId] = true;
         } catch {
             notification.images.failedToLoad();
@@ -35,11 +39,12 @@ export default function useImages() {
             const imageJson = JSON.stringify(newImage);
             const image = await api.images.create(imageJson);
             if (image) {
-                imagesByCollectionId[image.collectionId][image.id] = image
+                insertImage(image)
                 notification.images.added(image);
             }
-        } catch {
-            notification.images.failedToAdd();
+        } catch (e) {
+            console.log(e);
+            notification.images.failedToSave();
         }
     }
 
@@ -48,7 +53,7 @@ export default function useImages() {
             const imageJson = JSON.stringify(updatedImage);
             const image = await api.images.update(updatedImage.id, imageJson)
             if (image) {
-                imagesByCollectionId[image.collectionId][image.id] = image
+                insertImage(image)
                 notification.images.updated(image);
             }
         } catch {

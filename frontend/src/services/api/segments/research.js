@@ -1,4 +1,4 @@
-import { fetchJSON, methods } from './base'
+import { fetchJSON, fetchBlob, methods } from './base'
 
 const researchEndpoint = "/research";
 
@@ -12,4 +12,12 @@ export const getTrialsMeta = async (sessionId) => {
 
 export const getTrialImages = async (data) => {
     return await fetchJSON(`${researchEndpoint}/trial-images`, methods.POST, data);
+}
+
+export const getResultsData = async () => {
+    return await fetchJSON(`${researchEndpoint}/data`, methods.GET);
+}
+
+export const getExportCsv = async () => {
+    return await fetchBlob(`${researchEndpoint}/data/export`, methods.GET);
 }

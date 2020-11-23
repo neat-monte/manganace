@@ -19,14 +19,20 @@ import useCollections from "@/modules/collections";
 export default {
   name: "CollectionSelect",
 
-  emits: ["collection-id-set"],
+  props: {
+    modelValue: {
+      type: Number,
+    },
+  },
 
-  async setup(_, context) {
+  emits: ["update:modelValue"],
+
+  async setup(props, context) {
     const { collectionsById, loadCollectionsAsync } = useCollections();
 
     const collectionsOptions = ref([]);
     const dropdownOptions = ref([]);
-    const selectedCollection = ref(null);
+    const selectedCollection = ref(props.modelValue);
 
     watchEffect(() => {
       collectionsOptions.value = [];
@@ -52,8 +58,8 @@ export default {
     function onSelectOrChange(value) {
       const any = collectionsOptions.value.filter((opt) => opt.value === value);
       if (any.length > 0) {
-        selectedCollection.value = value;
-        context.emit("collection-id-set", value);
+        selectedCollection.value = Number(value);
+        context.emit("update:modelValue", Number(value));
       } else {
         selectedCollection.value = null;
       }

@@ -15,11 +15,12 @@
   </a-tooltip>
 
   <a-modal v-model:visible="visible" title="Save image" @ok="handleSave()">
+    {{ newImage }}
     <a-form>
       <a-form-item label="Collection">
         <Suspense>
           <template #default>
-            <CollectionSelect @collection-id-set="setCollectionId" />
+            <CollectionSelect v-model="newImage.collectionId" />
           </template>
         </Suspense>
       </a-form-item>
@@ -33,7 +34,7 @@
       <a-form-item label="Tags">
         <Suspense>
           <template #default>
-            <TagSelect @tag-id-set="setTagsIds" />
+            <TagSelect v-model="newImage.tagsIds" />
           </template>
         </Suspense>
       </a-form-item>
@@ -72,14 +73,6 @@ export default {
       newImage.imageId = currentImage.id;
     });
 
-    function setCollectionId(id) {
-      newImage.collectionId = id;
-    }
-
-    function setTagsIds(tagsIds) {
-      newImage.tagsIds = tagsIds;
-    }
-
     async function handleSave() {
       await addImageAsync(newImage);
       visible.value = false;
@@ -87,8 +80,6 @@ export default {
 
     return {
       currentImage,
-      setCollectionId,
-      setTagsIds,
       newImage,
       handleSave,
       showModal,

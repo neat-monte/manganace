@@ -50,9 +50,6 @@ export default {
             (event.target.offsetHeight / 100)
         ),
       };
-      console.log(
-        `(${event.clientX} - (${wrapper.offsetLeft} - ${window.scrollX})) / (${event.target.offsetWidth} / 100) = ${position.x}`
-      );
 
       event.target.style.backgroundPosition =
         position.x + "% " + position.y + "%";
@@ -118,7 +115,7 @@ export default {
 @include tablet {
   #zoomable-image {
     border-radius: 2px;
-    box-shadow: $box-double-shadow;
+    box-shadow: $box-shadow-strong;
   }
 }
 

@@ -1,12 +1,13 @@
 from typing import List, Any
 
 from fastapi import APIRouter, Depends, HTTPException
+from fastapi.responses import FileResponse
 from sqlalchemy.orm import Session
 
 import data
 import services
 from api.dependencies import get_db
-from schemas import Participant, ParticipantCreate, TrialImage
+from schemas import Participant, ParticipantCreate, TrialImage, SingleVectorData
 from schemas import TrialMeta
 
 router = APIRouter()
@@ -42,7 +43,11 @@ def request_trial_images(meta: TrialMeta, db: Session = Depends(get_db)) -> Any:
     return services.trial.get_trial_images(db, meta)
 
 
-@router.get('/results')
-def get_results(db: Session = Depends(get_db)) -> Any:
-    services.research.get_results(db)
-    pass
+@router.get('/data', response_model=List[SingleVectorData])
+def get_data(db: Session = Depends(get_db)) -> Any:
+    return services.research.get_results_data(db)
+
+
+@router.get('/data/export')
+def export_data(db: Session = Depends(get_db)) -> Any:
+    return FileResponse(services.research.export_results_data(db))

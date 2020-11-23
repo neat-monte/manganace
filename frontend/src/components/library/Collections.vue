@@ -45,11 +45,7 @@ export default {
     const collections = ref([]);
 
     watchEffect(() => {
-      if (
-        props.collectionId &&
-        collectionsById &&
-        !(props.collectionId in collectionsById)
-      ) {
+      if (props.collectionId && !(props.collectionId in collectionsById)) {
         router.push({
           name: "NotFound",
         });

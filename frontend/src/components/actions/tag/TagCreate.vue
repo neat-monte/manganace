@@ -77,6 +77,5 @@ export default {
 .addon {
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
-  box-shadow: none !important;
 }
 </style>

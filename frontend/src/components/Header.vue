@@ -65,7 +65,7 @@ export default {
         font-weight: bold;
         text-transform: uppercase;
         color: $primary;
-        text-shadow: $text-shadow-soft;
+        text-shadow: $box-shadow-soft;
         transition: all 0.2s ease;
       }
 
@@ -79,11 +79,12 @@ export default {
 
       &:hover,
       &:focus {
-        box-shadow: none !important;
+        .title {
+          color: $primary-dark;
+        }
 
         .subtitle {
           color: $darkness-80;
-          transform: scale(1.1);
         }
       }
     }
@@ -136,8 +137,6 @@ export default {
 
       &:hover,
       &:focus {
-        box-shadow: none !important;
-
         .link::after {
           visibility: visible;
           transform: scaleX(1);

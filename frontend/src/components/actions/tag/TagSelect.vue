@@ -2,7 +2,7 @@
   <div class="tag-select">
     <a-select
       @change="handleChange"
-      v-model:value="selectedTags"
+      :value="modelValue"
       mode="multiple"
       :placeholder="placeholder"
       :allowClear="true"
@@ -23,8 +23,6 @@
 </template>
 
 <script>
-import { ref, watchEffect } from "vue";
-
 import useTags from "@/modules/tags";
 import TagCreate from "@/components/actions/tag/TagCreate";
 
@@ -32,7 +30,7 @@ export default {
   name: "TagSelect",
 
   props: {
-    initialTags: {
+    modelValue: {
       type: Array,
       default: () => [],
     },
@@ -46,24 +44,18 @@ export default {
     },
   },
 
-  emits: ["tag-id-set"],
+  emits: ["update:modelValue"],
 
   async setup(props, context) {
     const { tagsById, loadTagsAsync } = useTags();
-    const selectedTags = ref([]);
-
-    watchEffect(() => {
-      selectedTags.value = props.initialTags;
-    });
 
     function handleChange(value) {
-      context.emit("tag-id-set", value);
+      context.emit("update:modelValue", value);
     }
 
     await loadTagsAsync();
 
     return {
-      selectedTags,
       handleChange,
       tagsById,
     };

@@ -12,7 +12,14 @@
         </Suspense>
       </a-tab-pane>
       <a-tab-pane key="2" tab="Results">
-        <Results />
+        <Suspense>
+          <template #default>
+            <Results />
+          </template>
+          <template #fallback>
+            <Loading id="sessions" />
+          </template>
+        </Suspense>
       </a-tab-pane>
     </a-tabs>
   </div>

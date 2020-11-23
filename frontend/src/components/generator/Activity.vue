@@ -1,16 +1,40 @@
 <template>
   <section id="activity">
     <swiper
-      :slides-per-view="slidesCount"
-      :space-between="5"
       :preload-images="false"
       :lazy="true"
+      :free-mode="true"
+      :breakpoints="{
+        320: {
+          slidesPerView: 1,
+          spaceBetween: 10,
+        },
+        480: {
+          slidesPerView: 2,
+          spaceBetween: 10,
+        },
+        768: {
+          slidesPerView: 3,
+          spaceBetween: 10,
+        },
+        992: {
+          slidesPerView: 4,
+          spaceBetween: 10,
+        },
+        1200: {
+          slidesPerView: 5,
+          spaceBetween: 10,
+        },
+        1400: {
+          slidesPerView: maxSlidesCount,
+        },
+      }"
       watch-slides-visibility
       navigation
     >
       <swiper-slide v-for="(image, index) in generatedImages" :key="index">
         <img
-          v-if="index < slidesCount"
+          v-if="index < maxSlidesCount"
           @click="swapImage(index)"
           :src="image.url"
         />
@@ -20,7 +44,7 @@
           :data-src="image.url"
           class="swiper-lazy"
         />
-        <div v-if="slidesCount <= index" class="swiper-lazy-preloader"></div>
+        <div v-if="maxSlidesCount <= index" class="swiper-lazy-preloader"></div>
       </swiper-slide>
     </swiper>
   </section>
@@ -44,7 +68,7 @@ export default {
   name: "Activity",
 
   props: {
-    slidesCount: {
+    maxSlidesCount: {
       type: Number,
       default: 6,
     },
@@ -79,25 +103,23 @@ export default {
 
 <style lang="scss" scoped>
 #activity {
-  height: 186px;
+  height: 220px;
+  border-radius: 2px;
+  border: 1px solid $darkness-20;
 
   .swiper-container {
-    width: 100%;
     height: 100%;
     background: $darkness-05;
-    border-radius: 2px;
 
     .swiper-slide {
-      text-align: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       cursor: pointer;
 
       img {
-        width: 100%;
-        height: auto;
-        position: absolute;
-        left: 50%;
-        top: 50%;
-        transform: translate(-50%, -50%);
+        width: auto;
+        height: 200px;
         border-radius: 2px;
       }
 
@@ -109,7 +131,11 @@ export default {
       }
 
       &:hover {
-        z-index: 1;
+        img {
+          z-index: 1;
+          box-shadow: $box-shadow-soft;
+          transform: scale(1.04);
+        }
       }
     }
   }

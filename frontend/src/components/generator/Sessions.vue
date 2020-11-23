@@ -102,17 +102,28 @@ export default {
   }
 
   .session-selected {
+    padding: 0 20px;
+
     .header {
       display: flex;
       justify-content: center;
       align-items: center;
       margin-bottom: 20px;
       position: relative;
+      padding-right: 150px;
 
       .change-session {
         position: absolute;
         right: 0;
       }
+    }
+  }
+}
+
+@include tablet {
+  #sessions {
+    .session-selected {
+      padding: 0;
     }
   }
 }

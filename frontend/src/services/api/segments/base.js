@@ -22,12 +22,27 @@ function jsonify(response) {
 }
 
 /**
+ * Fetch pipeline function which converts response to Blob object
+ * @param {*} response 
+ */
+function blobify(response) {
+  return response.blob()
+}
+
+/**
  * Fetch pipeline function which logs an error
  * @param error
  */
 function dump(error) {
   console.log('There was a problem: \n', error)
   throw error;
+}
+
+function checkUrl(url) {
+  if ((typeof url === "string" || url instanceof String) && !url.startsWith(domain)) {
+    return `${domain}${url}`;
+  }
+  return url;
 }
 
 /**
@@ -39,12 +54,25 @@ function dump(error) {
  * @returns {Promise<postcss.Result|any|undefined>}
  */
 export async function fetchJSON(url, method, data = null) {
-  if ((typeof url === "string" || url instanceof String) && !url.startsWith(domain)) {
-    url = `${domain}${url}`;
-  }
-  return fetch(url, { method: method, body: data, credentials: 'include' })
+  url = checkUrl(url)
+  return fetch(url, { method: method, body: data })
     .then(validate)
     .then(jsonify)
+    .catch(dump)
+}
+
+/**
+ * Wrapped fetch call with a predetermined pipeline to validate and convert to Blob,
+ * and in case of error - log to the console and throw an error
+ * @param url {String|URL}
+ * @param method {String}
+ * @returns {Promise<postcss.Result|any|undefined>}
+ */
+export async function fetchBlob(url, method, data = null) {
+  url = checkUrl(url)
+  return fetch(url, { method: method, body: data })
+    .then(validate)
+    .then(blobify)
     .catch(dump)
 }
 

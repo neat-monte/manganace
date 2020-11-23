@@ -48,18 +48,3 @@ export default {
   },
 };
 </script>
-
-
-<style lang="scss" scoped>
-#generated-image {
-  padding: 20px;
-}
-
-@include tablet {
-  #generated-image {
-    padding: 0;
-    border-radius: 2px;
-    box-shadow: $box-double-shadow;
-  }
-}
-</style>

@@ -52,7 +52,7 @@ export default function useResearch() {
     }
 
     const assignParticipantAsync = async (newParticipant) => {
-        generalLock.acquireAsync();
+        await generalLock.acquireAsync();
         try {
             const session = sessionsById[newParticipant.sessionId];
             if (!session || session.participant) {
@@ -102,7 +102,7 @@ export default function useResearch() {
     }
 
     const saveChosenTrialImage = async (chosenImage) => {
-        generalLock.acquireAsync();
+        await generalLock.acquireAsync();
         try {
             const imageJson = JSON.stringify(chosenImage);
             const image = await api.images.create(imageJson);
@@ -122,6 +122,24 @@ export default function useResearch() {
         }
     }
 
+    const getResultsDataAsync = async () => {
+        await generalLock.acquireAsync()
+        try {
+            return await api.research.getResultsData();
+        } finally {
+            generalLock.release();
+        }
+    }
+
+    const getExportCsvAsync = async () => {
+        await generalLock.acquireAsync()
+        try {
+            return await api.research.getExportCsv();
+        } finally {
+            generalLock.release();
+        }
+    }
+
     return {
         sessionsLoaded: readonly(hasLoaded),
         sessionsById: readonly(sessionsById),
@@ -132,6 +150,8 @@ export default function useResearch() {
         setCurrentSession,
         getTrialsMetaInfoAsync,
         getTrialImagesAsync,
-        saveChosenTrialImage
+        saveChosenTrialImage,
+        getResultsDataAsync,
+        getExportCsvAsync
     }
 }

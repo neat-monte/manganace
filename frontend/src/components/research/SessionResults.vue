@@ -13,7 +13,12 @@
     title="Session results"
     @ok="handleCreate()"
   >
-    <ImagesList v-if="images" :images="images" :allowDelete="false" />
+    <ImagesList
+      v-if="images"
+      :images="images"
+      :allowUpdate="true"
+      :allowDownload="true"
+    />
 
     <template #footer>
       <a-button key="submit" @click="showModal()">OK</a-button>

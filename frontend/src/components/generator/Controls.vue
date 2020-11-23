@@ -111,7 +111,7 @@ export default {
 
 <style lang="scss" scoped>
 #controls {
-  padding: 0 0 20px 20px;
+  padding: 0 20px 20px 20px;
   display: flex;
   flex-direction: column;
 
@@ -124,6 +124,12 @@ export default {
     justify-content: space-around;
     align-items: center;
     padding: 20px 0;
+  }
+}
+
+@include sm-desktop {
+  #controls {
+    padding: 0 0 20px 20px;
   }
 }
 </style>
