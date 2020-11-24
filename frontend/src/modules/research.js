@@ -13,12 +13,12 @@ const generalLock = new AwaitLock();
 
 const currentSession = reactive({});
 
-const insertSession = (session) => {
-    session.created = moment(session.created).format("YYYY-MM-DD HH:mm");
-    sessionsById[session.id] = session;
-}
-
 export default function useResearch() {
+
+    const insertResearchSession = (session) => {
+        session.created = moment(session.created).format("YYYY-MM-DD HH:mm");
+        sessionsById[session.id] = session;
+    }
 
     const loadResearchSessionsAsync = async () => {
         await loadLock.acquireAsync();
@@ -28,25 +28,13 @@ export default function useResearch() {
             }
             const sessions = await api.sessions.getAllResearch();
             if (sessions) {
-                sessions.forEach(session => insertSession(session));
+                sessions.forEach(session => insertResearchSession(session));
                 hasLoaded.value = true;
             }
         } catch (e) {
             notification.error("Failed to load research sessions", e.message);
         } finally {
             loadLock.release();
-        }
-    }
-
-    const createResearchSessionAsync = async (newSession) => {
-        try {
-            const newSessionJson = JSON.stringify(newSession);
-            const session = await api.sessions.createResearch(newSessionJson);
-            if (session) {
-                insertSession(session);
-            }
-        } catch (e) {
-            notification.error("Failed to create the research session", e.message);
         }
     }
 
@@ -162,7 +150,6 @@ export default function useResearch() {
         sessionsById: readonly(sessionsById),
         currentSession: readonly(currentSession),
         loadResearchSessionsAsync,
-        createResearchSessionAsync,
         assignParticipantAsync,
         getTrialsMetaInfoAsync,
         getTrialImagesAsync,
@@ -171,5 +158,6 @@ export default function useResearch() {
         getExportCsvAsync,
         saveChosenTrialImageAsync,
         setCurrentSession,
+        insertResearchSession,
     }
 }

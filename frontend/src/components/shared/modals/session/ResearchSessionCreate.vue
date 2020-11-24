@@ -1,11 +1,16 @@
 <template>
-  <a-button v-if="buttonText" type="primary" @click="showModal()">
+  <a-button
+    v-if="buttonText"
+    type="primary"
+    :disabled="disabled"
+    @click="showModal()"
+  >
     {{ buttonText }}
     <sync-outlined />
   </a-button>
 
   <a-tooltip v-else placement="top" title="Initialize research session">
-    <a-button type="primary" @click="showModal()">
+    <a-button type="primary" :disabled="disabled" @click="showModal()">
       <template v-slot:icon>
         <sync-outlined />
       </template>
@@ -70,6 +75,13 @@
           <a-switch v-model:checked="newSession.equalizeGender" />
         </a-form-item>
       </a-form>
+      <div class="multiple-controls">
+        <a-checkbox v-model:checked="makeMultiple">
+          Generate multiple
+        </a-checkbox>
+        <a-input-number v-if="makeMultiple" v-model:value="multipleCount">
+        </a-input-number>
+      </div>
       <div class="explanation">
         <p>There are <strong>6</strong> emotion vectors, therefore:</p>
         <ul>
@@ -111,7 +123,7 @@ import { ref, reactive, watchEffect } from "vue";
 import moment from "moment";
 
 import { SyncOutlined } from "@ant-design/icons-vue";
-import useResearch from "@/modules/research";
+import useGenerator from "@/modules/generator";
 
 export default {
   name: "ResearchSessionCreate",
@@ -121,6 +133,7 @@ export default {
       type: String,
       default: null,
     },
+    disabled: Boolean,
   },
 
   setup() {
@@ -131,7 +144,10 @@ export default {
     const duration = ref();
     const storage = ref();
 
-    const { createResearchSessionAsync } = useResearch();
+    const { generateResearchSessionsAsync } = useGenerator();
+
+    const makeMultiple = ref(false);
+    const multipleCount = ref(1);
 
     const newSession = reactive({
       totalAmount: 1,
@@ -163,10 +179,16 @@ export default {
 
     async function handleCreate() {
       visible.value = false;
-      await createResearchSessionAsync(newSession);
+      if (makeMultiple.value && multipleCount.value > 1) {
+        await generateResearchSessionsAsync(newSession, multipleCount.value);
+      } else {
+        await generateResearchSessionsAsync(newSession, 1);
+      }
     }
 
     return {
+      makeMultiple,
+      multipleCount,
       newSession,
       handleCreate,
       showModal,
@@ -194,11 +216,13 @@ export default {
 
   .session-data {
     flex: 50%;
-    margin-bottom: 20px;
   }
 
-  .explanation {
-    flex: 1 100%;
+  .multiple-controls {
+    display: flex;
+    align-items: center;
+    height: 50px;
+    margin: 20px 0;
   }
 }
 </style>

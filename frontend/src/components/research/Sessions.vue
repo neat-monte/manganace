@@ -1,7 +1,21 @@
 <template>
   <div id="sessions">
     <div class="controls">
-      <ResearchSessionCreate buttonText="Initialize session" />
+      <div v-if="researchGenerateRequest.inProgress" class="current-job">
+        <Loading />
+        Generating
+        {{
+          researchGenerateRequest.total > 1
+            ? `${researchGenerateRequest.done} / ${researchGenerateRequest.total} sessions`
+            : "a session"
+        }}
+      </div>
+      <div class="buttons">
+        <ResearchSessionCreate
+          buttonText="Initialize session"
+          :disabled="researchGenerateRequest.inProgress"
+        />
+      </div>
     </div>
 
     <a-list
@@ -22,14 +36,17 @@ import { watchEffect, ref } from "vue";
 
 import ResearchSessionCreate from "@/components/shared/modals/session/ResearchSessionCreate";
 import SessionCard from "@/components/research/SessionCard";
+import Loading from "@/components/shared/display/Loading";
 
 import useResearch from "@/modules/research";
+import useGenerator from "@/modules/generator";
 
 export default {
   name: "Sessions",
 
   async setup() {
     const { sessionsById, loadResearchSessionsAsync } = useResearch();
+    const { researchGenerateRequest } = useGenerator();
 
     const sessions = ref([]);
 
@@ -41,12 +58,14 @@ export default {
 
     return {
       sessions,
+      researchGenerateRequest,
     };
   },
 
   components: {
     ResearchSessionCreate,
     SessionCard,
+    Loading,
   },
 };
 </script>
@@ -57,8 +76,22 @@ export default {
   margin: 0 10px;
 
   .controls {
-    text-align: right;
+    display: flex;
+    justify-content: space-between;
+
     margin-bottom: 20px;
+
+    .current-job {
+      flex: 0 220px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .buttons {
+      flex: 1;
+      text-align: right;
+    }
   }
 }
 
