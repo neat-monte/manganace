@@ -9,8 +9,8 @@ class CImage(Base):
 
     id = Column(Integer, primary_key=True)
     description = Column(Text)
-    collection_id = Column(Integer, ForeignKey('collections.id'))
-    image_id = Column(Integer, ForeignKey('images.id'))
+    collection_id = Column(Integer, ForeignKey('collections.id'), nullable=False)
+    image_id = Column(Integer, ForeignKey('images.id'), nullable=False)
 
     collection = relationship("Collection", back_populates="c_images")
     image = relationship("Image", back_populates="c_images")

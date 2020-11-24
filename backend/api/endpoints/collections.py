@@ -48,6 +48,8 @@ def delete_collection(id_: int, db: Session = Depends(get_db)) -> Any:
     collection = data.collection_u.get(db, id_)
     if not collection:
         raise HTTPException(status_code=404, detail="Collection not found")
+    for c_image in collection.c_images:
+        data.c_image.delete(db, c_image.id)
     return data.collection_u.delete(db, id_)
 
 
