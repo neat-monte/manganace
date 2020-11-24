@@ -1,8 +1,10 @@
 <template>
-  <a-tooltip placement="top">
-    <template v-slot:title>
-      <span>Delete collection</span>
-    </template>
+  <a-button v-if="buttonText" type="danger" @click="showModal()">
+    {{ buttonText }}
+    <delete-outlined />
+  </a-button>
+
+  <a-tooltip v-else placement="top" title="Delete collection">
     <a-button type="danger" @click="showModal()">
       <template v-slot:icon>
         <delete-outlined />
@@ -34,6 +36,10 @@ export default {
 
   props: {
     collectionId: Number,
+    buttonText: {
+      type: String,
+      default: null,
+    },
   },
 
   setup(props) {

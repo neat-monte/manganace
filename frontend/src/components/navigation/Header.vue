@@ -152,11 +152,11 @@ export default {
     display: flex;
 
     .brand {
-      flex: 3 400px;
+      flex: 0;
     }
 
     .navigation {
-      flex: 3;
+      flex: 1;
       display: flex;
 
       a {
@@ -183,14 +183,6 @@ export default {
 
 @include sm-desktop {
   #header {
-    .brand {
-      justify-content: left;
-
-      .brand-link {
-        margin-left: 62px;
-      }
-    }
-
     .navigation {
       a {
         margin-right: 40px;

@@ -7,9 +7,11 @@
       </a-button>
     </div>
     <Boxplot
+      v-if="data.length > 0"
       :data="data"
       title="Chosen multipliers for each vector of all the participants"
     />
+    <Empty v-else />
   </div>
 </template>
 
@@ -18,6 +20,7 @@ import download from "downloadjs";
 
 import { ExportOutlined } from "@ant-design/icons-vue";
 import Boxplot from "@/components/shared/infographics/Boxplot";
+import Empty from "@/components/shared/display/Empty";
 
 import useResearch from "@/modules/research";
 
@@ -43,6 +46,7 @@ export default {
   components: {
     Boxplot,
     ExportOutlined,
+    Empty,
   },
 };
 </script>

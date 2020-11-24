@@ -1,17 +1,7 @@
 <template>
   <a-button v-if="buttonText" type="primary" @click="showModal()">
     {{ buttonText }}
-  </a-button>
-
-  <a-button
-    v-else-if="isAddon"
-    type="primary"
-    @click="showModal()"
-    class="addon"
-  >
-    <template v-slot:icon>
-      <plus-outlined />
-    </template>
+    <plus-outlined />
   </a-button>
 
   <a-tooltip v-else placement="top" title="Create new session">
@@ -48,10 +38,6 @@ export default {
       type: String,
       default: null,
     },
-    isAddon: {
-      type: Boolean,
-      default: false,
-    },
   },
 
   setup() {
@@ -82,10 +68,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss" scoped>
-.addon {
-  border-top-left-radius: 0;
-  border-bottom-left-radius: 0;
-}
-</style>

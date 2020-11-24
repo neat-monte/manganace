@@ -1,15 +1,11 @@
 <template>
-  <a-tooltip placement="top">
-    <template v-slot:title>
-      <span>Create new tag</span>
-    </template>
-    <a-button v-if="isAddon" type="primary" @click="showModal()" class="addon">
-      <template v-slot:icon>
-        <plus-outlined />
-      </template>
-    </a-button>
+  <a-button v-if="buttonText" type="primary" @click="showModal()">
+    {{ buttonText }}
+    <plus-outlined />
+  </a-button>
 
-    <a-button v-else type="primary" @click="showModal()">
+  <a-tooltip v-else placement="top" title="Create new tag">
+    <a-button type="primary" @click="showModal()">
       <template v-slot:icon>
         <plus-outlined />
       </template>
@@ -38,9 +34,9 @@ export default {
   name: "TagCreate",
 
   props: {
-    isAddon: {
-      type: Boolean,
-      default: false,
+    buttonText: {
+      type: String,
+      default: null,
     },
   },
 
@@ -72,10 +68,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss" scoped>
-.addon {
-  border-top-left-radius: 0;
-  border-bottom-left-radius: 0;
-}
-</style>

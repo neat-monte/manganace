@@ -52,7 +52,7 @@ export default {
 <style lang="scss" scoped>
 #tags {
   display: initial;
-  padding: 0 20px 10px 20px;
+  padding: 0 20px 0 20px;
   height: 100%;
 
   .tags-header {
@@ -76,7 +76,7 @@ export default {
 
 @include tablet {
   #tags {
-    padding: 0 0 10px 20px;
+    padding: 0;
   }
 }
 </style>

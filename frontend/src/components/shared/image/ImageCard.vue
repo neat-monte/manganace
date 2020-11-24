@@ -5,8 +5,8 @@
     </a-tooltip>
     <div class="card-controls">
       <ImageDelete v-if="allowDelete" :imageId="image.id" />
-      <ImageDownload v-if="allowDownload" :imageUrl="image.url" />
       <ImageUpdate v-if="allowUpdate" :image="image" />
+      <ImageDownload v-if="allowDownload" :imageUrl="image.url" />
     </div>
   </div>
 </template>

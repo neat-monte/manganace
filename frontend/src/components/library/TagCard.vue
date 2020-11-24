@@ -4,7 +4,6 @@
       {{ tag.name }}
     </span>
     <div class="card-controls">
-      <TagUpdate :tag="tag" />
       <TagDelete
         v-if="tag.forResearch"
         :disabled="true"
@@ -12,6 +11,7 @@
         :tagId="tag.id"
       />
       <TagDelete v-else :tagId="tag.id" />
+      <TagUpdate :tag="tag" />
     </div>
   </div>
 </template>

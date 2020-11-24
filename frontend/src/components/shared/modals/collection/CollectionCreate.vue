@@ -1,8 +1,10 @@
 <template>
-  <a-tooltip placement="top">
-    <template v-slot:title>
-      <span>Create new collection</span>
-    </template>
+  <a-button v-if="buttonText" type="primary" @click="showModal()">
+    {{ buttonText }}
+    <plus-outlined />
+  </a-button>
+
+  <a-tooltip v-else placement="top" title="Create new collection">
     <a-button type="primary" @click="showModal()">
       <template v-slot:icon>
         <plus-outlined />
@@ -40,6 +42,13 @@ import useCollections from "@/modules/collections";
 
 export default {
   name: "CollectionCreate",
+
+  props: {
+    buttonText: {
+      type: String,
+      default: null,
+    },
+  },
 
   setup() {
     const visible = ref();

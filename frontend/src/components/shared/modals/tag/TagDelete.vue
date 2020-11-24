@@ -1,5 +1,15 @@
 <template>
-  <a-tooltip placement="top" :title="tooltip">
+  <a-button
+    v-if="buttonText"
+    type="danger"
+    :disabled="disabled"
+    @click="showModal()"
+  >
+    {{ buttonText }}
+    <delete-outlined />
+  </a-button>
+
+  <a-tooltip v-else placement="top" :title="tooltip">
     <a-button type="danger" :disabled="disabled" @click="showModal()">
       <template v-slot:icon>
         <delete-outlined />
@@ -29,6 +39,10 @@ export default {
 
   props: {
     tagId: Number,
+    buttonText: {
+      type: String,
+      default: null,
+    },
     disabled: {
       type: Boolean,
       default: false,

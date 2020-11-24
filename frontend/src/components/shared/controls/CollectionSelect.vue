@@ -8,11 +8,14 @@
       @change="onSelectOrChange"
       class="autocomplete-input"
     />
+    <CollectionCreate v-if="showCreate" />
   </div>
 </template>
 
 <script>
 import { ref, watchEffect } from "vue";
+
+import CollectionCreate from "@/components/shared/modals/collection/CollectionCreate";
 
 import useCollections from "@/modules/collections";
 
@@ -22,6 +25,10 @@ export default {
   props: {
     modelValue: {
       type: Number,
+    },
+    showCreate: {
+      type: Boolean,
+      default: true,
     },
   },
 
@@ -73,6 +80,10 @@ export default {
       dropdownOptions,
       selectedCollection,
     };
+  },
+
+  components: {
+    CollectionCreate,
   },
 };
 </script>

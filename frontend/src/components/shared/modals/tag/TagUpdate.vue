@@ -1,8 +1,10 @@
 <template>
-  <a-tooltip placement="top">
-    <template v-slot:title>
-      <span>Edit tag</span>
-    </template>
+  <a-button v-if="buttonText" type="primary" @click="showModal()">
+    {{ buttonText }}
+    <edit-outlined />
+  </a-button>
+
+  <a-tooltip v-else placement="top" title="Edit tag">
     <a-button type="primary" @click="showModal()">
       <template v-slot:icon>
         <edit-outlined />
@@ -29,6 +31,10 @@ export default {
 
   props: {
     tag: Object,
+    buttonText: {
+      type: String,
+      default: null,
+    },
   },
 
   setup(props) {

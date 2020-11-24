@@ -3,7 +3,7 @@
     <div class="collections-header">
       <span class="title">Collections</span>
       <div class="controls">
-        <CollectionCreate />
+        <CollectionCreate buttonText="Create" />
       </div>
     </div>
     <a-list

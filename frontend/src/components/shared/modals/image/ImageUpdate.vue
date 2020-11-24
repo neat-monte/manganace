@@ -1,8 +1,10 @@
 <template>
-  <a-tooltip placement="top">
-    <template v-slot:title>
-      <span>Edit image</span>
-    </template>
+  <a-button v-if="buttonText" type="primary" @click="showModal()">
+    {{ buttonText }}
+    <edit-outlined />
+  </a-button>
+
+  <a-tooltip v-else placement="top" title="Edit image">
     <a-button type="primary" @click="showModal()">
       <template v-slot:icon>
         <edit-outlined />
@@ -38,7 +40,7 @@
 <script>
 import { reactive, ref } from "vue";
 import { EditOutlined } from "@ant-design/icons-vue";
-import TagSelect from "@/components/shared/modals/tag/TagSelect";
+import TagSelect from "@/components/shared/controls/TagSelect";
 import useImages from "@/modules/images";
 
 export default {
@@ -46,6 +48,10 @@ export default {
 
   props: {
     image: Object,
+    buttonText: {
+      type: String,
+      default: null,
+    },
   },
 
   setup(props) {

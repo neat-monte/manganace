@@ -31,10 +31,6 @@ export default {
       type: String,
       default: "Select a session",
     },
-    showCreate: {
-      type: Boolean,
-      default: true,
-    },
   },
 
   emits: ["session-id-set"],

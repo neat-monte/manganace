@@ -32,7 +32,7 @@
 import { ref, watchEffect } from "vue";
 
 import ImageCard from "@/components/shared/image/ImageCard";
-import TagSelect from "@/components/shared/modals/tag/TagSelect";
+import TagSelect from "@/components/shared/controls/TagSelect";
 import Loading from "@/components/shared/display/Loading";
 import Empty from "@/components/shared/display/Empty";
 

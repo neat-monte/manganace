@@ -4,11 +4,13 @@
     <sync-outlined />
   </a-button>
 
-  <a-button v-else type="primary" @click="showModal()">
-    <template v-slot:icon>
-      <sync-outlined />
-    </template>
-  </a-button>
+  <a-tooltip v-else placement="top" title="Initialize research session">
+    <a-button type="primary" @click="showModal()">
+      <template v-slot:icon>
+        <sync-outlined />
+      </template>
+    </a-button>
+  </a-tooltip>
 
   <a-modal
     v-model:visible="visible"

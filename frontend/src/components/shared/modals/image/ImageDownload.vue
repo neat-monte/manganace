@@ -1,9 +1,16 @@
 <template>
-  <a-tooltip placement="top">
-    <template v-slot:title>
-      <span>Download image</span>
-    </template>
-    <a-button @click="download(imageUrl)" :disabled="!imageUrl" type="primary">
+  <a-button
+    v-if="buttonText"
+    type="primary"
+    :disabled="!imageUrl"
+    @click="download(imageUrl)"
+  >
+    {{ buttonText }}
+    <download-outlined />
+  </a-button>
+
+  <a-tooltip v-else placement="top" title="Download image">
+    <a-button type="primary" :disabled="!imageUrl" @click="download(imageUrl)">
       <template v-slot:icon>
         <download-outlined />
       </template>
@@ -20,6 +27,10 @@ export default {
 
   props: {
     imageUrl: String,
+    buttonText: {
+      type: String,
+      default: null,
+    },
   },
 
   setup() {

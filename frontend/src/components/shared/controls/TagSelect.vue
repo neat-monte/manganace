@@ -18,7 +18,7 @@
         {{ tag.name }}
       </a-select-option>
     </a-select>
-    <TagCreate v-if="showCreate" :isAddon="true" />
+    <TagCreate v-if="showCreate" />
   </div>
 </template>
 

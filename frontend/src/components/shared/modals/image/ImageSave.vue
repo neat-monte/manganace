@@ -1,12 +1,19 @@
 <template>
-  <a-tooltip placement="top">
-    <template v-slot:title>
-      <span>Save image</span>
-    </template>
+  <a-button
+    v-if="buttonText"
+    type="primary"
+    :disabled="!currentImage.seed"
+    @click="showModal()"
+  >
+    {{ buttonText }}
+    <save-outlined />
+  </a-button>
+
+  <a-tooltip v-else placement="top" title="Save image">
     <a-button
-      @click="showModal()"
-      :disabled="!currentImage.seed"
       type="primary"
+      :disabled="!currentImage.seed"
+      @click="showModal()"
     >
       <template v-slot:icon>
         <save-outlined />
@@ -45,13 +52,20 @@
 import { reactive, ref, watchEffect } from "vue";
 import { SaveOutlined } from "@ant-design/icons-vue";
 
-import CollectionSelect from "@/components/shared/modals/collection/CollectionSelect";
-import TagSelect from "@/components/shared/modals/tag/TagSelect";
+import CollectionSelect from "@/components/shared/controls/CollectionSelect";
+import TagSelect from "@/components/shared/controls/TagSelect";
 import useImages from "@/modules/images";
 import useGenerator from "@/modules/generator";
 
 export default {
   name: "ImageSave",
+
+  props: {
+    buttonText: {
+      type: String,
+      default: null,
+    },
+  },
 
   setup() {
     const { currentImage } = useGenerator();
