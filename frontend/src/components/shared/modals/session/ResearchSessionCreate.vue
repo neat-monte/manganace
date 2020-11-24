@@ -79,8 +79,12 @@
         <a-checkbox v-model:checked="makeMultiple">
           Generate multiple
         </a-checkbox>
-        <a-input-number v-if="makeMultiple" v-model:value="multipleCount">
-        </a-input-number>
+        <a-input-number
+            v-if="makeMultiple"
+            v-model:value="multipleCount"
+            :min="1"
+            :step="1"
+        />
       </div>
       <div class="explanation">
         <p>There are <strong>6</strong> emotion vectors, therefore:</p>
@@ -157,7 +161,10 @@ export default {
     });
 
     watchEffect(() => {
-      const seconds = 1.5 * 6 * newSession.totalAmount * newSession.sliderSteps;
+      let seconds = 1.2 * 6 * newSession.totalAmount * newSession.sliderSteps;
+      if (makeMultiple.value) {
+        seconds *= multipleCount.value;
+      }
       const dur = moment.duration(seconds, "seconds");
       const hours = Math.floor(dur.asHours());
       const minutes = Math.floor(dur.asMinutes()) - hours * 60;
@@ -166,8 +173,11 @@ export default {
       } else {
         duration.value = `${hours} hours ${minutes} minutes`;
       }
-      const bytes =
+      let bytes =
         1413040 * 6 * newSession.totalAmount * newSession.sliderSteps;
+      if (makeMultiple.value) {
+        bytes *= multipleCount.value;
+      }
       const megabytes = Math.floor(bytes / 1048576);
       const gigabytes = (megabytes / 1024).toFixed(2);
       if (gigabytes < 1) {
