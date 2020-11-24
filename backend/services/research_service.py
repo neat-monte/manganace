@@ -20,6 +20,8 @@ class ResearchService:
     ROOT = Path.cwd()
     EXPORTS = ROOT / 'static/exports'
 
+    EXPORTS.mkdir(parents=True, exist_ok=True)
+
     def get_results_data(self, db: Session, session_r_id: int = None) -> List[s.SingleVectorData]:
         query = db.query(m.Vector.effect, m.ImageVector.multiplier)
         if session_r_id:

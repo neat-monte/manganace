@@ -1,11 +1,12 @@
 from typing import List, Any
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, BackgroundTasks
 from fastapi.responses import FileResponse
 from sqlalchemy.orm import Session
 
 import data
 import services
+from api.background_tasks import delete_file
 from api.dependencies import get_db
 from schemas import Participant, ParticipantCreate, TrialImage, SingleVectorData
 from schemas import TrialMeta
@@ -49,8 +50,10 @@ def get_data(db: Session = Depends(get_db)) -> Any:
 
 
 @router.get('/data/export')
-def export_data_csv(db: Session = Depends(get_db)) -> Any:
-    return FileResponse(services.research.export_results_data(db))
+def export_data_csv(background_tasks: BackgroundTasks, db: Session = Depends(get_db)) -> Any:
+    filepath = services.research.export_results_data(db)
+    background_tasks.add_task(delete_file, filepath=filepath)
+    return FileResponse(filepath)
 
 
 @router.get('/data/{session_r_id}', response_model=List[SingleVectorData])
