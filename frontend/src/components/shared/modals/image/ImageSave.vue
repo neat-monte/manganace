@@ -45,8 +45,8 @@
 import { reactive, ref, watchEffect } from "vue";
 import { SaveOutlined } from "@ant-design/icons-vue";
 
-import CollectionSelect from "@/components/actions/collection/CollectionSelect";
-import TagSelect from "@/components/actions/tag/TagSelect";
+import CollectionSelect from "@/components/shared/modals/collection/CollectionSelect";
+import TagSelect from "@/components/shared/modals/tag/TagSelect";
 import useImages from "@/modules/images";
 import useGenerator from "@/modules/generator";
 
@@ -61,7 +61,7 @@ export default {
       visible.value = true;
     }
 
-    const { addImageAsync } = useImages();
+    const { createCollectionImageAsync } = useImages();
     const newImage = reactive({
       description: null,
       collectionId: null,
@@ -73,7 +73,7 @@ export default {
     });
 
     async function handleSave() {
-      await addImageAsync(newImage);
+      await createCollectionImageAsync(newImage);
       visible.value = false;
     }
 

@@ -69,8 +69,8 @@ import {
   RollbackOutlined,
   CheckOutlined,
 } from "@ant-design/icons-vue";
-import ZoomableImage from "@/components/shared/ZoomableImage";
-import Slider from "@/components/shared/Slider";
+import ZoomableImage from "@/components/shared/image/ZoomableImage";
+import Slider from "@/components/shared/controls/Slider";
 
 import useResearch from "@/modules/research";
 import useTags from "@/modules/tags";
@@ -82,7 +82,7 @@ export default {
     const {
       currentSession,
       getTrialsMetaInfoAsync,
-      saveChosenTrialImage,
+      saveChosenTrialImageAsync,
       getTrialImagesAsync,
     } = useResearch();
     const { researchTagsById, loadResearchTagsAsync } = useTags();
@@ -130,7 +130,7 @@ export default {
         collectionId: currentSession.participant.collectionId,
         tagsIds: [tagsByEmotion[trial.value.emotion]],
       };
-      await saveChosenTrialImage(chosenImage);
+      await saveChosenTrialImageAsync(chosenImage);
     }
 
     async function nextTrialAsync() {

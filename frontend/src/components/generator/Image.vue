@@ -21,10 +21,10 @@
 </template>
 
 <script>
-import ImageSave from "@/components/actions/image/ImageSave";
-import ImageDownload from "@/components/actions/image/ImageDownload";
-import ZoomableImage from "@/components/shared/ZoomableImage";
-import Loading from "@/components/shared/Loading";
+import ImageSave from "@/components/shared/modals/image/ImageSave";
+import ImageDownload from "@/components/shared/modals/image/ImageDownload";
+import ZoomableImage from "@/components/shared/image/ZoomableImage";
+import Loading from "@/components/shared/display/Loading";
 
 import useGenerator from "@/modules/generator";
 

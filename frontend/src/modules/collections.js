@@ -26,23 +26,22 @@ export default function useCollections() {
             const collections = await api.collections.getAllUser();
             collections.forEach(collection => insertCollection(collection));
             hasLoaded.value = true;
-        } catch {
-            notification.collections.failedToLoad();
+        } catch (e) {
+            notification.error("Failed to load collections", e.message)
         } finally {
             loadLock.release();
         }
     }
 
-    const addCollectionAsync = async (newCollection) => {
+    const createCollectionAsync = async (newCollection) => {
         try {
             const collectionJson = JSON.stringify(newCollection);
             const collection = await api.collections.createUser(collectionJson);
             if (collection) {
                 insertCollection(collection);
-                notification.collections.created(collection);
             }
-        } catch {
-            notification.collections.failedToAdd();
+        } catch (e) {
+            notification.error("Failed to create the collection", e.message);
         }
     }
 
@@ -52,10 +51,9 @@ export default function useCollections() {
             const collection = await api.collections.updateUser(updatedCollection.id, collectionJson);
             if (collection) {
                 insertCollection(collection);
-                notification.collections.updated(collection);
             }
-        } catch {
-            notification.collections.failedToUpdate();
+        } catch (e) {
+            notification.error("Failed to update the collection", e.message);
         }
     }
 
@@ -64,18 +62,16 @@ export default function useCollections() {
             const collection = await api.collections.destroyUser(collectionId);
             if (collection) {
                 delete collectionsById[collection.id];
-                notification.collections.deleted(collection);
             }
-        } catch {
-            notification.collections.failedToDelete();
+        } catch (e) {
+            notification.error("Failed to delete the collection", e.message)
         }
     }
 
     return {
-        collectionsLoaded: readonly(hasLoaded),
         collectionsById: readonly(collectionsById),
         loadCollectionsAsync,
-        addCollectionAsync,
+        createCollectionAsync,
         updateCollectionAsync,
         deleteCollectionAsync
     }

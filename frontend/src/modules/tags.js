@@ -25,8 +25,8 @@ export default function useTags() {
                 tags.forEach(tag => tagsById[tag.id] = tag);
                 hasLoaded.value = true;
             }
-        } catch {
-            notification.tags.failedToLoad();
+        } catch (e) {
+            notification.error("Failed to load tags", e.message);
         } finally {
             loadLock.release();
         }
@@ -43,23 +43,22 @@ export default function useTags() {
                 tags.forEach(tags => researchTagsById[tags.id] = tags);
                 researchTagsLoaded.value = true;
             }
-        } catch {
-            notification.tags.failedToLoadResearchTags();
+        } catch (e) {
+            notification.error("Failed to load tags for research", e.message);
         } finally {
             researchTagsLoadLock.release();
         }
     }
 
-    const addTagAsync = async (newTag) => {
+    const createTagAsync = async (newTag) => {
         try {
             const tagJson = JSON.stringify(newTag);
             const tag = await api.tags.create(tagJson);
             if (tag) {
                 tagsById[tag.id] = tag;
-                notification.tags.created(tag);
             }
-        } catch {
-            notification.tags.failedToAdd();
+        } catch (e) {
+            notification.error("Failed to create the tag", e.message);
         }
     }
 
@@ -69,10 +68,9 @@ export default function useTags() {
             const tag = await api.tags.update(updatedTag.id, tagJson);
             if (tag) {
                 tagsById[tag.id] = tag;
-                notification.tags.updated(tag);
             }
-        } catch {
-            notification.tags.failedToUpdate();
+        } catch (e) {
+            notification.error("Failed to update the tag", e.message);
         }
     }
 
@@ -81,20 +79,18 @@ export default function useTags() {
             const tag = await api.tags.destroy(tagId);
             if (tag) {
                 delete tagsById[tag.id];
-                notification.tags.deleted(tag);
             }
-        } catch {
-            notification.tags.failedToDelete();
+        } catch (e) {
+            notification.error("Failed to delete the tag", e.message);
         }
     }
 
     return {
-        areLoaded: readonly(hasLoaded),
         tagsById: readonly(tagsById),
         researchTagsById: readonly(researchTagsById),
         loadTagsAsync,
         loadResearchTagsAsync,
-        addTagAsync,
+        createTagAsync,
         updateTagAsync,
         deleteTagAsync
     }

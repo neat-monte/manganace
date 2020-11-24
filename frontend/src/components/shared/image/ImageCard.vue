@@ -12,10 +12,10 @@
 </template>
 
 <script>
-import ImageDelete from "@/components/actions/image/ImageDelete";
-import ImageUpdate from "@/components/actions/image/ImageUpdate";
-import ImageDownload from "@/components/actions/image/ImageDownload";
-import LazyImage from "@/components/shared/LazyImage";
+import ImageDelete from "@/components/shared/modals/image/ImageDelete";
+import ImageUpdate from "@/components/shared/modals/image/ImageUpdate";
+import ImageDownload from "@/components/shared/modals/image/ImageDownload";
+import LazyImage from "@/components/shared/image/LazyImage";
 
 export default {
   name: "ImageCard",

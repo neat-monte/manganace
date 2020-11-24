@@ -4,7 +4,7 @@
       {{ collection.name }}
     </span>
     <div class="information">
-      <p class="description">{{ collection.description }}</p>
+      <p>{{ collection.description }}</p>
       <a-descriptions size="small" :column="1">
         <a-descriptions-item label="Created">
           {{ collection.created }}
@@ -24,8 +24,8 @@
 
 <script>
 import Images from "@/components/library/Images";
-import CollectionUpdate from "@/components/actions/collection/CollectionUpdate";
-import CollectionDelete from "@/components/actions/collection/CollectionDelete";
+import CollectionUpdate from "@/components/shared/modals/collection/CollectionUpdate";
+import CollectionDelete from "@/components/shared/modals/collection/CollectionDelete";
 
 export default {
   name: "CollectionCard",
@@ -48,13 +48,11 @@ export default {
   border: 1px solid $darkness-20;
   background: $darkness-05;
   border-radius: 2px;
-  padding: 10px 10px;
+  padding: 10px 20px;
 
   .information {
     margin: 10px 0;
-    .description {
-      text-align: left;
-    }
+    text-align: left;
   }
 
   .card-controls {

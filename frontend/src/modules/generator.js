@@ -4,7 +4,7 @@ import notification from "@/services/notification"
 import useActivity from "./activity";
 import AwaitLock from 'await-lock';
 
-const { imagesBySessionId, addGeneratedImage } = useActivity();
+const { imagesBySessionId, insertGeneratedImage } = useActivity();
 
 const isInitialized = ref(false);
 const initializeLock = new AwaitLock();
@@ -39,10 +39,10 @@ export default function useGenerator() {
                     vectors[vector.id] = vector;
                 });
                 isInitialized.value = true;
-                notification.generator.loaded();
+                notification.success("Generator is ready");
             }
         } catch (e) {
-            notification.generator.failedToLoad();
+            notification.error("Failed to initialize the generator", e.message);
         } finally {
             initializeLock.release();
         }
@@ -53,18 +53,19 @@ export default function useGenerator() {
         try {
             isGenerating.value = true;
             if (!currentSession.id) {
-                notification.generator.selectSessionFirst();
+                notification.warning("Select a session first",
+                    "A session is required to generate images");
                 return;
             }
             request["sessionId"] = currentSession.id;
             const requestJson = JSON.stringify(request);
             const generatedImage = await api.generator.generate(requestJson);
             if (generatedImage) {
-                addGeneratedImage(generatedImage);
+                insertGeneratedImage(generatedImage);
                 setCurrentImage(generatedImage);
             }
         } catch (e) {
-            notification.generator.failedToGenerate();
+            notification.error("Failed to generate an image", e.message);
         } finally {
             isGenerating.value = false;
             generateLock.release();

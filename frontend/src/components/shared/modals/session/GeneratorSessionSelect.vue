@@ -24,7 +24,7 @@ import useSessions from "@/modules/sessions";
 import useGenerator from "@/modules/generator";
 
 export default {
-  name: "SessionSelect",
+  name: "GeneratorSessionSelect",
 
   props: {
     placeholder: {
@@ -40,7 +40,7 @@ export default {
   emits: ["session-id-set"],
 
   async setup(_, context) {
-    const { loadSessionsAsync, sessionsById } = useSessions();
+    const { loadGeneratorSessionsAsync, sessionsById } = useSessions();
     const { currentSession } = useGenerator();
 
     function filterOption(input, option) {
@@ -51,7 +51,7 @@ export default {
       context.emit("session-id-set", value);
     }
 
-    await loadSessionsAsync();
+    await loadGeneratorSessionsAsync();
 
     return {
       currentSession,

@@ -1,7 +1,7 @@
 <template>
   <a-tooltip placement="top">
     <template v-slot:title>
-      <span>Delete session</span>
+      <span>Delete image</span>
     </template>
     <a-button type="danger" @click="showModal()">
       <template v-slot:icon>
@@ -12,26 +12,23 @@
 
   <a-modal
     v-model:visible="visible"
-    title="Confirm session delete"
+    title="Confirm image delete"
     @ok="handleDelete()"
   >
-    <p>
-      The session will be removed with all the generated images.
-      <strong>It will be unrecoverable.</strong>
-    </p>
+    <p>The image will be removed. <strong>It will be unrecoverable.</strong></p>
   </a-modal>
 </template>
 
 <script>
 import { ref } from "vue";
 import { DeleteOutlined } from "@ant-design/icons-vue";
-import useSessions from "@/modules/sessions";
+import useImages from "@/modules/images";
 
 export default {
-  name: "SessionDelete",
+  name: "ImageDelete",
 
   props: {
-    sessionId: Number,
+    imageId: Number,
   },
 
   setup(props) {
@@ -40,9 +37,9 @@ export default {
       visible.value = true;
     }
 
-    const { deleteSessionAsync } = useSessions();
+    const { deleteCollectionImageAsync } = useImages();
     async function handleDelete() {
-      await deleteSessionAsync(props.sessionId);
+      await deleteCollectionImageAsync(props.imageId);
       visible.value = false;
     }
 

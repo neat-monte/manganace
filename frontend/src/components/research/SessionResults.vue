@@ -30,8 +30,8 @@
 import { ref } from "vue";
 
 import { InfoCircleOutlined } from "@ant-design/icons-vue";
-import Boxplot from "@/components/shared/Boxplot";
-import ImagesList from "@/components/shared/ImagesList";
+import Boxplot from "@/components/shared/infographics/Boxplot";
+import ImagesList from "@/components/shared/image/ImagesList";
 
 import useImages from "@/modules/images";
 import useResearch from "@/modules/research";

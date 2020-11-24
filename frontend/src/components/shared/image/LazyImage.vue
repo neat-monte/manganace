@@ -7,7 +7,7 @@
 
 <script>
 import LazyLoadImageDirective from "@/directives/LazyLoadImageDirective";
-import Loading from "@/components/shared/Loading";
+import Loading from "@/components/shared/display/Loading";
 
 export default {
   inheritAttrs: false,

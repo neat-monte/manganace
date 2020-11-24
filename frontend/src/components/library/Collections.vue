@@ -23,7 +23,7 @@
 import { ref, watchEffect } from "vue";
 
 import CollectionCard from "@/components/library/CollectionCard";
-import CollectionCreate from "@/components/actions/collection/CollectionCreate";
+import CollectionCreate from "@/components/shared/modals/collection/CollectionCreate";
 
 import useCollections from "@/modules/collections";
 

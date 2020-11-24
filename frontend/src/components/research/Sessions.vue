@@ -1,7 +1,7 @@
 <template>
   <div id="sessions">
     <div class="controls">
-      <CreateSession buttonText="Initialize session" />
+      <ResearchSessionCreate buttonText="Initialize session" />
     </div>
 
     <a-list
@@ -20,7 +20,7 @@
 <script>
 import { watchEffect, ref } from "vue";
 
-import CreateSession from "@/components/actions/research/CreateSession";
+import ResearchSessionCreate from "@/components/shared/modals/session/ResearchSessionCreate";
 import SessionCard from "@/components/research/SessionCard";
 
 import useResearch from "@/modules/research";
@@ -29,7 +29,7 @@ export default {
   name: "Sessions",
 
   async setup() {
-    const { sessionsById, loadSessionsAsync } = useResearch();
+    const { sessionsById, loadResearchSessionsAsync } = useResearch();
 
     const sessions = ref([]);
 
@@ -37,7 +37,7 @@ export default {
       sessions.value = Object.values(sessionsById);
     });
 
-    await loadSessionsAsync();
+    await loadResearchSessionsAsync();
 
     return {
       sessions,
@@ -45,7 +45,7 @@ export default {
   },
 
   components: {
-    CreateSession,
+    ResearchSessionCreate,
     SessionCard,
   },
 };

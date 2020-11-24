@@ -26,7 +26,7 @@ import { useRouter } from "vue-router";
 
 import ParticipantForm from "@/components/research/session/ParticipantForm";
 import Trials from "@/components/research/session/Trials";
-import Loading from "@/components/shared/Loading";
+import Loading from "@/components/shared/display/Loading";
 
 import useResearch from "@/modules/research";
 

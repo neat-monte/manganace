@@ -28,7 +28,7 @@
 <script>
 import Sessions from "@/components/research/Sessions";
 import Results from "@/components/research/Results";
-import Loading from "@/components/shared/Loading";
+import Loading from "@/components/shared/display/Loading";
 
 export default {
   name: "Research",

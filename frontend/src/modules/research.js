@@ -20,7 +20,7 @@ const insertSession = (session) => {
 
 export default function useResearch() {
 
-    const loadSessionsAsync = async () => {
+    const loadResearchSessionsAsync = async () => {
         await loadLock.acquireAsync();
         try {
             if (hasLoaded.value) {
@@ -31,23 +31,22 @@ export default function useResearch() {
                 sessions.forEach(session => insertSession(session));
                 hasLoaded.value = true;
             }
-        } catch {
-            notification.sessions.failedToLoad();
+        } catch (e) {
+            notification.error("Failed to load research sessions", e.message);
         } finally {
             loadLock.release();
         }
     }
 
-    const addSessionAsync = async (newSession) => {
+    const createResearchSessionAsync = async (newSession) => {
         try {
             const newSessionJson = JSON.stringify(newSession);
             const session = await api.sessions.createResearch(newSessionJson);
             if (session) {
                 insertSession(session);
-                notification.sessions.created(session);
             }
-        } catch {
-            notification.sessions.failedToAdd();
+        } catch (e) {
+            notification.error("Failed to create the research session", e.message);
         }
     }
 
@@ -56,7 +55,8 @@ export default function useResearch() {
         try {
             const session = sessionsById[newParticipant.sessionId];
             if (!session || session.participant) {
-                notification.sessions.cannotAssignParticipant();
+                notification.warning("Cannot assign participant",
+                    "A participant is already assigned to this session");
                 return;
             }
             const participantJson = JSON.stringify(newParticipant);
@@ -67,8 +67,8 @@ export default function useResearch() {
                     currentSession.participant = participant;
                 }
             }
-        } catch {
-            notification.sessions.failedToAssignParticipant()
+        } catch (e) {
+            notification.error("Failed to assign the participant", e.message);
         } finally {
             generalLock.release();
         }
@@ -76,14 +76,14 @@ export default function useResearch() {
 
     const getTrialsMetaInfoAsync = async () => {
         if (!currentSession) {
-            notification.research.cannotLoadTrialsMetaInfo();
+            notification.warning("Cannot load trials data", "A session is not selected");
             return;
         }
         await generalLock.acquireAsync();
         try {
             return await api.research.getTrialsMeta(currentSession.id)
-        } catch {
-            notification.research.failedToLoadTrialsMetaInfo();
+        } catch (e) {
+            notification.error("Failed to load trials data", e.message);
         } finally {
             generalLock.release();
         }
@@ -94,14 +94,14 @@ export default function useResearch() {
         try {
             const trialMetaJson = JSON.stringify(trialMeta);
             return await api.research.getTrialImages(trialMetaJson)
-        } catch {
-            notification.research.failedToLoadTrialImages();
+        } catch (e) {
+            notification.error("Failed to load images of the trial", e.message);
         } finally {
             generalLock.release();
         }
     }
 
-    const saveChosenTrialImage = async (chosenImage) => {
+    const saveChosenTrialImageAsync = async (chosenImage) => {
         await generalLock.acquireAsync();
         try {
             const imageJson = JSON.stringify(chosenImage);
@@ -110,6 +110,8 @@ export default function useResearch() {
                 currentSession.progress += 1;
                 sessionsById[currentSession.id].progress += 1;
             }
+        } catch (e) {
+            notification.error("Failed to save the answer", e.message);
         } finally {
             generalLock.release();
         }
@@ -126,6 +128,8 @@ export default function useResearch() {
         await generalLock.acquireAsync()
         try {
             return await api.research.getResultsData();
+        } catch (e) {
+            notification.error("Failed to load results data", e.message);
         } finally {
             generalLock.release();
         }
@@ -135,6 +139,8 @@ export default function useResearch() {
         await generalLock.acquireAsync()
         try {
             return await api.research.getSessionResultsData(sessionId);
+        } catch (e) {
+            notification.error("Failed to load results data", e.message);
         } finally {
             generalLock.release();
         }
@@ -144,6 +150,8 @@ export default function useResearch() {
         await generalLock.acquireAsync()
         try {
             return await api.research.getExportCsv();
+        } catch (e) {
+            notification.error("Failed to export the data", e.message);
         } finally {
             generalLock.release();
         }
@@ -153,15 +161,15 @@ export default function useResearch() {
         sessionsLoaded: readonly(hasLoaded),
         sessionsById: readonly(sessionsById),
         currentSession: readonly(currentSession),
-        loadSessionsAsync,
-        addSessionAsync,
+        loadResearchSessionsAsync,
+        createResearchSessionAsync,
         assignParticipantAsync,
-        setCurrentSession,
         getTrialsMetaInfoAsync,
         getTrialImagesAsync,
-        saveChosenTrialImage,
         getResultsDataAsync,
         getSessionResultsDataAsync,
-        getExportCsvAsync
+        getExportCsvAsync,
+        saveChosenTrialImageAsync,
+        setCurrentSession,
     }
 }

@@ -112,7 +112,7 @@ import { SyncOutlined } from "@ant-design/icons-vue";
 import useResearch from "@/modules/research";
 
 export default {
-  name: "SessionCreate",
+  name: "ResearchSessionCreate",
 
   props: {
     buttonText: {
@@ -129,7 +129,7 @@ export default {
     const duration = ref();
     const storage = ref();
 
-    const { addSessionAsync } = useResearch();
+    const { createResearchSessionAsync } = useResearch();
 
     const newSession = reactive({
       totalAmount: 1,
@@ -160,7 +160,7 @@ export default {
     });
 
     async function handleCreate() {
-      await addSessionAsync(newSession);
+      await createResearchSessionAsync(newSession);
       visible.value = false;
     }
 

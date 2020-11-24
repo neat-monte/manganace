@@ -27,57 +27,53 @@ export default function useImages() {
             const images = await api.collections.getImages(collectionId);
             images.forEach(image => insertImage(image));
             hasLoaded[collectionId] = true;
-        } catch {
-            notification.images.failedToLoad();
+        } catch (e) {
+            notification.error("Failed to load images", e.message);
         } finally {
             loadLock.release();
         }
     }
 
-    const addImageAsync = async (newImage) => {
+    const createCollectionImageAsync = async (newImage) => {
         try {
             const imageJson = JSON.stringify(newImage);
             const image = await api.images.createCImage(imageJson);
             if (image) {
                 insertImage(image)
-                notification.images.added(image);
             }
         } catch (e) {
-            console.log(e);
-            notification.images.failedToSave();
+            notification.error("Failed to save the image", e.message);
         }
     }
 
-    const updateImageAsync = async (updatedImage) => {
+    const updateCollectionImageAsync = async (updatedImage) => {
         try {
             const imageJson = JSON.stringify(updatedImage);
             const image = await api.images.updateCImage(updatedImage.id, imageJson)
             if (image) {
                 insertImage(image)
-                notification.images.updated(image);
             }
-        } catch {
-            notification.images.failedToUpdate();
+        } catch (e) {
+            notification.error("Failed to update the image", e.message);
         }
     }
 
-    const deleteImageAsync = async (imageId) => {
+    const deleteCollectionImageAsync = async (imageId) => {
         try {
             const image = await api.images.destroyCImage(imageId);
             if (image) {
                 delete imagesByCollectionId[image.collectionId][image.id];
-                notification.images.deleted(image);
             }
-        } catch {
-            notification.images.failedToDelete();
+        } catch (e) {
+            notification.error("Failed to delete the image", e.message);
         }
     }
 
     return {
         imagesByCollectionId: readonly(imagesByCollectionId),
         loadImagesOfCollectionAsync,
-        addImageAsync,
-        updateImageAsync,
-        deleteImageAsync
+        createCollectionImageAsync,
+        updateCollectionImageAsync,
+        deleteCollectionImageAsync
     }
 }

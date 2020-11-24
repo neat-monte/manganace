@@ -27,14 +27,14 @@ export default function useActivity() {
             const images = await api.sessions.getImages(sessionId);
             images.forEach(image => insertImage(image));
             loaded[sessionId] = true;
-        } catch {
-            notification.activity.failedToLoad();
+        } catch (e) {
+            notification.error("Failed to load activity", e.message);
         } finally {
             activityLock.release();
         }
     }
 
-    const addGeneratedImage = async (image) => {
+    const insertGeneratedImage = async (image) => {
         if (!hasLoaded(image.sessionId)) {
             await loadImagesOfSessionAsync();
         }
@@ -46,7 +46,7 @@ export default function useActivity() {
         }
     }
 
-    const deleteImage = async (sessionId, image) => {
+    const tryDeleteImageAsync = async (sessionId, image) => {
         await activityLock.acquireAsync();
         try {
             await api.images.destroyImage(image.id);
@@ -56,9 +56,10 @@ export default function useActivity() {
             }
         } catch (e) {
             if (e.message === "Forbidden") {
-                notification.activity.cannotDeleteImage();
+                notification.warning("Cannot delete image",
+                    "At least one collection is dependent on the image");
             } else {
-                notification.activity.failedToDeleteImage();
+                notification.error("Failed to delete image", e.message)
             }
         }
         finally {
@@ -69,7 +70,7 @@ export default function useActivity() {
     return {
         imagesBySessionId: readonly(imagesBySessionId),
         loadImagesOfSessionAsync,
-        addGeneratedImage,
-        deleteImage,
+        tryDeleteImageAsync,
+        insertGeneratedImage,
     }
 }

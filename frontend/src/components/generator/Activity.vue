@@ -16,18 +16,12 @@
             </span>
           </a-tooltip>
           <img
-            v-if="index < preloadCount"
-            @click="swapImage(index)"
-            :src="image.url"
-          />
-          <img
-            v-else
             @click="swapImage(index)"
             :data-src="image.url"
             class="swiper-lazy"
           />
         </div>
-        <div v-if="preloadCount <= index" class="swiper-lazy-preloader"></div>
+        <div class="swiper-lazy-preloader"></div>
       </swiper-slide>
     </swiper>
   </section>
@@ -64,7 +58,7 @@ export default {
     const {
       imagesBySessionId,
       loadImagesOfSessionAsync,
-      deleteImage,
+      tryDeleteImageAsync,
     } = useActivity();
 
     const generatedImages = ref([]);
@@ -78,7 +72,7 @@ export default {
     await loadImagesOfSessionAsync(currentSession.id);
 
     async function destroyImage(image) {
-      await deleteImage(currentSession.id, image);
+      await tryDeleteImageAsync(currentSession.id, image);
     }
 
     return {

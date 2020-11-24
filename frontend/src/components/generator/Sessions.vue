@@ -4,7 +4,7 @@
       <span class="message">Choose</span>
       <Suspense>
         <template #default>
-          <SessionSelect
+          <GeneratorSessionSelect
             placeholder="an already existing"
             @session-id-set="setSession"
           />
@@ -14,7 +14,7 @@
         </template>
       </Suspense>
       <span class="message">session or</span>
-      <SessionCreate buttonText="Create" />
+      <GeneratorSessionCreate buttonText="Create" />
       <span class="message">new session</span>
     </div>
 
@@ -41,9 +41,9 @@
 <script>
 import { SwapOutlined } from "@ant-design/icons-vue";
 import Activity from "@/components/generator/Activity";
-import SessionSelect from "@/components/actions/session/SessionSelect";
-import SessionCreate from "@/components/actions/session/SessionCreate";
-import Loading from "@/components/shared/Loading";
+import GeneratorSessionSelect from "@/components/shared/modals/session/GeneratorSessionSelect";
+import GeneratorSessionCreate from "@/components/shared/modals/session/GeneratorSessionCreate";
+import Loading from "@/components/shared/display/Loading";
 
 import useGenerator from "@/modules/generator";
 import useSessions from "@/modules/sessions";
@@ -72,8 +72,8 @@ export default {
 
   components: {
     Loading,
-    SessionSelect,
-    SessionCreate,
+    GeneratorSessionSelect,
+    GeneratorSessionCreate,
     Activity,
     SwapOutlined,
   },

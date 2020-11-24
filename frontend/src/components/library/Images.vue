@@ -25,7 +25,7 @@
 import { ref } from "vue";
 
 import { PictureOutlined } from "@ant-design/icons-vue";
-import ImagesList from "@/components/shared/ImagesList";
+import ImagesList from "@/components/shared/image/ImagesList";
 
 import useImages from "@/modules/images";
 

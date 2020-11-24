@@ -25,8 +25,8 @@ export default function useExtras() {
                 genders.forEach(gen => gendersById[gen.id] = gen);
                 gendersLoaded.value = true;
             }
-        } catch {
-            notification.extras.failedToLoadGenders();
+        } catch (e) {
+            notification.error("Failed to load genders", e.message);
         } finally {
             gendersLoadLock.release();
         }
@@ -43,8 +43,8 @@ export default function useExtras() {
                 educations.forEach(edu => educationsById[edu.id] = edu);
                 educationsLoaded.value = true;
             }
-        } catch {
-            notification.extras.failedToLoadEducations();
+        } catch (e) {
+            notification.error("Failed to load educations", e.message);
         } finally {
             educationsLoadLock.release();
         }

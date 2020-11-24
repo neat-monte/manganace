@@ -16,3 +16,9 @@ export const warning = (message, description, placement = "bottomRight") => {
 export const error = (message, description, placement = "bottomRight") => {
     send("error", message, description, placement);
 }
+
+export default {
+    success,
+    warning,
+    error
+}

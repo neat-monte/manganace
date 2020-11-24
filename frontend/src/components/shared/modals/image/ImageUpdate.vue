@@ -38,7 +38,7 @@
 <script>
 import { reactive, ref } from "vue";
 import { EditOutlined } from "@ant-design/icons-vue";
-import TagSelect from "@/components/actions/tag/TagSelect";
+import TagSelect from "@/components/shared/modals/tag/TagSelect";
 import useImages from "@/modules/images";
 
 export default {
@@ -54,7 +54,7 @@ export default {
       visible.value = true;
     }
 
-    const { updateImageAsync } = useImages();
+    const { updateCollectionImageAsync } = useImages();
     const updatedImage = reactive({
       id: props.image.id,
       description: props.image.description,
@@ -63,7 +63,7 @@ export default {
     });
 
     async function handleUpdate() {
-      await updateImageAsync(updatedImage);
+      await updateCollectionImageAsync(updatedImage);
       visible.value = false;
     }
 

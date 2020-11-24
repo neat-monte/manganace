@@ -42,7 +42,7 @@ import { reactive } from "vue";
 
 import { SyncOutlined } from "@ant-design/icons-vue";
 import useGenerator from "@/modules/generator";
-import Slider from "@/components/shared/Slider";
+import Slider from "@/components/shared/controls/Slider";
 
 export default {
   name: "Controls",

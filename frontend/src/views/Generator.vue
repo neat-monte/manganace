@@ -26,7 +26,7 @@
 import Image from "@/components/generator/Image";
 import Controls from "@/components/generator/Controls";
 import Sessions from "@/components/generator/Sessions";
-import Loading from "@/components/shared/Loading";
+import Loading from "@/components/shared/display/Loading";
 import useGenerator from "@/modules/generator";
 
 export default {

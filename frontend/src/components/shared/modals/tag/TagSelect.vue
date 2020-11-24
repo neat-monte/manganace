@@ -24,7 +24,7 @@
 
 <script>
 import useTags from "@/modules/tags";
-import TagCreate from "@/components/actions/tag/TagCreate";
+import TagCreate from "@/components/shared/modals/tag/TagCreate";
 
 export default {
   name: "TagSelect",

@@ -19,7 +19,7 @@
 <script>
 import { ref, watchEffect } from "vue";
 
-import TagCreate from "@/components/actions/tag/TagCreate";
+import TagCreate from "@/components/shared/modals/tag/TagCreate";
 import TagCard from "@/components/library/TagCard";
 
 import useTags from "@/modules/tags";

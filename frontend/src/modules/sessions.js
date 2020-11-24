@@ -13,7 +13,7 @@ const sessionsById = reactive({});
 
 export default function useSessions() {
 
-    const loadSessionsAsync = async () => {
+    const loadGeneratorSessionsAsync = async () => {
         await loadSessionsLock.acquireAsync();
         try {
             if (hasLoaded.value) {
@@ -24,58 +24,29 @@ export default function useSessions() {
                 sessions.forEach(ses => sessionsById[ses.id] = ses);
                 hasLoaded.value = true;
             }
-        } catch {
-            notification.sessions.failedToLoad();
+        } catch (e) {
+            notification.error("Failed to load generator sessions", e.message);
         } finally {
             loadSessionsLock.release();
         }
     }
 
-    const addSessionAsync = async (newSession) => {
+    const createGeneratorSessionAsync = async (newSession) => {
         try {
             const sessionJson = JSON.stringify(newSession);
             const session = await api.sessions.createGenerator(sessionJson);
             if (session) {
                 sessionsById[session.id] = session;
-                notification.sessions.created(session);
-                setCurrentSession(sessionsById[session.id])
+                setCurrentSession(sessionsById[session.id]);
             }
-        } catch {
-            notification.sessions.failedToAdd();
-        }
-    }
-
-    const updateSessionAsync = async (updatedSession) => {
-        try {
-            const sessionJson = JSON.stringify(updatedSession);
-            const session = await api.sessions.updateGenerator(updatedSession.id, sessionJson);
-            if (session) {
-                sessionsById[session.id] = session;
-                notification.sessions.updated(session);
-            }
-        } catch {
-            notification.sessions.failedToUpdate();
-        }
-    }
-
-    const deleteSessionAsync = async (sessionId) => {
-        try {
-            const session = await api.sessions.destroyGenerator(sessionId);
-            if (session) {
-                delete sessionsById[session.id];
-                notification.sessions.deleted(session);
-            }
-        } catch {
-            notification.sessions.failedToDelete();
+        } catch (e) {
+            notification.error("Failed to create the generator session", e.message);
         }
     }
 
     return {
-        areLoaded: readonly(hasLoaded),
         sessionsById: readonly(sessionsById),
-        loadSessionsAsync,
-        addSessionAsync,
-        updateSessionAsync,
-        deleteSessionAsync
+        loadGeneratorSessionsAsync,
+        createGeneratorSessionAsync,
     }
 }

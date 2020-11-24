@@ -31,10 +31,10 @@
 <script>
 import { ref, watchEffect } from "vue";
 
-import ImageCard from "@/components/shared/ImageCard";
-import TagSelect from "@/components/actions/tag/TagSelect";
-import Loading from "@/components/shared/Loading";
-import Empty from "@/components/shared/Empty";
+import ImageCard from "@/components/shared/image/ImageCard";
+import TagSelect from "@/components/shared/modals/tag/TagSelect";
+import Loading from "@/components/shared/display/Loading";
+import Empty from "@/components/shared/display/Empty";
 
 export default {
   name: "ImagesList",

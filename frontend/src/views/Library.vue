@@ -23,7 +23,7 @@
 <script>
 import Collections from "@/components/library/Collections";
 import Tags from "@/components/library/Tags";
-import Loading from "@/components/shared/Loading";
+import Loading from "@/components/shared/display/Loading";
 
 export default {
   name: "Library",

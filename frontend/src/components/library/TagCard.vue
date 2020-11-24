@@ -17,8 +17,8 @@
 </template>
 
 <script>
-import TagUpdate from "@/components/actions/tag/TagUpdate";
-import TagDelete from "@/components/actions/tag/TagDelete";
+import TagUpdate from "@/components/shared/modals/tag/TagUpdate";
+import TagDelete from "@/components/shared/modals/tag/TagDelete";
 
 export default {
   name: "TagCard",

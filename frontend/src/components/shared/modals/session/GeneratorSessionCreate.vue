@@ -1,15 +1,21 @@
 <template>
-  <a-tooltip placement="top">
-    <template v-slot:title>
-      <span>Create new tag</span>
-    </template>
-    <a-button v-if="isAddon" type="primary" @click="showModal()" class="addon">
-      <template v-slot:icon>
-        <plus-outlined />
-      </template>
-    </a-button>
+  <a-button v-if="buttonText" type="primary" @click="showModal()">
+    {{ buttonText }}
+  </a-button>
 
-    <a-button v-else type="primary" @click="showModal()">
+  <a-button
+    v-else-if="isAddon"
+    type="primary"
+    @click="showModal()"
+    class="addon"
+  >
+    <template v-slot:icon>
+      <plus-outlined />
+    </template>
+  </a-button>
+
+  <a-tooltip v-else placement="top" title="Create new session">
+    <a-button type="primary" @click="showModal()">
       <template v-slot:icon>
         <plus-outlined />
       </template>
@@ -18,12 +24,12 @@
 
   <a-modal
     v-model:visible="visible"
-    title="Create new tag"
+    title="Create new session"
     @ok="handleCreate()"
   >
     <a-form>
       <a-form-item label="Name">
-        <a-input v-model:value="newTag.name" placeholder="Short tag name" />
+        <a-input v-model:value="newSession.name" placeholder="Session name" />
       </a-form-item>
     </a-form>
   </a-modal>
@@ -32,12 +38,16 @@
 <script>
 import { ref, reactive } from "vue";
 import { PlusOutlined } from "@ant-design/icons-vue";
-import useTags from "@/modules/tags";
+import useSessions from "@/modules/sessions";
 
 export default {
-  name: "TagCreate",
+  name: "GeneratorSessionCreate",
 
   props: {
+    buttonText: {
+      type: String,
+      default: null,
+    },
     isAddon: {
       type: Boolean,
       default: false,
@@ -50,17 +60,17 @@ export default {
       visible.value = true;
     }
 
-    const { addTagAsync } = useTags();
-    const newTag = reactive({
+    const { createGeneratorSessionAsync } = useSessions();
+    const newSession = reactive({
       name: null,
     });
     async function handleCreate() {
-      await addTagAsync(newTag);
+      await createGeneratorSessionAsync(newSession);
       visible.value = false;
     }
 
     return {
-      newTag,
+      newSession,
       handleCreate,
       showModal,
       visible,

@@ -17,7 +17,7 @@
 import download from "downloadjs";
 
 import { ExportOutlined } from "@ant-design/icons-vue";
-import Boxplot from "@/components/shared/Boxplot";
+import Boxplot from "@/components/shared/infographics/Boxplot";
 
 import useResearch from "@/modules/research";
 

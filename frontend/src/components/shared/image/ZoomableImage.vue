@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import Loading from "@/components/shared/Loading";
+import Loading from "@/components/shared/display/Loading";
 
 export default {
   name: "ZoomableImage",
