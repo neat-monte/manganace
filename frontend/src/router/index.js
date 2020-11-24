@@ -13,11 +13,6 @@ const routes = [
     component: Library
   },
   {
-    path: "/library/:collectionId",
-    name: "CollectionImages",
-    component: Library
-  },
-  {
     path: "/generator",
     name: "Generator",
     component: Generator

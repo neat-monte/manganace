@@ -1,6 +1,6 @@
 <template>
   <div class="tag-card">
-    <span class="tag-title">
+    <span class="sm-title">
       {{ tag.name }}
     </span>
     <div class="card-controls">
@@ -42,12 +42,6 @@ export default {
   background: $darkness-05;
   border-radius: 2px;
   padding: 10px 40px;
-
-  .tag-title {
-    font-size: 1rem;
-    font-weight: bold;
-    word-wrap: break-word;
-  }
 
   .card-controls {
     position: absolute;

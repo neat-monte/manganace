@@ -1,22 +1,19 @@
 <template>
-  <div id="tags">
+  <section id="tags">
     <div class="tags-header">
       <span class="title">Tags</span>
       <div class="controls">
         <TagCreate />
       </div>
     </div>
-    <a-list
-      :grid="{ gutter: 20, xs: 2, md: 2, lg: 3, xl: 4, xxl: 6 }"
-      :data-source="tags"
-    >
+    <a-list :grid="{ gutter: 20, xs: 2, md: 1 }" :data-source="tags">
       <template #renderItem="{ item, index }">
         <a-list-item :key="index">
           <TagCard :tag="item" />
         </a-list-item>
       </template>
     </a-list>
-  </div>
+  </section>
 </template>
 
 <script>

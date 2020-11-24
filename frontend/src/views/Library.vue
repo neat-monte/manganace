@@ -2,57 +2,34 @@
   <div id="library" class="content">
     <Suspense>
       <template #default>
-        <Collections :collectionId="collectionId" />
-      </template>
-      <template #fallback>
-        <Loading id="collections" />
-      </template>
-    </Suspense>
-
-    <Suspense v-if="collectionId">
-      <template #default>
-        <Images :collectionId="collectionId" />
-      </template>
-      <template #fallback>
-        <Loading id="images" />
-      </template>
-    </Suspense>
-    <Suspense v-else>
-      <template #default>
         <Tags />
       </template>
       <template #fallback>
         <Loading id="tags" />
       </template>
     </Suspense>
+
+    <Suspense>
+      <template #default>
+        <Collections :collectionId="collectionId" />
+      </template>
+      <template #fallback>
+        <Loading id="collections" />
+      </template>
+    </Suspense>
   </div>
 </template>
 
 <script>
-import { computed } from "vue";
-import { useRoute } from "vue-router";
-
 import Collections from "@/components/library/Collections";
-import Images from "@/components/library/Images";
 import Tags from "@/components/library/Tags";
 import Loading from "@/components/shared/Loading";
 
 export default {
   name: "Library",
 
-  setup() {
-    const route = useRoute();
-
-    const collectionId = computed(() => Number(route.params.collectionId));
-
-    return {
-      collectionId,
-    };
-  },
-
   components: {
     Collections,
-    Images,
     Tags,
     Loading,
   },
@@ -65,21 +42,25 @@ export default {
   flex-wrap: wrap;
   justify-content: space-between;
 
+  #tags,
   #collections {
-    flex: 100%;
+    flex: 1 100%;
   }
 
-  #images,
-  #tags {
-    flex: 1;
+  #collections {
+    order: -1;
   }
 }
 
 @include tablet {
   #library {
+    #tags {
+      flex: 0 200px;
+    }
+
     #collections {
-      flex: 0 380px;
-      margin-right: 20px;
+      flex: 1;
+      order: initial;
     }
   }
 }

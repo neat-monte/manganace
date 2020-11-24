@@ -47,7 +47,7 @@ export default {
 
 <style lang="scss" scoped>
 .image-card {
-  min-height: 40px;
+  min-height: 230px;
   position: relative;
   margin-bottom: 20px;
   box-shadow: $box-shadow-strong;

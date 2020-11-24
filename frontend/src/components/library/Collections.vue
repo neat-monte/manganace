@@ -6,73 +6,48 @@
         <CollectionCreate />
       </div>
     </div>
-
-    <a-collapse :activeKey="collectionId.toString()" :bordered="false">
-      <a-collapse-panel
-        v-for="collection in collections"
-        :key="collection.id.toString()"
-        :header="collection.name"
-        @click="renderImages(collection.id)"
-      >
-        <Collection :collection="collection" />
-      </a-collapse-panel>
-    </a-collapse>
-
-    <Empty v-if="collections.length == 0" />
+    <a-list
+      :grid="{ gutter: 20, xs: 1, sm: 2, md: 1, lg: 2, xl: 3, xxl: 4 }"
+      :data-source="collections"
+    >
+      <template #renderItem="{ item, index }">
+        <a-list-item :key="index">
+          <CollectionCard :collection="item" />
+        </a-list-item>
+      </template>
+    </a-list>
   </section>
 </template>
 
 <script>
 import { ref, watchEffect } from "vue";
-import { useRouter } from "vue-router";
 
-import Collection from "@/components/library/Collection";
+import CollectionCard from "@/components/library/CollectionCard";
 import CollectionCreate from "@/components/actions/collection/CollectionCreate";
-import Empty from "@/components/shared/Empty";
 
 import useCollections from "@/modules/collections";
 
 export default {
   name: "Collections",
 
-  props: {
-    collectionId: Number,
-  },
-
-  async setup(props) {
-    const router = useRouter();
+  async setup() {
     const { collectionsById, loadCollectionsAsync } = useCollections();
     const collections = ref([]);
 
     watchEffect(() => {
-      if (props.collectionId && !(props.collectionId in collectionsById)) {
-        router.push({
-          name: "NotFound",
-        });
-      }
-
       collections.value = Object.values(collectionsById);
     });
-
-    function renderImages(collectionId) {
-      router.push({
-        name: "CollectionImages",
-        params: { collectionId: collectionId },
-      });
-    }
 
     await loadCollectionsAsync();
 
     return {
       collections,
-      renderImages,
     };
   },
 
   components: {
-    Collection,
     CollectionCreate,
-    Empty,
+    CollectionCard,
   },
 };
 </script>
@@ -86,7 +61,7 @@ export default {
   .collections-header {
     display: flex;
     position: relative;
-    margin: 8px 16px;
+    margin: 8px 0;
 
     .title {
       width: 100%;
@@ -99,6 +74,12 @@ export default {
       align-self: center;
       right: 0;
     }
+  }
+}
+
+@include tablet {
+  #collections {
+    padding: 0 0 10px 20px;
   }
 }
 </style>

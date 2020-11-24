@@ -1,24 +1,21 @@
 <template>
-  <a-tooltip placement="top">
-    <template v-slot:title>
-      <span>Create new session</span>
+  <a-button v-if="buttonText" type="primary" @click="showModal()">
+    {{ buttonText }}
+  </a-button>
+
+  <a-button
+    v-else-if="isAddon"
+    type="primary"
+    @click="showModal()"
+    class="addon"
+  >
+    <template v-slot:icon>
+      <plus-outlined />
     </template>
-    <a-button v-if="buttonText" type="primary" @click="showModal()">
-      {{ buttonText }}
-    </a-button>
+  </a-button>
 
-    <a-button
-      v-else-if="isAddon"
-      type="primary"
-      @click="showModal()"
-      class="addon"
-    >
-      <template v-slot:icon>
-        <plus-outlined />
-      </template>
-    </a-button>
-
-    <a-button v-else type="primary" @click="showModal()">
+  <a-tooltip v-else placement="top" title="Create new session">
+    <a-button type="primary" @click="showModal()">
       <template v-slot:icon>
         <plus-outlined />
       </template>

@@ -17,5 +17,12 @@ html {
             color: $primary;
             margin-bottom: 10px;
         }
+
+        .sm-title {
+            font-size: 1rem;
+            font-weight: bold;
+            word-wrap: break-word;
+            color: $darkness;
+        }
     }
 }
