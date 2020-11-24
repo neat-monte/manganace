@@ -15,7 +15,6 @@
   </a-tooltip>
 
   <a-modal v-model:visible="visible" title="Save image" @ok="handleSave()">
-    {{ newImage }}
     <a-form>
       <a-form-item label="Collection">
         <Suspense>

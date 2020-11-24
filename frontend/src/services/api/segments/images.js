@@ -1,15 +1,20 @@
 import { fetchJSON as fetchJSON, methods } from './base'
 
+const collectionImagesEndpoint = "/collections/images";
 const imagesEndpoint = "/images";
 
-export const create = async (data) => {
-  return await fetchJSON(imagesEndpoint, methods.POST, data);
+export const createCImage = async (data) => {
+  return await fetchJSON(collectionImagesEndpoint, methods.POST, data);
 }
 
-export const update = async (id, data) => {
-  return await fetchJSON(`${imagesEndpoint}/${id}`, methods.PUT, data);
+export const updateCImage = async (id, data) => {
+  return await fetchJSON(`${collectionImagesEndpoint}/${id}`, methods.PUT, data);
 }
 
-export const destroy = async (id) => {
-  return await fetchJSON(`${imagesEndpoint}/${id}`, methods.DELETE);
+export const destroyCImage = async (id) => {
+  return await fetchJSON(`${collectionImagesEndpoint}/${id}`, methods.DELETE);
+}
+
+export const destroyImage = async (id) => {
+  return await fetchJSON(`${imagesEndpoint}/${id}`, methods.DELETE)
 }

@@ -25,6 +25,11 @@ class ImageService:
         db_image = data.image.create_with_vectors(db, request.seed, filename, request.session_id, request.vectors)
         return self.construct_image(db_image)
 
+    def delete(self, db: Session, db_image: m.Image):
+        image = self.construct_image(db_image)
+        _ = data.image.delete(db, db_image.id)
+        return image
+
     @staticmethod
     def construct_image(db_image: m.Image) -> s.Image:
         return s.Image.construct(

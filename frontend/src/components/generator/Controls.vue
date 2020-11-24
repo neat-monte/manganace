@@ -25,10 +25,6 @@
       </a-form-item>
     </a-form>
     <div class="controls">
-      <a-button @click="clearGenerateRequest" type="secondary">
-        Clear
-        <clear-outlined />
-      </a-button>
       <a-button
         @click="generateAsync(generateRequest)"
         :disabled="isGenerating || !generateRequest.seed"
@@ -44,7 +40,7 @@
 <script>
 import { reactive } from "vue";
 
-import { SyncOutlined, ClearOutlined } from "@ant-design/icons-vue";
+import { SyncOutlined } from "@ant-design/icons-vue";
 import useGenerator from "@/modules/generator";
 import Slider from "@/components/shared/Slider";
 
@@ -63,11 +59,6 @@ export default {
       seed: "",
       vectors: [],
     });
-
-    function clearGenerateRequest() {
-      generateRequest.seed = "";
-      generateRequest.vectors = [];
-    }
 
     function seedOnChange(e) {
       const { value } = e.target;
@@ -97,7 +88,6 @@ export default {
 
     return {
       generateRequest,
-      clearGenerateRequest,
       vectors,
       isGenerating,
       generateAsync,
@@ -109,7 +99,6 @@ export default {
   components: {
     Slider,
     SyncOutlined,
-    ClearOutlined,
   },
 };
 </script>

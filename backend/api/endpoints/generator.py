@@ -4,7 +4,6 @@ from fastapi import APIRouter, HTTPException, Depends
 from sqlalchemy.orm import Session
 
 import data
-import models
 import services
 from api.dependencies import get_db
 from schemas import GenerateRequest, GeneratorInitializedResponse, Image

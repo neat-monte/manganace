@@ -11,6 +11,9 @@ class ImageFileService:
     ROOT = Path.cwd()
     SESSIONS = 'static/images/sessions'
 
+    def get_path(self, filename: str, session_id: int) -> Path:
+        return self.ROOT / self.SESSIONS / str(session_id) / filename
+
     def make_url(self, filename: str, session_id: int):
         url = parse.urlunsplit(('http', f'{settings.BACKEND_HOST_DOMAIN}:{settings.BACKEND_HOST_PORT}', '', '', ''))
         return parse.urljoin(url, f'{str(self.SESSIONS)}/{session_id}/{filename}')

@@ -46,9 +46,30 @@ export default function useActivity() {
         }
     }
 
+    const deleteImage = async (sessionId, image) => {
+        await activityLock.acquireAsync();
+        try {
+            await api.images.destroyImage(image.id);
+            const index = imagesBySessionId[sessionId].indexOf(image);
+            if (index > -1) {
+                imagesBySessionId[sessionId].splice(index, 1);
+            }
+        } catch (e) {
+            if (e.message === "Forbidden") {
+                notification.activity.cannotDeleteImage();
+            } else {
+                notification.activity.failedToDeleteImage();
+            }
+        }
+        finally {
+            activityLock.release();
+        }
+    }
+
     return {
         imagesBySessionId: readonly(imagesBySessionId),
         loadImagesOfSessionAsync,
         addGeneratedImage,
+        deleteImage,
     }
 }
