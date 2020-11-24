@@ -87,8 +87,8 @@ export default {
     });
 
     async function handleSave() {
-      await createCollectionImageAsync(newImage);
       visible.value = false;
+      await createCollectionImageAsync(newImage);
     }
 
     return {

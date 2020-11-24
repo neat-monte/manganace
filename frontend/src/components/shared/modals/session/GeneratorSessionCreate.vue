@@ -51,8 +51,8 @@ export default {
       name: null,
     });
     async function handleCreate() {
-      await createGeneratorSessionAsync(newSession);
       visible.value = false;
+      await createGeneratorSessionAsync(newSession);
     }
 
     return {

@@ -51,8 +51,8 @@ export default {
       name: null,
     });
     async function handleCreate() {
-      await createTagAsync(newTag);
       visible.value = false;
+      await createTagAsync(newTag);
     }
 
     return {

@@ -162,8 +162,8 @@ export default {
     });
 
     async function handleCreate() {
-      await createResearchSessionAsync(newSession);
       visible.value = false;
+      await createResearchSessionAsync(newSession);
     }
 
     return {

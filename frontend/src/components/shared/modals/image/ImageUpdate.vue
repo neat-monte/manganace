@@ -69,8 +69,8 @@ export default {
     });
 
     async function handleUpdate() {
-      await updateCollectionImageAsync(updatedImage);
       visible.value = false;
+      await updateCollectionImageAsync(updatedImage);
     }
 
     return {

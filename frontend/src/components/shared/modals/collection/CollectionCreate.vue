@@ -62,8 +62,8 @@ export default {
       description: null,
     });
     async function handleCreate() {
-      await createCollectionAsync(newCollection);
       visible.value = false;
+      await createCollectionAsync(newCollection);
     }
 
     return {

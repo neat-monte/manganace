@@ -49,8 +49,8 @@ export default {
       name: props.tag.name,
     });
     async function handleUpdate() {
-      await updateTagAsync(updatedTag);
       visible.value = false;
+      await updateTagAsync(updatedTag);
     }
 
     return {

@@ -61,8 +61,8 @@ export default {
 
     const { deleteTagAsync } = useTags();
     async function handleDelete() {
-      await deleteTagAsync(props.tagId);
       visible.value = false;
+      await deleteTagAsync(props.tagId);
     }
 
     return {

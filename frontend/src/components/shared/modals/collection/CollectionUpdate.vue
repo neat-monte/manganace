@@ -64,8 +64,8 @@ export default {
       description: props.collection.description,
     });
     async function handleUpdate() {
-      await updateCollectionAsync(updatedCollection);
       visible.value = false;
+      await updateCollectionAsync(updatedCollection);
     }
 
     return {

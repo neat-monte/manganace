@@ -45,8 +45,8 @@ export default {
 
     const { deleteCollectionImageAsync } = useImages();
     async function handleDelete() {
-      await deleteCollectionImageAsync(props.imageId);
       visible.value = false;
+      await deleteCollectionImageAsync(props.imageId);
     }
 
     return {
