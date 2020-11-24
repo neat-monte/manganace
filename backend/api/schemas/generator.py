@@ -1,9 +1,9 @@
 from typing import List, Optional
 
 from fastapi_camelcase import CamelModel
-from pydantic import conint, HttpUrl, confloat
+from pydantic import conint
 
-from schemas.vector import Vector, ImageVector
+from api.schemas.vector import Vector, ImageVector
 
 
 class GeneratorInitializedResponse(CamelModel):

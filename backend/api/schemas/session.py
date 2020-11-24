@@ -5,7 +5,7 @@ from fastapi_camelcase import CamelModel
 from pydantic.class_validators import validator
 from pydantic.types import conint, constr
 
-from schemas import Participant
+from api.schemas import Participant
 
 
 class SessionInDb(CamelModel):

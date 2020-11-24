@@ -1,4 +1,4 @@
-from models import *
+from database.models import *
 
 from .c_image import CRUDCImage
 from .collection_p import CRUDParticipantCollection

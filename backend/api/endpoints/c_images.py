@@ -5,8 +5,8 @@ from sqlalchemy.orm import Session
 
 import services
 from api.dependencies import get_db
-from models import Collection
-from schemas import CImage, CImageCreate, CImageUpdate
+from database.models import Collection
+from api.schemas import CImage, CImageCreate, CImageUpdate
 
 router = APIRouter()
 

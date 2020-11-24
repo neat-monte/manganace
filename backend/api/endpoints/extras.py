@@ -3,9 +3,9 @@ from typing import List, Any
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
-import models
+from database import models
 from api.dependencies import get_db
-from schemas import Gender, Education
+from api.schemas import Gender, Education
 
 router = APIRouter()
 

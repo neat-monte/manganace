@@ -2,9 +2,9 @@ from typing import List
 
 from sqlalchemy.orm import Session
 
-from data._crud_base import CRUDBase
-from models import Tag
-from schemas import TagCreate, TagUpdate
+from database.CRUD._crud_base import CRUDBase
+from database.models import Tag
+from api.schemas import TagCreate, TagUpdate
 
 
 # noinspection PyMethodMayBeStatic

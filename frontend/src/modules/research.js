@@ -105,7 +105,7 @@ export default function useResearch() {
         await generalLock.acquireAsync();
         try {
             const imageJson = JSON.stringify(chosenImage);
-            const image = await api.images.create(imageJson);
+            const image = await api.images.createCImage(imageJson);
             if (image) {
                 currentSession.progress += 1;
                 sessionsById[currentSession.id].progress += 1;

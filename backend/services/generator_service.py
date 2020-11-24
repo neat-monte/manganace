@@ -2,8 +2,8 @@ import numpy as np
 from sqlalchemy.orm import Session
 
 from encoder.wrapper import GeneratorWrapper
-from models import ResearchSession
-from schemas import GenerateRequest, Image, ImageVector
+from database.models import ResearchSession
+from api.schemas import GenerateRequest, Image, ImageVector
 from .image_file_service import ImageFileService
 from .image_service import ImageService
 from .seeds_service import SeedsService

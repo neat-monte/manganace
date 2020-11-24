@@ -4,10 +4,7 @@ from typing import TypeVar
 
 from sqlalchemy.orm import Session
 
-from models import Tag
-from models.education import Education
-from models.gender import Gender
-from models.vector import Vector
+from database.models import Tag, Education, Gender, Vector
 from . import LocalSession, Base, engine
 
 SETUP_DATA = Path.cwd() / "_setup_data"

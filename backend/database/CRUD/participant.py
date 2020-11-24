@@ -1,9 +1,9 @@
 from fastapi.encoders import jsonable_encoder
 from sqlalchemy.orm import Session
 
-from data._crud_base import CRUDBase
-from models import Participant, ResearchSession, ParticipantCollection
-from schemas import ParticipantCreate
+from database.CRUD._crud_base import CRUDBase
+from database.models import Participant, ResearchSession, ParticipantCollection
+from api.schemas import ParticipantCreate
 
 
 class CRUDParticipant(CRUDBase[Participant, ParticipantCreate, None]):

@@ -3,11 +3,11 @@ from typing import Any
 from fastapi import APIRouter, HTTPException, Depends, BackgroundTasks
 from sqlalchemy.orm import Session
 
-import data
+from database import CRUD
 import services
 from api.background_tasks import delete_file
 from api.dependencies import get_db
-from schemas import Image
+from api.schemas import Image
 
 router = APIRouter()
 
@@ -15,7 +15,7 @@ router = APIRouter()
 @router.delete("/{id_}", response_model=Image)
 def delete_image(id_: int, background_tasks: BackgroundTasks, db: Session = Depends(get_db)) -> Any:
     """ Delete an image, only deletes if no collection is dependent on it """
-    db_image = data.image.get(db, id_)
+    db_image = CRUD.image.get(db, id_)
     if not db_image:
         raise HTTPException(status_code=404, detail="Image not found")
     if db_image.c_images:

@@ -9,7 +9,7 @@ from config import settings
 
 class ImageFileService:
     ROOT = Path.cwd()
-    SESSIONS = 'static/images/sessions'
+    SESSIONS = 'static/session_images/sessions'
 
     def get_path(self, filename: str, session_id: int) -> Path:
         return self.ROOT / self.SESSIONS / str(session_id) / filename

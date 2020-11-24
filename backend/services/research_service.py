@@ -6,9 +6,8 @@ from typing import List
 import pandas as pd
 from sqlalchemy.orm import Session
 
-import data
-import models as m
-import schemas as s
+from database import models as m, CRUD
+from api import schemas as s
 from .image_file_service import ImageFileService
 from .vector_service import VectorService
 
@@ -42,7 +41,7 @@ class ResearchService:
         return [self.construct_vector_data(effect, points) for (effect, points) in points_by_effect.items()]
 
     def export_results_data(self, db: Session):
-        participants = data.participant.get_all(db)
+        participants = CRUD.participant.get_all(db)
         results_data = {'age': [], 'gender': [], 'education': [], 'total_images': [], 'overlap': [],
                         'equalize_gender': [], 'slider_steps': [], 'emotion': [], 'multiplier': []}
         for participant in participants:
@@ -66,14 +65,14 @@ class ResearchService:
         return self.construct_research_session(db_session_r, vectors_count)
 
     def get_sessions(self, db: Session) -> List[s.ResearchSession]:
-        db_sessions_r = data.session_r.get_all(db)
+        db_sessions_r = CRUD.session_r.get_all(db)
         vectors_count = len(vector_service.get_ids(db))
         return [self.construct_research_session(ses, vectors_count) for ses in db_sessions_r]
 
     def get_trials_meta(self, db: Session, db_session_r: m.ResearchSession,
                         include_done: bool = False) -> List[s.TrialMeta]:
-        vectors = data.vector.get_all(db)
-        seeds = data.image.get_seeds_of_session(db, db_session_r.id)
+        vectors = CRUD.vector.get_all(db)
+        seeds = CRUD.image.get_seeds_of_session(db, db_session_r.id)
         if include_done:
             return [self.construct_trial_meta(s_id, v.id, seed, v.effect)
                     for (s_id, v, seed)
@@ -86,7 +85,7 @@ class ResearchService:
                 if (v.id, seed) not in done_trial]
 
     def get_trial_images(self, db: Session, meta: s.TrialMeta) -> List[s.TrialImage]:
-        db_images = data.image.get_all_of_trial(db, meta.session_id, meta.seed, meta.vector_id)
+        db_images = CRUD.image.get_all_of_trial(db, meta.session_id, meta.seed, meta.vector_id)
         images = [self.construct_trial_image(i, meta.vector_id) for i in db_images]
         images.sort(key=lambda i: i.vector_multiplier)
         return images

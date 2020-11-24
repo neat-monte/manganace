@@ -16,12 +16,19 @@
             </span>
           </a-tooltip>
           <img
+            v-if="index <= preloadCount"
+            @click="swapImage(index)"
+            :src="image.url"
+            class="swiper-lazy"
+          />
+          <img
+            v-else
             @click="swapImage(index)"
             :data-src="image.url"
             class="swiper-lazy"
           />
         </div>
-        <div class="swiper-lazy-preloader"></div>
+        <div v-if="index > preloadCount" class="swiper-lazy-preloader"></div>
       </swiper-slide>
     </swiper>
   </section>

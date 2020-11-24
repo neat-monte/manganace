@@ -2,8 +2,8 @@ from typing import List
 
 from sqlalchemy.orm import Session
 
-from data._crud_base import CRUDBase
-from models import Vector
+from database.CRUD._crud_base import CRUDBase
+from database.models import Vector
 
 
 # noinspection PyMethodMayBeStatic

@@ -4,7 +4,7 @@ from fastapi_camelcase import CamelModel
 from pydantic import HttpUrl
 from pydantic.types import conint
 
-from schemas import ImageVector
+from api.schemas import ImageVector
 
 
 class Image(CamelModel):

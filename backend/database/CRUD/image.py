@@ -2,9 +2,9 @@ from typing import List
 
 from sqlalchemy.orm import Session, joinedload
 
-import schemas as s
-from data._crud_base import CRUDBase
-from models import Image, Vector, ImageVector
+from api import schemas as s
+from database.CRUD._crud_base import CRUDBase
+from database.models import Image, Vector, ImageVector
 
 
 # noinspection PyMethodMayBeStatic
