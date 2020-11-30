@@ -1,9 +1,9 @@
 import pickle
 from pathlib import Path
+from typing import List, Tuple
 
 import numpy as np
 import tensorflow as tf
-from sqlalchemy.orm import Session
 
 import dnnlib
 from .model import Generator
@@ -16,7 +16,9 @@ PICKLED_EMOTIONS_VECTORS = BASE_DIR / 'emotion_directions_in_latent_space.pkl'
 class GeneratorWrapper:
     multiplier_scale = 0.1
 
-    def __init__(self, vector_effect_weight_by_id):
+    def __init__(self, batch_size: int, random_noise: bool, vector_effect_weight_by_id):
+        self.batch_size = batch_size
+        self.random_noise = random_noise
         # Initialize the tensorflow session
         dnnlib.tflib.init_tf()
         self.tf_session = tf.get_default_session()
@@ -27,40 +29,56 @@ class GeneratorWrapper:
         with open(PICKLED_EMOTIONS_VECTORS, "rb") as file:
             self.emotion_vectors = pickle.load(file)
         # Initialize the generator
-        self.generator = Generator(self.Gs, batch_size=1, randomize_noise=False)
+        self.generator = Generator(self.Gs, batch_size, random_noise)
         self.vector_effect_weight_by_id = vector_effect_weight_by_id
 
-    def _get_latent_state(self, seed, truncation_psi=0.5):
-        """ Given a seed [0..2^31-1] produce a latent state point """
+    def get_latent_state(self, seed: int, truncation_psi: float = 0.5):
+        """ Given a seed in the [0, 2^31-1] interval, produce a latent state """
         random_state = np.random.RandomState(np.asarray(seed))
         latents = random_state.randn(1, self.Gs.input_shape[1])
         all_w = self.Gs.components.mapping.run(latents, None)
         average_latent = self.Gs.get_var("dlatent_avg")
         return average_latent + (all_w - average_latent) * truncation_psi
 
-    def _apply_vectors(self, latent_state, vectors):
+    def get_latent_states(self, seeds: List[int], truncation_psi: float = 0.5):
+        """ Given an array of seeds in the [0, 2^31-1] interval, produce an array of latent states """
+        random_state = np.random.RandomState(np.asarray(seeds[0]))
+        latents = random_state.randn(1, self.Gs.input_shape[1])
+        for seed in seeds[1:]:
+            random_state.seed(seed)
+            latent = random_state.randn(1, self.Gs.input_shape[1])
+            latents = np.append(latents, latent, axis=0)
+        all_w = self.Gs.components.mapping.run(latents, None)
+        average_latent = self.Gs.get_var("dlatent_avg")
+        return average_latent + (all_w - average_latent) * truncation_psi
+
+    def apply_vectors_to_latent(self, latent_state, vectors: Tuple[int, float]):
         """ Apply emotions with provided multipliers """
-        latent_state = latent_state.reshape((1, 18 * 512))
-        for vector in vectors:
-            (v_effect, v_weight) = self.vector_effect_weight_by_id[vector.id]
-            multiplier = vector.multiplier * self.multiplier_scale
+        latent_state = latent_state.reshape((latent_state.shape[0], 18 * 512))
+        for (v_id, v_multiplier) in vectors:
+            (v_effect, v_weight) = self.vector_effect_weight_by_id[v_id]
+            multiplier = v_multiplier * self.multiplier_scale
             emotion_vector = self.emotion_vectors[f'neutral->{v_effect}']
             weighted_emotion_vector = emotion_vector * v_weight
             scaled_emotion_vector = weighted_emotion_vector * multiplier
             latent_state += scaled_emotion_vector
-        return latent_state.reshape((1, 18, 512))
+        return latent_state.reshape((latent_state.shape[0], 18, 512))
 
-    def _generate_image(self, latent_state):
+    def generate_from_latent(self, latent_state):
         """ Generate image of the provided latent state """
         self.generator.set_dlatents(latent_state)
-        img_array = self.generator.generate_images()[0]
+        img_array = self.generator.generate_images()
         self.generator.reset_dlatents()
         return img_array
 
-    def generate(self, seed: int, vectors=None):
+    def generate(self, seed: int, vectors: Tuple[int, float] = None):
         """ Generation pipeline, make latent state from a seed, apply emotion vectors, and generate an image """
         with self.tf_session.as_default():
-            latent_state = self._get_latent_state(seed)
+            latent_state = self.get_latent_state(seed)
             if vectors:
-                self._apply_vectors(latent_state, vectors)
-            return self._generate_image(latent_state)
+                self.apply_vectors_to_latent(latent_state, vectors)
+            return self.generate_from_latent(latent_state)
+
+    def shutdown(self):
+        self.tf_session.clear()
+        self.tf_session.close()

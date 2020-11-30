@@ -59,13 +59,12 @@ def get_research_sessions(db: Session = Depends(get_db)) -> Any:
 
 
 @router.post('/research', response_model=ResearchSession)
-def create_research_session(session_r_in: ResearchSessionCreate, db: Session = Depends(get_db)) -> Any:
+def create_research_session(session_r_in: ResearchSessionCreate,
+                            batch_size: int = 10, db: Session = Depends(get_db)) -> Any:
     """ Create a new research session by pre-generating all images with all emotion vectors \n
-        NOTE: this might take a really long time! """
-    if not services.generator.is_initialized():
-        services.generator.initialize(db)
+        NOTE: this might take a long time! """
     db_session_r = CRUD.session_r.create(db, session_r_in)
-    services.generator.create_research_trials(db, db_session_r)
+    services.generator.create_research_trials(db, db_session_r, batch_size)
     return services.research.get_session_schema(db, db_session_r)
 
 
