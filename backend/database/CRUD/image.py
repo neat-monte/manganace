@@ -28,12 +28,6 @@ class CRUDImage(CRUDBase[Image, None, None]):
         db_image.vectors = self._create_image_vectors(db, vectors)
         return self._add_save(db, db_image)
 
-    def delete_with_vectors(self, db: Session, db_image: Image) -> Image:
-        for image_vector in db_image.vectors:
-            db.delete(image_vector)
-        self._delete_save(db, db_image)
-        return db_image
-
     def _create_image_vectors(self, db: Session, vectors: List[s.ImageVector]) -> List[ImageVector]:
         image_vectors = []
         vectors_ids = [v.id for v in vectors]

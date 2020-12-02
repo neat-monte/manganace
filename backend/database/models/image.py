@@ -13,5 +13,5 @@ class Image(Base):
     session_id = Column(Integer, ForeignKey('sessions.id'))
 
     session = relationship("Session", back_populates="images")
-    vectors = relationship("ImageVector", back_populates="image")
+    vectors = relationship("ImageVector", back_populates="image", cascade="all, delete")
     c_images = relationship("CImage", back_populates="image")

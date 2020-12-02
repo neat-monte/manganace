@@ -1,6 +1,6 @@
 <template>
   <div class="image-card">
-    <a-tooltip v-lazyload placement="top" :title="image.description">
+    <a-tooltip placement="top" :title="image.description">
       <LazyImage :src="image.url" :alt="image.description" />
     </a-tooltip>
     <div class="card-controls">

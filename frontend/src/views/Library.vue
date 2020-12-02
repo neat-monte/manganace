@@ -11,7 +11,7 @@
 
     <Suspense>
       <template #default>
-        <Collections :collectionId="collectionId" />
+        <Collections />
       </template>
       <template #fallback>
         <Loading id="collections" />
