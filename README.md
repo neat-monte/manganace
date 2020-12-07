@@ -1,7 +1,8 @@
-# Manganace
+# Manganace - Manipulate GAN Face
 
 The project is made by Mantas Makelis for bachelor's thesis of Artificial Intelligence at Radboud University.
 The key idea of the project was to establish a base project with User Interface (UI) to allow a user to explore the latent space of the Generative Adversarial Network (GAN).
+The [GAN implementation](https://github.com/NVlabs/stylegan2) is provided by NVidia and this project utilizes the pretrained [FFHQ model](https://nvlabs-fi-cdn.nvidia.com/stylegan2/networks/stylegan2-ffhq-config-f.pkl).
 
 The main established requirement of the project was to make a web-based UI which could be distributed to users using a containerization technology e.g. Docker and/or to be able to host it on a server.
 Another requirement was to make it easily expandable, hence the approach to the architecture was an important aspect. 
