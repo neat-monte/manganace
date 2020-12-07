@@ -1,4 +1,4 @@
-# frontend
+# Mangance frontend
 
 ## Project setup
 ```
