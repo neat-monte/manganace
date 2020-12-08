@@ -1,3 +1,5 @@
+![Radboud University](frontend/public/radboud.png)
+
 # Manganace - Manipulate GAN Face
 
 The project is made by Mantas Makelis for bachelor's thesis of Artificial Intelligence at Radboud University.
