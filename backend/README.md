@@ -41,20 +41,26 @@ I assume you already have some Python version installed on your machine and have
 Otherwise, just [install the latest Python](https://www.python.org/downloads/).
 
 1. [Install pipenv](https://pipenv.pypa.io/en/latest/install/) with the preferred method.
-For example you can just run:
-    > pip install pipenv
+For example, you can just run: 
+    ```
+    pip install pipenv
+    ```
 
 2. Open the terminal inside the `backend` folder.
 
 3. Run:
-    > pipenv install
+    ```
+    pipenv install
+    ```
 
 In addition to the steps above you will need to place pickled model and vectors in the following way:
 
 1. [Download the FFHQ model](https://nvlabs-fi-cdn.nvidia.com/stylegan2/networks/stylegan2-ffhq-config-f.pkl).
 This is the pickled GAN model developed and trained by NVIDIA.
+Make sure it is named `stylegan2-ffhq-config-f.pkl`.
 
 2. Download the emotion vectors.
+Make sure it is named `emotion_directions_in_latent_space.pkl`.
 
 3. Place both files under `backend/_pickles` folder. If necessary create the `_pickles` folder yourself.
 
@@ -72,9 +78,6 @@ You can access this documentation with Swagger UI by going to `http://127.0.0.1:
 
 Although the flow diagram above explains the general flow and layers of the application, it is not a rule for all API endpoints.
 In some cases there is simply no additional logic to execute, thus, for simplicity reasons, the service layer is cut out from the flow and an API endpoint can call the CRUD layer directly.
-
-## Generator service
-
 
 ## Database
 
