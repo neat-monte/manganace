@@ -1,0 +1,26 @@
+[
+  {
+    "name": "Happy",
+    "for_research": true
+  },
+  {
+    "name": "Sad",
+    "for_research": true
+  },
+  {
+    "name": "Angry",
+    "for_research": true
+  },
+  {
+    "name": "Disgusted",
+    "for_research": true
+  },
+  {
+    "name": "Fearful",
+    "for_research": true
+  },
+  {
+    "name": "Surprised",
+    "for_research": true
+  }
+]

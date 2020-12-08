@@ -1,0 +1,22 @@
+[
+  {
+    "name": "Secondary or less",
+    "explanation": "Current high school student or graduated high school"
+  },
+  {
+    "name": "Undergraduate",
+    "explanation": "Bachelor's degree in progress"
+  },
+  {
+    "name": "Graduate",
+    "explanation": "Obtained bachelor's degree"
+  },
+  {
+    "name": "Postgraduate",
+    "explanation": "Obtained master's degree"
+  },
+  {
+    "name": "Doctoral/PhD degree",
+    "explanation": "Obtained doctoral degree"
+  }
+]

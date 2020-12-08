@@ -1,47 +1,25 @@
-from typing import List, Any
+from typing import Any
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, HTTPException, Depends, BackgroundTasks
 from sqlalchemy.orm import Session
 
-import crud
-from api import deps
-from schemas import Image, ImageCreate, ImageUpdate
+from database import CRUD
+import services
+from api.background_tasks import delete_file
+from api.dependencies import get_db
+from api.schemas import Image
 
 router = APIRouter()
 
 
-@router.post('/', response_model=Image)
-def create_image(image_in: ImageCreate, db: Session = Depends(deps.get_db)) -> Any:
-    """ Create a new image """
-    return crud.image.create_with_tags(db, image_in)
-
-
-@router.get('/', response_model=List[Image])
-def get_images(skip: int = 0, limit: int = 100, db: Session = Depends(deps.get_db)) -> Any:
-    """ Get a limited list of images """
-    return crud.image.get_multi(db, skip, limit)
-
-
-@router.get("/{id_}", response_model=Image)
-def get_image(id_: int, db: Session = Depends(deps.get_db)) -> Any:
-    """ Get an image by id """
-    image = crud.image.get(db, id_)
-    if not image:
-        raise HTTPException(status_code=404, detail="Image not found")
-    return image
-
-
-@router.put('/{id_}', response_model=Image)
-def update_image(id_: int, image_in: ImageUpdate, db: Session = Depends(deps.get_db)) -> Any:
-    """ Modify an existing image """
-    return crud.image.update(db, id_, image_in)
-
-
 @router.delete("/{id_}", response_model=Image)
-def delete_image(id_: int, db: Session = Depends(deps.get_db)) -> Any:
-    """ Delete an image """
-    item = crud.image.get(db, id_)
-    if not item:
+def delete_image(id_: int, background_tasks: BackgroundTasks, db: Session = Depends(get_db)) -> Any:
+    """ Delete an image, only deletes if no collection is dependent on it """
+    db_image = CRUD.image.get(db, id_)
+    if not db_image:
         raise HTTPException(status_code=404, detail="Image not found")
-    item = crud.image.remove(db, id_)
-    return item
+    if db_image.c_images:
+        raise HTTPException(status_code=403, detail="Image is being used in at least one collection")
+    filepath = services.image_file.get_path(db_image.filename, db_image.session_id)
+    background_tasks.add_task(delete_file, filepath=filepath)
+    return services.image.delete(db, db_image)

@@ -1,16 +1,37 @@
-// Viewports
+/**
+ * Viewports
+ */
 $tablet-width: 768px;
 $sm-desktop-width: 992px;
 $lg-desktop-width: 1200px;
 
-// Generated image sizes (height and width)
+/**
+ * Generated image sizes (height and width)
+ */
 $sm-desktop-image: 512px;
 $lg-desktop-image: 768px;
 
-// Paddings
-$sm-generator-y-padding: 5vw;
-$lg-generator-y-padding: 10vw;
+/**
+ * Paddings
+ */
+$tablet-x-padding: 50px;
+$sm-x-padding: 5vw;
+$lg-x-padding: 10vw;
 
-
+/**
+ * Heights
+ */
 $header-height: 80px;
 $footer-height: 80px;
+
+/**
+ * Shadows
+ */
+$box-shadow-strong: 0 10px 16px 0 $darkness-20, 0 6px 20px 0 $darkness-20;
+$box-shadow-soft: 0 2px 4px $darkness-20, 0 2px 2px $darkness-20;
+
+/**
+ * Variables used in Generator page
+ */
+$desktop-controls-width: 30%;
+$desktop-image-width: 70%;

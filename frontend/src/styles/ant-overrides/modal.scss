@@ -1,0 +1,42 @@
+.ant-modal {
+    .ant-modal-content {
+        background: $filler !important;
+
+        .ant-modal-close {
+            transition: all 0.2s ease !important;
+
+            .ant-modal-close-x {
+                .ant-modal-close-icon {
+                    color: $filler !important;
+                }
+            }
+
+            &:hover,
+            &:focus {
+                box-shadow: none !important;
+                transform: scale(1.3) !important;
+            }
+        }
+
+        .ant-modal-header {
+            background: $primary !important;
+
+            .ant-modal-title {
+                color: $filler !important;
+                font-size: 1rem !important;
+                font-weight: bold !important;
+                text-transform: uppercase !important;
+            }
+        }
+
+        .ant-modal-body {
+            .ant-form {
+                .ant-form-item {
+                    &:last-child {
+                        margin-bottom: 0 !important;
+                    }
+                }
+            }
+        }
+    }
+}

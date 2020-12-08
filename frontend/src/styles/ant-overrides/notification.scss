@@ -1,0 +1,22 @@
+.ant-notification-notice {
+    color: $primary !important;
+    background: $filler !important;
+    border: 1px solid $darkness-50 !important;
+
+    .ant-notification-notice-content {
+        .ant-notification-notice-with-icon {
+            .ant-notification-notice-icon-success {
+                svg {
+                    color: $primary !important;
+                }
+            }
+
+            .ant-notification-notice-message {
+                color: $darkness !important;
+            }
+            .ant-notification-notice-description {
+                color: $darkness !important;
+            }
+        }
+    }
+}

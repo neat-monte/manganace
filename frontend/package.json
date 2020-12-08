@@ -9,10 +9,14 @@
   },
   "dependencies": {
     "ant-design-vue": "^2.0.0-beta",
+    "await-lock": "^2.1.0",
     "core-js": "^3.6.5",
-    "fetch-absolute": "^1.0.0",
+    "downloadjs": "^1.4.7",
+    "moment": "^2.29.1",
     "node-sass": "^4.14.1",
+    "plotly.js": "^1.57.1",
     "sass-loader": "^10.0.3",
+    "swiper": "^6.3.4",
     "vue": "^3.0.1",
     "vue-router": "^4.0.0-0"
   },

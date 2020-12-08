@@ -1,0 +1,104 @@
+.ant-input {
+    color: $darkness !important;
+
+    &:hover,
+    &:focus {
+        border-color: $primary !important;
+    }
+
+    &:last-child {
+        margin: 0 !important;
+    }
+
+    &::placeholder {
+        color: $primary-50 !important;
+        font-style: italic !important;
+    }
+}
+
+.ant-input-number {
+    color: $darkness !important;
+
+    &:hover,
+    &:focus {
+        border-color: $primary !important;
+    }
+
+    &.ant-input-number-focused {
+        box-shadow: 0 0 0 1px $primary-50 !important;
+    }
+}
+
+.ant-switch-checked {
+    background-color: $primary !important;
+}
+
+.ant-checkbox-wrapper {
+    .ant-checkbox {
+        .ant-checkbox-inner {
+            border-color: $primary !important;
+        }
+    }
+
+    .ant-checkbox-checked {
+        .ant-checkbox-inner {
+            background-color: $primary !important;
+        }
+    }
+}
+
+.ant-select-dropdown-menu {
+    .ant-select-dropdown-menu-item {
+        &.ant-select-dropdown-menu-item-selected {
+            .ant-select-selected-icon {
+                color: $primary !important;
+            }
+        }
+    }
+
+    .ant-select-dropdown-menu-item-active:not(.ant-select-dropdown-menu-item-disabled) {
+        background-color: $primary-50 !important;
+    }
+}
+
+.ant-select {
+    color: $darkness !important;
+
+    .ant-select-selection {
+        border-color: $primary !important;
+
+        .ant-select-selection__placeholder {
+            color: $primary-50 !important;
+            font-style: italic !important;
+        }
+    }
+}
+
+.ant-slider {
+    .ant-slider-rail {
+        background-color: $darkness-20 !important;
+    }
+    .ant-slider-track {
+        background-color: $primary-50 !important;
+    }
+    .ant-slider-handle {
+        border-color: $primary !important;
+    }
+
+    &:hover {
+        .ant-slider-rail {
+            background-color: $darkness-50 !important;
+        }
+    }
+}
+
+.ant-radio,
+.ant-radio.ant-radio-checked {
+    .ant-radio-inner {
+        border-color: $primary !important;
+
+        &::after {
+            background-color: $primary !important;
+        }
+    }
+}

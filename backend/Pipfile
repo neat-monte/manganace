@@ -17,6 +17,10 @@ uvicorn = "*"
 aiofiles = "*"
 sqlalchemy = "*"
 fastapi-camelcase = "*"
+pydantic = "*"
+python-dotenv = "*"
+pandas = "*"
+joblib = "*"
 
 [requires]
 python_version = "3.7"

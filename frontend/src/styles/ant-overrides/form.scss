@@ -1,0 +1,18 @@
+.ant-form {
+    .ant-form-item {
+        margin-bottom: 12px !important;
+        .ant-form-item-label {
+            width: 100% !important;
+            text-align: left !important;
+
+            label {
+                font-size: 1rem !important;
+                color: $darkness !important;
+            }
+        }
+
+        .ant-form-item-control {
+            text-align: left;
+        }
+    }
+}

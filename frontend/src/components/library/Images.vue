@@ -1,35 +1,63 @@
 <template>
-  <div id="images">
-    {{ collectionId }}
-    <div v-for="image in images" :key="image.id">
-      {{ image.filename }}
-    </div>
-  </div>
+  <a-button type="primary" @click="showModal()">
+    Images
+    <picture-outlined />
+  </a-button>
+
+  <a-modal
+    v-model:visible="visible"
+    :title="`Collection images (${images.length})`"
+    :width="800"
+  >
+    <ImagesList
+      :images="images"
+      :allowDelete="true"
+      :allowUpdate="true"
+      :allowDownload="true"
+    />
+    <template #footer>
+      <a-button key="submit" @click="showModal()">OK</a-button>
+    </template>
+  </a-modal>
 </template>
 
 <script>
-import { ref, watchEffect } from "vue";
-import useImages from "@/modules/useImages";
+import { ref } from "vue";
+
+import { PictureOutlined } from "@ant-design/icons-vue";
+import ImagesList from "@/components/shared/image/ImagesList";
+
+import useImages from "@/modules/images";
 
 export default {
-  name: "Images",
+  name: "SessionResults",
 
   props: {
-    collectionId: Number,
+    collectionId: { type: Number, required: true },
   },
 
-  async setup(props) {
-    const { state, getImagesOfCollection } = useImages();
-    const images = ref();
+  setup(props) {
+    const visible = ref();
+    const { imagesByCollectionId, loadImagesOfCollectionAsync } = useImages();
 
-    watchEffect(async () => {
-      await getImagesOfCollection(props.collectionId);
-      images.value = state.images[props.collectionId];
-    });
+    const images = ref([]);
+
+    async function showModal() {
+      visible.value = !visible.value;
+      await loadImagesOfCollectionAsync(props.collectionId);
+      images.value = Object.values(imagesByCollectionId[props.collectionId]);
+    }
 
     return {
+      showModal,
+      visible,
       images,
     };
+  },
+
+  components: {
+    PictureOutlined,
+    ImagesList,
   },
 };
 </script>

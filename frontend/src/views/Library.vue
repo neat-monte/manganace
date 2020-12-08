@@ -1,58 +1,67 @@
 <template>
   <div id="library" class="content">
-    <div v-if="error">{{ error }}</div>
+    <Suspense>
+      <template #default>
+        <Tags />
+      </template>
+      <template #fallback>
+        <Loading id="tags" />
+      </template>
+    </Suspense>
 
     <Suspense>
       <template #default>
         <Collections />
       </template>
       <template #fallback>
-        <Loading />
-      </template>
-    </Suspense>
-
-    <Suspense>
-      <template #default>
-        <Images :collectionId="collectionId" />
-      </template>
-      <template #fallback>
-        <Loading />
+        <Loading id="collections" />
       </template>
     </Suspense>
   </div>
 </template>
 
 <script>
-import { computed, ref, onErrorCaptured, watchEffect } from "vue";
-import { useRoute } from "vue-router";
 import Collections from "@/components/library/Collections";
-import Images from "@/components/library/Images";
-import Loading from "@/components/Loading";
+import Tags from "@/components/library/Tags";
+import Loading from "@/components/shared/display/Loading";
 
 export default {
   name: "Library",
 
-  setup() {
-    const route = useRoute();
-    watchEffect(() => route.params);
-
-    const collectionId = computed(() => Number(route.params.collectionId));
-
-    const error = ref(null);
-    onErrorCaptured((e) => {
-      error.value = e;
-    });
-
-    return {
-      error,
-      collectionId,
-    };
-  },
-
   components: {
     Collections,
-    Images,
+    Tags,
     Loading,
   },
 };
 </script>
+
+<style lang="scss" scoped>
+#library {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+
+  #tags,
+  #collections {
+    flex: 1 100%;
+  }
+
+  #collections {
+    order: -1;
+  }
+}
+
+@include tablet {
+  #library {
+    #tags {
+      flex: 0 200px;
+    }
+
+    #collections {
+      flex: 1;
+      order: initial;
+    }
+  }
+}
+</style>

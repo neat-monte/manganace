@@ -1,7 +1,24 @@
-$color1: #1E0D1F;
-$color2: #8C2425;
-$color3: #E9262C;
-$color4: #1A9A8B;
-$color5: #136966;
-$color6: #F2F2F2;
-$color7: #BF6F6F;
+$filler: #f2f2f2;
+$filler-80: rgba(242, 242, 242, 0.7);
+$filler-50: rgba(242, 242, 242, 0.5);
+$filler-35: rgba(242, 242, 242, 0.35);
+
+$primary: #1a9a8b;
+$primary-50: rgba(26, 154, 139, 0.5);
+
+$primary-dark: #136966;
+
+$secondary: #bf6f6f;
+$secondary-50: rgba(191, 111, 111, 0.5);
+$secondary-20: rgba(191, 111, 111, 0.2);
+
+$danger: #e9262c;
+$danger-80: rgba(233, 38, 44, 0.8);
+
+$danger-dark: #8c2425;
+
+$darkness: #1e0d1f;
+$darkness-80: rgba(30, 13, 31, 0.7);
+$darkness-50: rgba(30, 13, 31, 0.5);
+$darkness-20: rgba(30, 13, 31, 0.2);
+$darkness-05: rgba(30, 13, 31, 0.05);

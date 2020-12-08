@@ -1,11 +1,42 @@
-from sqlalchemy import create_engine
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
+import json
+from pathlib import Path
+from typing import TypeVar
 
-SQLALCHEMY_DATABASE_URL = "sqlite:///./database/manganace.sqlite"
+from sqlalchemy.orm import Session
 
-engine = create_engine(SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False})
+from database.models import Tag, Education, Gender, Vector
+from . import LocalSession, Base, engine
 
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+SETUP_DATA = Path.cwd() / "_setup_data"
+VECTORS = SETUP_DATA / "vectors.json"
+GENDERS = SETUP_DATA / "genders.json"
+EDUCATIONS = SETUP_DATA / "educations.json"
+TAGS = SETUP_DATA / "tags.json"
 
-Base = declarative_base()
+
+def database_setup():
+    """ Create database with tables and populate or update it """
+    Base.metadata.create_all(bind=engine)
+    db = LocalSession()
+    try:
+        populate_from_json(db, Vector, str(VECTORS))
+        populate_from_json(db, Gender, str(GENDERS))
+        populate_from_json(db, Education, str(EDUCATIONS))
+        populate_from_json(db, Tag, str(TAGS))
+    finally:
+        db.close()
+
+
+DatabaseModel = TypeVar("DatabaseModel", bound=Base)
+
+
+def populate_from_json(db: Session, model: DatabaseModel, json_file: str):
+    """ Read the JSON file and populate provided model table if table is empty """
+    data_exists = db.query(model).first()
+    if data_exists:
+        return
+    with open(json_file, "r") as file:
+        data = json.loads(file.read())
+        for obj in data:
+            db.add(model(**obj))
+    db.commit()

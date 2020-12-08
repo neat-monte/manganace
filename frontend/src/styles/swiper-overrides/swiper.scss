@@ -1,0 +1,11 @@
+.swiper-button-prev,
+.swiper-button-next {
+    color: $primary;
+}
+
+.swiper-scrollbar {
+    background: $darkness-20;
+    .swiper-scrollbar-drag {
+        background: $darkness-50;
+    }
+}
