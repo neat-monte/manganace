@@ -2,7 +2,7 @@
 
 The project is made by Mantas Makelis for bachelor's thesis of Artificial Intelligence at Radboud University.
 The key idea of the project was to establish a base project with User Interface (UI) to allow a user to explore the latent space of the Generative Adversarial Network (GAN).
-The [GAN implementation](https://github.com/NVlabs/stylegan2) is provided by NVidia and this project utilizes the pretrained [FFHQ model](https://nvlabs-fi-cdn.nvidia.com/stylegan2/networks/stylegan2-ffhq-config-f.pkl).
+The [GAN implementation](https://github.com/NVlabs/stylegan2) is provided by NVIDIA and this project utilizes the pretrained [FFHQ model](https://nvlabs-fi-cdn.nvidia.com/stylegan2/networks/stylegan2-ffhq-config-f.pkl).
 
 The main established requirement of the project was to make a web-based UI which could be distributed to users using a containerization technology e.g. Docker and/or to be able to host it on a server.
 Another requirement was to make it easily expandable, hence the approach to the architecture was an important aspect. 
@@ -34,9 +34,19 @@ This includes the bar chart for each vector selection and chosen images with tag
 10. Overall results of research sessions which includes only the bar chart for each vector.
 
 For deeper dive into the tech-stack and architectural decisions please check out the following:
+- [Backend documentation](backend/README.md)
+- [Frontend documentation](frontend/README.md)
 
-[Backend documentation](backend/README.md)
+## System requirements:
 
-[Frontend documentation](frontend/README.md)
+- Both Linux and Windows are supported.
+- 16 GB of RAM
+- High-end NVIDIA GPU with at least 16 GB of DRAM. (**NOTE:** I have developed this with 8GB of DRAM and it worked)
 
-In case *you* have any questions or are continuing the work on this project and require assistance, please do not hesitate to contact me via [my student email](mailto:m.makelis@student.ru.nl).
+## How to setup:
+
+1. Setup the backend ([see backend documentation](backend/README.md))
+2. Setup the frontend ([see frontend documentation](frontend/README.md))
+3. Run both projects in parallel either via two separate terminals or make use of run configurations provided by Pycharm or any other IDE you like. 
+
+In case you have any questions or are continuing the work on this project and require assistance, please do not hesitate to contact me via [my student email](mailto:m.makelis@student.ru.nl).
