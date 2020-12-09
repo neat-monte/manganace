@@ -58,4 +58,11 @@ I use the following extensions to make life easy:
 **NOTE:** 
 On the other hand, if you want to use [PyCharm](https://www.jetbrains.com/pycharm/) because then you can work in a single IDE, then install [Vue.js](https://plugins.jetbrains.com/plugin/9442-vue-js) plugin to handle Vue.
 
+## Application flow
+
+![General frontend flow](_docs/general-frontend-flow.png "General frontend flow")
+
+The above graph indicates the general asynchronous HTTP call flow in the project.
+Note that the graph is not accurate and excludes the Vue router and any interaction between components, nevertheless, it explains the structure of the project.  
+
 In case you have any questions or are continuing the work on this project and require assistance, please do not hesitate to contact me via [my student email](mailto:m.makelis@student.ru.nl).
