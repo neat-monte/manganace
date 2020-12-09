@@ -15,7 +15,7 @@ To understand the dependencies of the GAN model you can look into the [Stylegan2
 There are two parts to the setup - setup the GAN model and setup the project.
 The former one being the most difficult.
 In advance I have to apologize for the Linux users because I personally developed everything on Windows, therefore, I can only provide the steps that I took.
-Nevertheless, it should be extremely different and the idea is still the same. 
+Nevertheless, it should not be extremely different and the idea is still the same. 
 
 ### Setup **Windows 10** to handle the GAN model:
 
@@ -65,6 +65,11 @@ Make sure it is named `emotion_directions_in_latent_space.pkl`.
 3. Place both files under `backend/_pickles` folder. If necessary create the `_pickles` folder yourself.
 
 After completing all the steps above, the project should be ready to launch.
+
+## Development environment
+
+My advice is to use [PyCharm](https://www.jetbrains.com/pycharm/) and to install [EnvFile](https://plugins.jetbrains.com/plugin/7861-envfile) plugin.
+If you are going to use [PyCharm](https://www.jetbrains.com/pycharm/) for frontend as well, then install [Vue.js](https://plugins.jetbrains.com/plugin/9442-vue-js) plugin to handle Vue.
 
 ## API
 

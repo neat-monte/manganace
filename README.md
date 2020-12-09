@@ -43,12 +43,15 @@ For deeper dive into the tech-stack and architectural decisions please check out
 
 - Both Linux and Windows are supported.
 - 16 GB of RAM
-- High-end NVIDIA GPU with at least 16 GB of DRAM. (**NOTE:** I have developed this with 8GB of DRAM and it worked)
+- High-end NVIDIA GPU with at least 16 GB of DRAM.
+
+(**NOTE:** I have developed this with 8GB of DRAM and it worked well)
 
 ## How to setup:
 
 1. Setup the backend ([see backend documentation](backend/README.md))
 2. Setup the frontend ([see frontend documentation](frontend/README.md))
-3. Run both projects in parallel either via two separate terminals or make use of run configurations provided by Pycharm or any other IDE you like. 
+3. Run both projects in parallel either via two separate terminals or make use of run configurations provided by [PyCharm](https://www.jetbrains.com/pycharm/) or any other IDE you like.
+You can also run backend on [PyCharm](https://www.jetbrains.com/pycharm/) and frontend on [Visual Studio Code](https://code.visualstudio.com/).
 
 In case you have any questions or are continuing the work on this project and require assistance, please do not hesitate to contact me via [my student email](mailto:m.makelis@student.ru.nl).
