@@ -22,7 +22,7 @@ class Session(Base):
 
 
 class GeneratorSession(Session, Timestamp):
-    __tablename__ = "sessions_g"
+    __tablename__ = "generator_sessions"
 
     id = Column(Integer, ForeignKey('sessions.id'), primary_key=True)
     name = Column(String(64), nullable=True)
@@ -33,7 +33,7 @@ class GeneratorSession(Session, Timestamp):
 
 
 class ResearchSession(Session):
-    __tablename__ = "sessions_r"
+    __tablename__ = "research_sessions"
 
     id = Column(Integer, ForeignKey('sessions.id'), primary_key=True)
     total_amount = Column(Integer, nullable=False)

@@ -21,10 +21,10 @@ class ResearchService:
 
     EXPORTS.mkdir(parents=True, exist_ok=True)
 
-    def get_results_data(self, db: Session, session_r_id: int = None) -> List[s.SingleVectorData]:
+    def get_results_data(self, db: Session, research_session_id: int = None) -> List[s.SingleVectorData]:
         query = db.query(m.Vector.effect, m.ImageVector.multiplier)
-        if session_r_id:
-            query = query.select_from(m.ResearchSession).filter(m.ResearchSession.id == session_r_id) \
+        if research_session_id:
+            query = query.select_from(m.ResearchSession).filter(m.ResearchSession.id == research_session_id) \
                 .join(m.Participant).join(m.ParticipantCollection)
         else:
             query = query.select_from(m.ParticipantCollection)
@@ -63,28 +63,28 @@ class ResearchService:
         df.to_csv(file_path)
         return str(file_path)
 
-    def get_session_schema(self, db: Session, db_session_r: m.ResearchSession) -> s.ResearchSession:
+    def get_session_schema(self, db: Session, db_research_session: m.ResearchSession) -> s.ResearchSession:
         vectors_count = len(vector_service.get_ids(db))
-        return self.construct_research_session(db_session_r, vectors_count)
+        return self.construct_research_session(db_research_session, vectors_count)
 
     def get_sessions(self, db: Session) -> List[s.ResearchSession]:
-        db_sessions_r = CRUD.session_r.get_all(db)
+        db_research_sessions = CRUD.research_session.get_all(db)
         vectors_count = len(vector_service.get_ids(db))
-        return [self.construct_research_session(ses, vectors_count) for ses in db_sessions_r]
+        return [self.construct_research_session(ses, vectors_count) for ses in db_research_sessions]
 
-    def get_trials_meta(self, db: Session, db_session_r: m.ResearchSession,
+    def get_trials_meta(self, db: Session, db_research_session: m.ResearchSession,
                         include_done: bool = False) -> List[s.TrialMeta]:
         vectors = CRUD.vector.get_all(db)
-        seeds = CRUD.image.get_seeds_of_session(db, db_session_r.id)
+        seeds = CRUD.image.get_seeds_of_session(db, db_research_session.id)
         if include_done:
             return [self.construct_trial_meta(s_id, v.id, seed, v.effect)
                     for (s_id, v, seed)
-                    in product([db_session_r.id], vectors, seeds)]
-        done_trial = [(c_im.image.vectors[0].vector_id, c_im.image.seed)
-                      for c_im in db_session_r.participant.collection.trial_picks]
+                    in product([db_research_session.id], vectors, seeds)]
+        done_trial = [(collection_im.image.vectors[0].vector_id, collection_im.image.seed)
+                      for collection_im in db_research_session.participant.collection.trial_picks]
         return [self.construct_trial_meta(s_id, v.id, seed, v.effect)
                 for (s_id, v, seed)
-                in product([db_session_r.id], vectors, seeds)
+                in product([db_research_session.id], vectors, seeds)
                 if (v.id, seed) not in done_trial]
 
     def get_trial_images(self, db: Session, meta: s.TrialMeta) -> List[s.TrialImage]:
@@ -101,21 +101,21 @@ class ResearchService:
         )
 
     @staticmethod
-    def construct_research_session(db_session_r: m.ResearchSession, vectors_count: int) -> s.ResearchSession:
-        trials = vectors_count * db_session_r.total_amount
+    def construct_research_session(db_research_session: m.ResearchSession, vectors_count: int) -> s.ResearchSession:
+        trials = vectors_count * db_research_session.total_amount
         progress = 0
-        if db_session_r.participant and db_session_r.participant.collection:
-            progress = len(db_session_r.participant.collection.trial_picks)
+        if db_research_session.participant and db_research_session.participant.collection:
+            progress = len(db_research_session.participant.collection.trial_picks)
         return s.ResearchSession.construct(
-            id=db_session_r.id,
-            total_amount=db_session_r.total_amount,
-            overlap_amount=db_session_r.overlap_amount,
-            equalize_gender=db_session_r.equalize_gender,
-            slider_steps=db_session_r.slider_steps,
-            created=db_session_r.created,
+            id=db_research_session.id,
+            total_amount=db_research_session.total_amount,
+            overlap_amount=db_research_session.overlap_amount,
+            equalize_gender=db_research_session.equalize_gender,
+            slider_steps=db_research_session.slider_steps,
+            created=db_research_session.created,
             trials=trials,
             progress=progress,
-            participant=db_session_r.participant
+            participant=db_research_session.participant
         )
 
     @staticmethod

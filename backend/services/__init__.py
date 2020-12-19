@@ -1,4 +1,4 @@
-from .c_image_service import CImageService
+from .collection_image_service import CImageService
 from .generator_service import GeneratorService
 from .image_file_service import ImageFileService
 from .image_service import ImageService
@@ -9,7 +9,7 @@ from .vector_service import VectorService
 
 # Alphabetical order
 
-c_image = CImageService()
+collection_image = CImageService()
 generator = GeneratorService()
 image_file = ImageFileService()
 image = ImageService()

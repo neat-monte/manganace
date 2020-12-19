@@ -24,7 +24,7 @@ class UserCollection(Collection, Timestamp):
     name = Column(String(64), nullable=False)
     description = Column(Text)
 
-    c_images = relationship("CImage", back_populates="collection")
+    collection_images = relationship("CImage", back_populates="collection")
 
     __mapper_args__ = {
         'polymorphic_identity': 'user',

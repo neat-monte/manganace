@@ -3,5 +3,5 @@ from database.models import ResearchSession
 from api.schemas import ResearchSessionCreate
 
 
-class CRUDSessionR(CRUDBase[ResearchSession, ResearchSessionCreate, None]):
+class CRUDResearchSession(CRUDBase[ResearchSession, ResearchSessionCreate, None]):
     pass

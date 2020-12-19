@@ -15,9 +15,9 @@ class CImage(Base):
     collection_id = Column(Integer, ForeignKey('collections.id'), nullable=False)
     image_id = Column(Integer, ForeignKey('images.id'), nullable=False)
 
-    collection = relationship("UserCollection", back_populates="c_images")
-    image = relationship("Image", back_populates="c_images")
-    tags = relationship("Tag", secondary='collection_image_tag', back_populates="c_images")
+    collection = relationship("UserCollection", back_populates="collection_images")
+    image = relationship("Image", back_populates="collection_images")
+    tags = relationship("Tag", secondary='collection_image_tag', back_populates="collection_images")
 
     __mapper_args__ = {
         'polymorphic_identity': 'user saved',

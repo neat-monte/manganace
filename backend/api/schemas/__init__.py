@@ -1,7 +1,7 @@
 # Alphabetical order
 
-from .c_image import *
 from .collection import *
+from .collection_image import *
 from .gender import *
 from .generator import *
 from .image import *
