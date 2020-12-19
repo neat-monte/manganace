@@ -6,7 +6,7 @@
 
   <a-modal
     v-model:visible="visible"
-    :title="`Collection images (${images.length})`"
+    :title="`${collection.name} (${images.length})`"
     :width="800"
   >
     <ImagesList
@@ -28,6 +28,7 @@ import { PictureOutlined } from "@ant-design/icons-vue";
 import ImagesList from "@/components/shared/image/ImagesList";
 
 import useImages from "@/modules/images";
+import useCollections from "@/modules/collections";
 
 export default {
   name: "SessionResults",
@@ -39,8 +40,10 @@ export default {
   setup(props) {
     const visible = ref();
     const { imagesByCollectionId, loadImagesOfCollectionAsync } = useImages();
+    const { collectionsById } = useCollections();
 
     const images = ref([]);
+    const collection = collectionsById[props.collectionId]
 
     async function showModal() {
       visible.value = !visible.value;
@@ -52,6 +55,7 @@ export default {
       showModal,
       visible,
       images,
+      collection
     };
   },
 

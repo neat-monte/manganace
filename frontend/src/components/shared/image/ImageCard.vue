@@ -51,6 +51,8 @@ export default {
   position: relative;
   margin-bottom: 20px;
   box-shadow: $box-shadow-strong;
+  overflow: hidden;
+  border-radius: 2px 2px 2px 2px;
 
   .card-controls {
     width: 100%;
@@ -58,43 +60,25 @@ export default {
     justify-content: space-around;
     align-items: center;
     position: absolute;
-    bottom: 0;
-    height: 50px;
-    border-top: 1px solid $secondary-20;
+    background: $filler-35;
+    bottom: -40px;
+    left: 0;
+    transition: all 0.2s ease;
+    height: 40px;
+    visibility: hidden;
   }
-}
 
-@include tablet {
-  .image-card {
-    margin: 0;
-    border-radius: 2px 2px 2px 2px;
-
-    .card-controls {
-      border-bottom: none;
-    }
-  }
-}
-
-@include sm-desktop {
-  .image-card {
-    overflow: hidden;
-
-    .card-controls {
-      position: absolute;
-      background: $filler-35;
-      bottom: -40px;
-      left: 0;
-      transition: all 0.2s ease;
-      height: 40px;
-      visibility: hidden;
-    }
-
-    &:hover {
+  &:hover {
       .card-controls {
         bottom: 0;
         visibility: visible;
       }
     }
+}
+
+@include tablet {
+  .image-card {
+    margin: 0;
   }
 }
 </style>
