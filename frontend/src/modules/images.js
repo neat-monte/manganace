@@ -37,7 +37,7 @@ export default function useImages() {
     const createCollectionImageAsync = async (newImage) => {
         try {
             const imageJson = JSON.stringify(newImage);
-            const image = await api.images.createCImage(imageJson);
+            const image = await api.collections.createCImage(imageJson);
             if (image) {
                 insertImage(image)
             }
@@ -49,7 +49,7 @@ export default function useImages() {
     const updateCollectionImageAsync = async (updatedImage) => {
         try {
             const imageJson = JSON.stringify(updatedImage);
-            const image = await api.images.updateCImage(updatedImage.id, imageJson)
+            const image = await api.collections.updateCImage(updatedImage.id, imageJson)
             if (image) {
                 insertImage(image)
             }
@@ -60,7 +60,7 @@ export default function useImages() {
 
     const deleteCollectionImageAsync = async (imageId) => {
         try {
-            const image = await api.images.destroyCImage(imageId);
+            const image = await api.collections.destroyCImage(imageId);
             if (image) {
                 delete imagesByCollectionId[image.collectionId][image.id];
             }

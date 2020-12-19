@@ -1,9 +1,8 @@
 export default {
-    collections: require('./segments/collections'),
-    images: require('./segments/images'),
-    tags: require('./segments/tags'),
     generator: require('./segments/generator'),
-    sessions: require('./segments/sessions'),
     research: require('./segments/research'),
+    sessions: require('./segments/sessions'),
+    collections: require('./segments/collections'),
+    tags: require('./segments/tags'),
     extras: require('./segments/extras'),
 }

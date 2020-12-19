@@ -49,7 +49,7 @@ export default function useActivity() {
     const tryDeleteImageAsync = async (sessionId, image) => {
         await activityLock.acquireAsync();
         try {
-            await api.images.destroyImage(image.id);
+            await api.sessions.destroyImage(image.id);
             const index = imagesBySessionId[sessionId].indexOf(image);
             if (index > -1) {
                 imagesBySessionId[sessionId].splice(index, 1);

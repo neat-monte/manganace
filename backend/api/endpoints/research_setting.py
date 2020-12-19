@@ -10,19 +10,19 @@ from api.schemas import ResearchSetting, ResearchSettingCreate
 router = APIRouter()
 
 
-@router.get('/', response_model=List[ResearchSetting])
+@router.get('/settings', response_model=List[ResearchSetting])
 def get_research_settings(db: Session = Depends(get_db)) -> Any:
     """ Get a list of all research settings """
     return CRUD.research_setting.get_all(db)
 
 
-@router.post('/', response_model=ResearchSetting)
+@router.post('/settings', response_model=ResearchSetting)
 def create_research_setting(setting_in: ResearchSettingCreate, db: Session = Depends(get_db)) -> Any:
     """ Create a new research setting """
     return CRUD.research_setting.create(db, setting_in)
 
 
-@router.delete("/{id_}", response_model=ResearchSetting)
+@router.delete("/settings/{id_}", response_model=ResearchSetting)
 def delete_research_setting(id_: int, db: Session = Depends(get_db)) -> Any:
     """ Delete a research setting """
     db_research_setting = CRUD.research_setting.get(db, id_)
