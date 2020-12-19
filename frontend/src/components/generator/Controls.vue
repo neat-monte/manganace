@@ -3,15 +3,37 @@
     <div class="header">
       <span class="title">Controls</span>
     </div>
-    <a-form class="request-form">
+    <a-form layout="horizontal" class="request-form">
       <a-form-item>
-        <a-input
-          :value="generateRequest.seed"
-          @change="seedOnChange"
-          :maxlength="10"
-          :disabled="isGenerating"
-          placeholder="Enter a seed"
-        />
+        <div class="seed-multiplier">
+          <div class="seed-input">
+            <a-tooltip
+              title="Enter a seed between 0 and 4294967296 (2³¹ - 1) inclusive"
+            >
+              <div class="label">Seed</div>
+            </a-tooltip>
+            <a-input
+              :value="generateRequest.seed"
+              @change="seedOnChange"
+              :maxlength="10"
+              :disabled="isGenerating"
+              placeholder="Enter a seed of your choice"
+            />
+          </div>
+          <div class="global-multiplier">
+            <a-tooltip
+              title="Scales all selected feature vector values by this amount"
+            >
+              <div class="label">Global multiplier</div>
+            </a-tooltip>
+            <a-input-number
+              :value="globalMultiplier"
+              :min="0.001"
+              :step="0.001"
+              @change="onGlobalMultiplierChange"
+            />
+          </div>
+        </div>
       </a-form-item>
       <a-form-item v-for="vector in vectors" :key="vector.id">
         <Slider
@@ -38,7 +60,7 @@
 </template>
 
 <script>
-import { reactive } from "vue";
+import { ref, reactive } from "vue";
 
 import { SyncOutlined } from "@ant-design/icons-vue";
 import useGenerator from "@/modules/generator";
@@ -55,6 +77,9 @@ export default {
       vectors,
     } = useGenerator();
 
+    const globalMultiplier = ref(0.1);
+    const prevGlobalMultiplier = ref(0.1);
+
     const generateRequest = reactive({
       seed: "",
       vectors: [],
@@ -68,15 +93,27 @@ export default {
       }
     }
 
+    function onGlobalMultiplierChange(value) {
+      if (isNaN(value) || value <= 0) {
+        return;
+      }
+      globalMultiplier.value = value;
+      generateRequest.vectors.forEach((vector) => {
+        vector.multiplier =
+          (vector.multiplier / prevGlobalMultiplier.value) * value;
+      });
+      prevGlobalMultiplier.value = value;
+    }
+
     function vectorOnChange(id, value) {
       const vector = generateRequest.vectors.filter((e) => e.id === id)[0];
 
       if (vector && value > 0) {
-        vector.multiplier = value;
+        vector.multiplier = globalMultiplier.value * value;
       } else if (!vector && value > 0) {
         generateRequest.vectors.push({
           id: id,
-          multiplier: value,
+          multiplier: globalMultiplier.value * value,
         });
       } else if (vector && value <= 0) {
         const index = generateRequest.vectors.indexOf(vector);
@@ -87,12 +124,14 @@ export default {
     await initGeneratorAsync();
 
     return {
+      globalMultiplier,
       generateRequest,
       vectors,
       isGenerating,
       generateAsync,
       seedOnChange,
       vectorOnChange,
+      onGlobalMultiplierChange,
     };
   },
 
@@ -111,6 +150,32 @@ export default {
 
   .request-form {
     flex: 1;
+
+    .seed-multiplier {
+      display: flex;
+      justify-content: space-between;
+
+      .seed-input,
+      .global-multiplier {
+        flex: 1;
+        display: flex;
+        align-items: center;
+      }
+
+      .global-multiplier {
+        justify-content: flex-end;
+      }
+    }
+
+    .label {
+      margin-left: 5px;
+      margin-right: 5px;
+      min-width: 100px;
+
+      &.ant-tooltip-open {
+        cursor: help;
+      }
+    }
   }
 
   .controls {
