@@ -18,7 +18,7 @@ class Collection(Base):
 
 
 class UserCollection(Collection, Timestamp):
-    __tablename__ = "collections_u"
+    __tablename__ = "user_collections"
 
     id = Column(Integer, ForeignKey('collections.id'), primary_key=True)
     name = Column(String(64), nullable=False)
@@ -32,7 +32,7 @@ class UserCollection(Collection, Timestamp):
 
 
 class ParticipantCollection(Collection, Timestamp):
-    __tablename__ = "collections_p"
+    __tablename__ = "participant_collections"
 
     id = Column(Integer, ForeignKey('collections.id'), primary_key=True)
 

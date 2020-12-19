@@ -10,8 +10,8 @@ class Participant(Base):
     id = Column(Integer, primary_key=True)
     age = Column(Integer, nullable=False)
     gender_id = Column(Integer, ForeignKey('genders.id'))
-    session_id = Column(Integer, ForeignKey('sessions_r.id'))
-    collection_id = Column(Integer, ForeignKey('collections_p.id'))
+    session_id = Column(Integer, ForeignKey('research_sessions.id'))
+    collection_id = Column(Integer, ForeignKey('participant_collections.id'))
 
     gender = relationship("Gender", back_populates="participants")
     session = relationship("ResearchSession", back_populates="participant")
