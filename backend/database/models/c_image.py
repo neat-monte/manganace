@@ -15,12 +15,12 @@ class CImage(Base):
     collection_id = Column(Integer, ForeignKey('collections.id'), nullable=False)
     image_id = Column(Integer, ForeignKey('images.id'), nullable=False)
 
-    collection = relationship("Collection", back_populates="c_images")
+    collection = relationship("UserCollection", back_populates="c_images")
     image = relationship("Image", back_populates="c_images")
     tags = relationship("Tag", secondary='c_image_tag', back_populates="c_images")
 
     __mapper_args__ = {
-        'polymorphic_identity': 'basic',
+        'polymorphic_identity': 'user saved',
         'polymorphic_on': type
     }
 
@@ -29,10 +29,12 @@ class TrialPick(CImage):
     __tablename__ = "trial_picks"
 
     id = Column(Integer, ForeignKey('c_images.id'), primary_key=True)
-    order_spot = Column(Integer, nullable=False)
+    trial_number = Column(Integer, nullable=False)
     initial_multiplier = Column(Float, nullable=False)
     created = Column(DateTime, nullable=False, default=datetime.utcnow)
 
+    collection = relationship("ParticipantCollection", back_populates="trial_picks")
+
     __mapper_args__ = {
-        'polymorphic_identity': 'trial',
+        'polymorphic_identity': 'trial choice',
     }

@@ -36,12 +36,12 @@ class CImage(CamelModel):
 
 class TrialPickCreate(CImageCreate):
     """ Properties that are available/required for the creation """
-    order_spot: conint(gt=0)
+    trial_number: conint(gt=0)
     initial_multiplier: confloat(ge=0)
 
 
 class TrialPick(CImage):
     """ Properties that are returned via the API """
-    order_spot: conint(gt=0)
+    trial_number: conint(gt=0)
     initial_multiplier: confloat(ge=0)
     created: datetime

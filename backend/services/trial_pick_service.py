@@ -37,7 +37,7 @@ class TrialPickService:
             url=image_file_service.make_url(db_trial_pick.image.filename, db_trial_pick.image.session_id),
             vectors=[s.ImageVector.construct(id=v.vector_id, multiplier=v.multiplier)
                      for v in db_trial_pick.image.vectors],
-            order_spot=db_trial_pick.order_spot,
+            trial_number=db_trial_pick.trial_number,
             initial_multiplier=db_trial_pick.initial_multiplier,
             created=db_trial_pick.created
         )

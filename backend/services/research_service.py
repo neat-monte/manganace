@@ -43,9 +43,10 @@ class ResearchService:
     def export_results_data(self, db: Session):
         participants = CRUD.participant.get_all(db)
         results_data = {'age': [], 'gender': [], 'education': [], 'total_images': [], 'overlap': [],
-                        'equalize_gender': [], 'slider_steps': [], 'emotion': [], 'multiplier': []}
+                        'equalize_gender': [], 'slider_steps': [], 'emotion': [], 'trial_number': [],
+                        'initial_multiplier': [], 'chosen_multiplier': [], 'answer_moment': []}
         for participant in participants:
-            for c_image in participant.collection.c_images:
+            for trial_pick in participant.collection.trial_picks:
                 results_data['age'].append(participant.age)
                 results_data['gender'].append(participant.gender.name)
                 results_data['education'].append(participant.education.name)
@@ -53,8 +54,11 @@ class ResearchService:
                 results_data['overlap'].append(participant.session.overlap_amount)
                 results_data['equalize_gender'].append(participant.session.equalize_gender)
                 results_data['slider_steps'].append(participant.session.slider_steps)
-                results_data['emotion'].append(c_image.image.vectors[0].vector.effect)
-                results_data['multiplier'].append(c_image.image.vectors[0].multiplier)
+                results_data['emotion'].append(trial_pick.image.vectors[0].vector.effect)
+                results_data['trial_number'].append(trial_pick.trial_number)
+                results_data['initial_multiplier'].append(trial_pick.initial_multiplier)
+                results_data['chosen_multiplier'].append(trial_pick.image.vectors[0].multiplier)
+                results_data['answer_moment'].append(trial_pick.created)
         df = pd.DataFrame(results_data)
         file_path = self.EXPORTS / f'export_{strftime("%Y-%m-%d-%H-%M-%S")}.csv'
         df.to_csv(file_path)
@@ -78,7 +82,7 @@ class ResearchService:
                     for (s_id, v, seed)
                     in product([db_session_r.id], vectors, seeds)]
         done_trial = [(c_im.image.vectors[0].vector_id, c_im.image.seed)
-                      for c_im in db_session_r.participant.collection.c_images]
+                      for c_im in db_session_r.participant.collection.trial_picks]
         return [self.construct_trial_meta(s_id, v.id, seed, v.effect)
                 for (s_id, v, seed)
                 in product([db_session_r.id], vectors, seeds)
@@ -102,7 +106,7 @@ class ResearchService:
         trials = vectors_count * db_session_r.total_amount
         progress = 0
         if db_session_r.participant and db_session_r.participant.collection:
-            progress = len(db_session_r.participant.collection.c_images)
+            progress = len(db_session_r.participant.collection.trial_picks)
         return s.ResearchSession.construct(
             id=db_session_r.id,
             total_amount=db_session_r.total_amount,

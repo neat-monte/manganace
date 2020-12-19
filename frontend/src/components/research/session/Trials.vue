@@ -130,7 +130,7 @@ export default {
         description: `Participant found this naturally ${trial.value.emotion}`,
         collectionId: currentSession.participant.collectionId,
         tagsIds: [tagsByEmotion[trial.value.emotion]],
-        orderSpot: currentSession.progress + 1,
+        trialNumber: currentSession.progress + 1,
         initialMultiplier: initialMultiplier.value,
       };
       await saveChosenTrialImageAsync(chosenImage);
