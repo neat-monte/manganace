@@ -6,6 +6,7 @@ from .gender import *
 from .generator import *
 from .image import *
 from .participant import *
+from .research_setting import *
 from .result import *
 from .session import *
 from .tag import *

@@ -36,12 +36,10 @@ class ResearchSession(Session):
     __tablename__ = "research_sessions"
 
     id = Column(Integer, ForeignKey('sessions.id'), primary_key=True)
-    total_amount = Column(Integer, nullable=False)
-    overlap_amount = Column(Integer, nullable=False)
-    equalize_gender = Column(Boolean, default=False)
-    slider_steps = Column(Integer, default=21)
+    research_setting_id = Column(Integer, ForeignKey('research_settings.id'), nullable=False)
     created = Column(DateTime, nullable=False, default=datetime.utcnow)
 
+    research_setting = relationship("ResearchSetting", back_populates="research_sessions")
     participant = relationship("Participant", uselist=False, back_populates="session")
 
     __mapper_args__ = {
