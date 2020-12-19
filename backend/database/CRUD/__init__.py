@@ -8,6 +8,7 @@ from .participant import CRUDParticipant
 from .session_g import CRUDSessionG
 from .session_r import CRUDSessionR
 from .tag import CRUDTag
+from .trial_pick import CRUDTrialPick
 from .vector import CRUDVector
 
 # Alphabetical order
@@ -20,4 +21,5 @@ participant = CRUDParticipant(Participant)
 session_g = CRUDSessionG(GeneratorSession)
 session_r = CRUDSessionR(ResearchSession)
 tag = CRUDTag(Tag)
+trial_pick = CRUDTrialPick(TrialPick)
 vector = CRUDVector(Vector)

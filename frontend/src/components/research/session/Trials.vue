@@ -93,6 +93,7 @@ export default {
 
     const trial = ref();
     const selection = ref();
+    const initialMultiplier = ref();
 
     const trialImages = ref();
     const currentImage = ref();
@@ -129,6 +130,8 @@ export default {
         description: `Participant found this naturally ${trial.value.emotion}`,
         collectionId: currentSession.participant.collectionId,
         tagsIds: [tagsByEmotion[trial.value.emotion]],
+        orderSpot: currentSession.progress + 1,
+        initialMultiplier: initialMultiplier.value,
       };
       await saveChosenTrialImageAsync(chosenImage);
     }
@@ -138,7 +141,11 @@ export default {
       trial.value = trials.value[randomTrial];
       trials.value.splice(randomTrial, 1);
       trialImages.value = await getTrialImagesAsync(trial.value);
-      selection.value = Math.floor(Math.random() * currentSession.sliderSteps);
+      const randomStart = Math.floor(
+        Math.random() * currentSession.sliderSteps
+      );
+      initialMultiplier.value = trialImages.value[randomStart].vectorMultiplier;
+      selection.value = randomStart;
     }
 
     return {

@@ -28,6 +28,9 @@ class GeneratorWrapper:
         self.__start_generator(batch_size, random_noise)
 
     def restart_generator(self, batch_size: int, random_noise: bool):
+        self.batch_size = batch_size
+        self.random_noise = random_noise
+        # Close and reinitialize the tensorflow session
         self.tf_session.close()
         dnnlib.tflib.init_tf()
         self.tf_session = tf.get_default_session()

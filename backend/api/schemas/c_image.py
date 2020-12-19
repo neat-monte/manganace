@@ -1,7 +1,8 @@
+from datetime import datetime
 from typing import Optional, List
 
 from fastapi_camelcase import CamelModel
-from pydantic import HttpUrl, conint
+from pydantic import HttpUrl, conint, confloat
 
 from .vector import ImageVector
 
@@ -31,3 +32,16 @@ class CImage(CamelModel):
     tags_ids: List[int]
     url: HttpUrl
     vectors: List[ImageVector]
+
+
+class TrialPickCreate(CImageCreate):
+    """ Properties that are available/required for the creation """
+    order_spot: conint(gt=0)
+    initial_multiplier: confloat(ge=0)
+
+
+class TrialPick(CImage):
+    """ Properties that are returned via the API """
+    order_spot: conint(gt=0)
+    initial_multiplier: confloat(ge=0)
+    created: datetime

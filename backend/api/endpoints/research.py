@@ -36,7 +36,7 @@ def get_trials_meta_info(session_r_id: int, done: bool = False, db: Session = De
 
 
 @router.post('/trial-images', response_model=List[TrialImage])
-def request_trial_images(meta: TrialMeta, db: Session = Depends(get_db)) -> Any:
+def get_trial_images(meta: TrialMeta, db: Session = Depends(get_db)) -> Any:
     """ Get images list for a single trial by providing trial meta information """
     db_session_r = CRUD.session_r.get(db, meta.session_id)
     if not db_session_r:

@@ -16,5 +16,10 @@ export const destroyCImage = async (id) => {
 }
 
 export const destroyImage = async (id) => {
-  return await fetchJSON(`${imagesEndpoint}/${id}`, methods.DELETE)
+  return await fetchJSON(`${imagesEndpoint}/${id}`, methods.DELETE);
+}
+
+export const createTrialPick = async (data) => {
+  console.log(data);
+  return await fetchJSON(`${collectionImagesEndpoint}/trial`, methods.POST, data);
 }
