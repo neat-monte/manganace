@@ -5,7 +5,7 @@ from sqlalchemy.orm import Session
 
 from database import models
 from api.dependencies import get_db
-from api.schemas import Gender, Education
+from api.schemas import Gender
 
 router = APIRouter()
 
@@ -14,9 +14,3 @@ router = APIRouter()
 def get_genders_options(db: Session = Depends(get_db)) -> Any:
     """ Get a list of available gender options """
     return [g.__dict__ for g in db.query(models.Gender).all()]
-
-
-@router.get("/educations", response_model=List[Education])
-def get_educations_options(db: Session = Depends(get_db)) -> Any:
-    """ Get a list of available education options """
-    return [e.__dict__ for e in db.query(models.Education).all()]

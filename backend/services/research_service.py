@@ -42,14 +42,13 @@ class ResearchService:
 
     def export_results_data(self, db: Session):
         participants = CRUD.participant.get_all(db)
-        results_data = {'age': [], 'gender': [], 'education': [], 'total_images': [], 'overlap': [],
-                        'equalize_gender': [], 'slider_steps': [], 'emotion': [], 'trial_number': [],
-                        'initial_multiplier': [], 'chosen_multiplier': [], 'answer_moment': []}
+        results_data = {'age': [], 'gender': [], 'total_images': [], 'overlap': [], 'equalize_gender': [],
+                        'slider_steps': [], 'emotion': [], 'trial_number': [], 'initial_multiplier': [],
+                        'chosen_multiplier': [], 'answer_moment': []}
         for participant in participants:
             for trial_pick in participant.collection.trial_picks:
                 results_data['age'].append(participant.age)
                 results_data['gender'].append(participant.gender.name)
-                results_data['education'].append(participant.education.name)
                 results_data['total_images'].append(participant.session.total_amount)
                 results_data['overlap'].append(participant.session.overlap_amount)
                 results_data['equalize_gender'].append(participant.session.equalize_gender)

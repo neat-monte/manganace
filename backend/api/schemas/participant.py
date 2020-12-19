@@ -6,7 +6,6 @@ class ParticipantCreate(CamelModel):
     """ Properties that are available/required for the creation """
     age: conint(gt=0)
     gender_id: conint(gt=0)
-    education_id: conint(gt=0)
     session_id: conint(gt=0)
 
 
@@ -15,7 +14,6 @@ class ParticipantInDb(CamelModel):
     id: conint(gt=0)
     age: conint(gt=0)
     gender_id: conint(gt=0)
-    education_id: conint(gt=0)
     session_id: conint(gt=0)
     collection_id: conint(gt=0)
 

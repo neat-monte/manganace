@@ -17,6 +17,7 @@
 
 <script>
 import download from "downloadjs";
+import moment from "moment";
 
 import { ExportOutlined } from "@ant-design/icons-vue";
 import Boxplot from "@/components/shared/infographics/Boxplot";
@@ -32,7 +33,10 @@ export default {
 
     async function downloadExportCsv() {
       const exportCsv = await getExportCsvAsync();
-      download(exportCsv, `export.csv`);
+      download(
+        exportCsv,
+        `export ${moment().format("DD-MM-YYYY HH-mm-ss")}.csv`
+      );
     }
 
     const data = await getResultsDataAsync();

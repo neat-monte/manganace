@@ -10,8 +10,8 @@ const loadLock = new AwaitLock();
 const collectionsById = reactive({});
 
 const insertCollection = (collection) => {
-    collection.created = moment(collection.created).format("YYYY-MM-DD HH:mm");
-    collection.updated = collection.updated !== null ? moment(collection.updated).format("YYYY-MM-DD HH:mm") : null;
+    collection.created = moment(collection.created).format("DD-MM-YYYY HH:mm");
+    collection.updated = collection.updated !== null ? moment(collection.updated).format("DD-MM-YYYY HH:mm") : null;
     collectionsById[collection.id] = collection;
 }
 

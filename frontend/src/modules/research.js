@@ -16,7 +16,7 @@ const currentSession = reactive({});
 export default function useResearch() {
 
     const insertResearchSession = (session) => {
-        session.created = moment(session.created).format("YYYY-MM-DD HH:mm");
+        session.created = moment(session.created).format("DD-MM-YYYY HH:mm");
         sessionsById[session.id] = session;
     }
 

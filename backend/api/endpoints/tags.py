@@ -24,7 +24,7 @@ def get_tags(db: Session = Depends(get_db)) -> Any:
 
 @router.get("/research", response_model=List[Tag])
 def get_research_tags(db: Session = Depends(get_db)) -> Any:
-    """ Get a list of available education options """
+    """ Get a list of available research tags """
     return CRUD.tag.get_all_research(db)
 
 

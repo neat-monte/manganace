@@ -4,13 +4,12 @@ from typing import TypeVar
 
 from sqlalchemy.orm import Session
 
-from database.models import Tag, Education, Gender, Vector
+from database.models import Tag, Gender, Vector
 from . import LocalSession, Base, engine
 
 SETUP_DATA = Path.cwd() / "_setup_data"
 VECTORS = SETUP_DATA / "vectors.json"
 GENDERS = SETUP_DATA / "genders.json"
-EDUCATIONS = SETUP_DATA / "educations.json"
 TAGS = SETUP_DATA / "tags.json"
 
 
@@ -21,7 +20,6 @@ def database_setup():
     try:
         populate_from_json(db, Vector, str(VECTORS))
         populate_from_json(db, Gender, str(GENDERS))
-        populate_from_json(db, Education, str(EDUCATIONS))
         populate_from_json(db, Tag, str(TAGS))
     finally:
         db.close()

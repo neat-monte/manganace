@@ -40,18 +40,6 @@
           </a-radio>
         </a-radio-group>
       </a-form-item>
-      <a-form-item label="Education">
-        <a-radio-group v-model:value="participant.educationId">
-          <a-radio
-            v-for="edu in educationOptions"
-            :key="edu.id"
-            :value="edu.id"
-            class="radio"
-          >
-            {{ edu.name }}
-          </a-radio>
-        </a-radio-group>
-      </a-form-item>
     </a-form>
     <div class="controls">
       <router-link :to="{ name: 'Research' }">
@@ -83,42 +71,35 @@ export default {
     const { currentSession, assignParticipantAsync } = useResearch();
     const {
       loadGendersAsync,
-      loadEducationsAsync,
       gendersById,
-      educationsById,
     } = useExtras();
 
     const genderOptions = ref([]);
-    const educationOptions = ref([]);
 
     watchEffect(() => {
       genderOptions.value = Object.values(gendersById);
-      educationOptions.value = Object.values(educationsById);
     });
 
     const participant = reactive({
       age: null,
       genderId: null,
-      educationId: null,
       sessionId: currentSession.id,
     });
 
     const isValid = () =>
       participant.age &&
       18 <= participant.age &&
-      participant.genderId &&
-      participant.educationId;
+      participant.genderId;
 
     async function beginSession() {
       await assignParticipantAsync(participant);
     }
 
-    await Promise.all([loadGendersAsync(), loadEducationsAsync()]);
+    await loadGendersAsync();
 
     return {
       participant,
       genderOptions,
-      educationOptions,
       isValid,
       beginSession,
     };
