@@ -80,10 +80,10 @@
           Generate multiple
         </a-checkbox>
         <a-input-number
-            v-if="makeMultiple"
-            v-model:value="multipleCount"
-            :min="1"
-            :step="1"
+          v-if="makeMultiple"
+          v-model:value="multipleCount"
+          :min="1"
+          :step="1"
         />
       </div>
       <div class="explanation">
@@ -161,7 +161,11 @@ export default {
     });
 
     watchEffect(() => {
-      let seconds = 1.2 * 6 * newSession.totalAmount * newSession.sliderSteps;
+      let seconds =
+        0.3 /* one image generation duration */ *
+        6 /* vector count */ *
+        newSession.totalAmount *
+        newSession.sliderSteps;
       if (makeMultiple.value) {
         seconds *= multipleCount.value;
       }
@@ -173,8 +177,7 @@ export default {
       } else {
         duration.value = `${hours} hours ${minutes} minutes`;
       }
-      let bytes =
-        1413040 * 6 * newSession.totalAmount * newSession.sliderSteps;
+      let bytes = 1460497 * 6 * newSession.totalAmount * newSession.sliderSteps;
       if (makeMultiple.value) {
         bytes *= multipleCount.value;
       }
