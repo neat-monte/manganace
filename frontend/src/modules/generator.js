@@ -1,11 +1,11 @@
 import { ref, reactive, readonly } from "vue"
 import api from "@/services/api"
 import notification from "@/services/notification"
-import useActivity from "./activity";
+import useGeneratorSessionImages from "./generatorSessionImages";
 import useResearch from "./research";
 import AwaitLock from 'await-lock';
 
-const { imagesBySessionId, insertGeneratedImage } = useActivity();
+const { imagesBySessionId, insertGeneratedImage } = useGeneratorSessionImages();
 const { insertResearchSession } = useResearch();
 
 const isInitialized = ref(false);

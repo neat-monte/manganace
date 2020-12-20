@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import useSessions from "@/modules/sessions";
+import useGeneratorSessions from "@/modules/generatorSessions";
 import useGenerator from "@/modules/generator";
 
 export default {
@@ -36,7 +36,7 @@ export default {
   emits: ["session-id-set"],
 
   async setup(_, context) {
-    const { loadGeneratorSessionsAsync, sessionsById } = useSessions();
+    const { loadGeneratorSessionsAsync, sessionsById } = useGeneratorSessions();
     const { currentSession } = useGenerator();
 
     function filterOption(input, option) {

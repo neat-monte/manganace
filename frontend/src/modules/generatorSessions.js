@@ -11,7 +11,7 @@ const loadSessionsLock = new AwaitLock();
 
 const sessionsById = reactive({});
 
-export default function useSessions() {
+export default function useGeneratorSessions() {
 
     const loadGeneratorSessionsAsync = async () => {
         await loadSessionsLock.acquireAsync();

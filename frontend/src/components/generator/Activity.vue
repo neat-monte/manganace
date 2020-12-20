@@ -48,7 +48,7 @@ import "swiper/components/navigation/navigation.scss";
 SwiperCore.use([Navigation, Lazy]);
 
 import useGenerator from "@/modules/generator";
-import useActivity from "@/modules/activity";
+import useGeneratorSessionImages from "@/modules/generatorSessionImages";
 
 export default {
   name: "Activity",
@@ -66,7 +66,7 @@ export default {
       imagesBySessionId,
       loadImagesOfSessionAsync,
       tryDeleteImageAsync,
-    } = useActivity();
+    } = useGeneratorSessionImages();
 
     const generatedImages = ref([]);
 

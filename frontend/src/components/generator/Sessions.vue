@@ -41,18 +41,18 @@
 <script>
 import { SwapOutlined } from "@ant-design/icons-vue";
 import Activity from "@/components/generator/Activity";
-import GeneratorSessionSelect from "@/components/shared/modals/session/GeneratorSessionSelect";
+import GeneratorSessionSelect from "@/components/shared/controls/GeneratorSessionSelect";
 import GeneratorSessionCreate from "@/components/shared/modals/session/GeneratorSessionCreate";
 import Loading from "@/components/shared/display/Loading";
 
 import useGenerator from "@/modules/generator";
-import useSessions from "@/modules/sessions";
+import useGeneratorSessions from "@/modules/generatorSessions";
 
 export default {
   name: "Sessions",
 
   async setup() {
-    const { sessionsById } = useSessions();
+    const { sessionsById } = useGeneratorSessions();
     const { setCurrentSession, currentSession } = useGenerator();
 
     function setSession(sessionId) {

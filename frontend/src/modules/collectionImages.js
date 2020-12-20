@@ -16,7 +16,7 @@ const insertImage = (image) => {
     imagesByCollectionId[image.collectionId][image.id] = image
 }
 
-export default function useImages() {
+export default function useCollectionImages() {
 
     const loadImagesOfCollectionAsync = async (collectionId) => {
         await loadLock.acquireAsync();

@@ -16,7 +16,7 @@ const insertImage = (image) => {
     imagesBySessionId[image.sessionId].unshift(image);
 }
 
-export default function useActivity() {
+export default function useGeneratorSessionImages() {
 
     const loadImagesOfSessionAsync = async (sessionId) => {
         await activityLock.acquireAsync();

@@ -27,7 +27,7 @@ import { ref } from "vue";
 import { PictureOutlined } from "@ant-design/icons-vue";
 import ImagesList from "@/components/shared/image/ImagesList";
 
-import useImages from "@/modules/images";
+import useCollectionImages from "@/modules/collectionImages";
 import useCollections from "@/modules/collections";
 
 export default {
@@ -39,11 +39,14 @@ export default {
 
   setup(props) {
     const visible = ref();
-    const { imagesByCollectionId, loadImagesOfCollectionAsync } = useImages();
+    const {
+      imagesByCollectionId,
+      loadImagesOfCollectionAsync,
+    } = useCollectionImages();
     const { collectionsById } = useCollections();
 
     const images = ref([]);
-    const collection = collectionsById[props.collectionId]
+    const collection = collectionsById[props.collectionId];
 
     async function showModal() {
       visible.value = !visible.value;
@@ -55,7 +58,7 @@ export default {
       showModal,
       visible,
       images,
-      collection
+      collection,
     };
   },
 

@@ -33,7 +33,7 @@ import { InfoCircleOutlined } from "@ant-design/icons-vue";
 import Boxplot from "@/components/shared/infographics/Boxplot";
 import ImagesList from "@/components/shared/image/ImagesList";
 
-import useImages from "@/modules/images";
+import useCollectionImages from "@/modules/collectionImages";
 import useResearch from "@/modules/research";
 
 export default {
@@ -45,7 +45,10 @@ export default {
 
   async setup(props) {
     const visible = ref();
-    const { imagesByCollectionId, loadImagesOfCollectionAsync } = useImages();
+    const {
+      imagesByCollectionId,
+      loadImagesOfCollectionAsync,
+    } = useCollectionImages();
     const { getSessionResultsDataAsync } = useResearch();
 
     const images = ref([]);
