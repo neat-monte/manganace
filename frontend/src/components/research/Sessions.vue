@@ -1,5 +1,6 @@
 <template>
-  <div id="sessions">
+  <Loading v-if="loading" id="sessions" />
+  <div v-else id="sessions">
     <div class="controls">
       <div v-if="researchGenerateRequest.inProgress" class="current-job">
         <Loading />
@@ -12,7 +13,8 @@
       </div>
       <div class="buttons">
         <ResearchSessionCreate
-          buttonText="Initialize session"
+          :researchSettingId="researchSettingId"
+          buttonText="Generate session"
           :disabled="researchGenerateRequest.inProgress"
         />
       </div>
@@ -20,7 +22,7 @@
 
     <a-list
       :grid="{ gutter: 20, xs: 1, md: 2, lg: 2, xl: 3, xxl: 4 }"
-      :data-source="sessions"
+      :data-source="sessionsBySettingId[researchSettingId]"
     >
       <template #renderItem="{ item, index }">
         <a-list-item :key="index">
@@ -38,27 +40,40 @@ import ResearchSessionCreate from "@/components/shared/modals/session/ResearchSe
 import SessionCard from "@/components/research/SessionCard";
 import Loading from "@/components/shared/display/Loading";
 
-import useResearch from "@/modules/research";
-import useGenerator from "@/modules/generator";
+import useResearchSessions from "@/modules/researchSessions";
+import useExtras from "@/modules/extras";
 
 export default {
   name: "Sessions",
 
-  async setup() {
-    const { sessionsById, loadResearchSessionsAsync } = useResearch();
-    const { researchGenerateRequest } = useGenerator();
+  props: {
+    researchSettingId: {
+      type: Number,
+      required: true,
+    },
+  },
 
-    const sessions = ref([]);
+  async setup(props) {
+    const loading = ref();
+    const {
+      sessionsBySettingId,
+      loadResearchSessionsAsync,
+      researchGenerateRequest,
+    } = useResearchSessions();
+    const { loadGendersAsync } = useExtras();
 
-    watchEffect(() => {
-      sessions.value = Object.values(sessionsById);
+    watchEffect(async () => {
+      loading.value = true;
+      await loadResearchSessionsAsync(props.researchSettingId);
+      loading.value = false;
     });
 
-    await loadResearchSessionsAsync();
+    await loadGendersAsync();
 
     return {
-      sessions,
+      loading,
       researchGenerateRequest,
+      sessionsBySettingId,
     };
   },
 

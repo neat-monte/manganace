@@ -34,7 +34,7 @@ import Boxplot from "@/components/shared/infographics/Boxplot";
 import ImagesList from "@/components/shared/image/ImagesList";
 
 import useCollectionImages from "@/modules/collectionImages";
-import useResearch from "@/modules/research";
+import useResearchData from "@/modules/researchData";
 
 export default {
   name: "SessionResults",
@@ -49,10 +49,13 @@ export default {
       imagesByCollectionId,
       loadImagesOfCollectionAsync,
     } = useCollectionImages();
-    const { getSessionResultsDataAsync } = useResearch();
+    const { getSessionResultsDataAsync } = useResearchData();
 
     const images = ref([]);
-    const data = await getSessionResultsDataAsync(props.session.id);
+    const data = await getSessionResultsDataAsync(
+      props.session.researchSettingId,
+      props.session.id
+    );
 
     async function showModal() {
       visible.value = !visible.value;

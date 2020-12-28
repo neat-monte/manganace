@@ -4,16 +4,16 @@ const researchEndpoint = "/research";
 
 /* Research data */
 
-export const getResultsData = async () => {
-    return await fetchJSON(`${researchEndpoint}/data`, methods.GET);
+export const getResultsData = async (settingId) => {
+    return await fetchJSON(`${researchEndpoint}/${settingId}/data`, methods.GET);
 }
 
-export const getSessionResultsData = async (sessionId) => {
-    return await fetchJSON(`${researchEndpoint}/data/${sessionId}`, methods.GET);
+export const getSessionResultsData = async (settingId, sessionId) => {
+    return await fetchJSON(`${researchEndpoint}/${settingId}/data/${sessionId}`, methods.GET);
 }
 
-export const getExportCsv = async () => {
-    return await fetchBlob(`${researchEndpoint}/data/export`, methods.GET);
+export const getExportCsv = async (settingId) => {
+    return await fetchBlob(`${researchEndpoint}/${settingId}/data/export`, methods.GET);
 }
 
 /* Research trials */
@@ -38,10 +38,10 @@ export const getResearchSettings = async () => {
     return await fetchJSON(`${researchEndpoint}/settings`, methods.GET);
 }
 
-export const createResearchSettings = async (data) => {
+export const createResearchSetting = async (data) => {
     return await fetchJSON(`${researchEndpoint}/settings`, methods.POST, data);
 }
 
-export const destroyResearchSettings = async (settingId) => {
+export const destroyResearchSetting = async (settingId) => {
     return await fetchJSON(`${researchEndpoint}/settings/${settingId}`, methods.DELETE);
 }

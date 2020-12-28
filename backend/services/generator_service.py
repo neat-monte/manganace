@@ -68,9 +68,10 @@ class GeneratorService:
         """ Generate a whole research session, save images, and register them in the database.
             Method generates [len(seeds) * len(vectors) * slider_steps/len(multipliers)] amount of images"""
         self.__assert_initialization(db, batch_size)
-        seeds = seeds_service.get_seeds(session.total_amount, session.overlap_amount, session.equalize_gender)
+        setting = session.research_setting
+        seeds = seeds_service.get_seeds(setting.total_amount, setting.overlap_amount, setting.equalize_gender)
         vector_ids = vector_service.get_ids(db)
-        multipliers = list(np.linspace(0, 1, session.slider_steps))
+        multipliers = list(np.round(np.linspace(0, 1, setting.slider_steps) * setting.global_multiplier, 3))
         max_ten_seeds_batches = np.array_split(seeds, math.ceil(len(seeds) / 10))
         for seeds_batch in max_ten_seeds_batches:
             base_ls = self.generator.get_latent_states(seeds_batch)

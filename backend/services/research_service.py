@@ -21,13 +21,15 @@ class ResearchService:
 
     EXPORTS.mkdir(parents=True, exist_ok=True)
 
-    def get_results_data(self, db: Session, research_session_id: int = None) -> List[s.SingleVectorData]:
-        query = db.query(m.Vector.effect, m.ImageVector.multiplier)
+    def get_results_data(self, db: Session, research_setting_id: int, research_session_id: int = None) \
+            -> List[s.SingleVectorData]:
+        query = db.query(m.Vector.effect, m.ImageVector.multiplier).select_from(m.ResearchSession) \
+            .filter(m.ResearchSession.research_setting_id == research_setting_id)
         if research_session_id:
-            query = query.select_from(m.ResearchSession).filter(m.ResearchSession.id == research_session_id) \
+            query = query.filter(m.ResearchSession.id == research_session_id) \
                 .join(m.Participant).join(m.ParticipantCollection)
         else:
-            query = query.select_from(m.ParticipantCollection)
+            query = query.join(m.Participant).join(m.ParticipantCollection)
         query = query.join(m.CImage).join(m.Image).join(m.ImageVector).join(m.Vector)
 
         effect_value_pairs = query.all()
@@ -67,8 +69,8 @@ class ResearchService:
         vectors_count = len(vector_service.get_ids(db))
         return self.construct_research_session(db_research_session, vectors_count)
 
-    def get_sessions(self, db: Session) -> List[s.ResearchSession]:
-        db_research_sessions = CRUD.research_session.get_all(db)
+    def get_sessions(self, db: Session, research_setting_id: int) -> List[s.ResearchSession]:
+        db_research_sessions = CRUD.research_session.get_all_of_setting(db, research_setting_id)
         vectors_count = len(vector_service.get_ids(db))
         return [self.construct_research_session(ses, vectors_count) for ses in db_research_sessions]
 
@@ -102,16 +104,13 @@ class ResearchService:
 
     @staticmethod
     def construct_research_session(db_research_session: m.ResearchSession, vectors_count: int) -> s.ResearchSession:
-        trials = vectors_count * db_research_session.total_amount
+        trials = vectors_count * db_research_session.research_setting.total_amount
         progress = 0
         if db_research_session.participant and db_research_session.participant.collection:
             progress = len(db_research_session.participant.collection.trial_picks)
         return s.ResearchSession.construct(
             id=db_research_session.id,
-            total_amount=db_research_session.total_amount,
-            overlap_amount=db_research_session.overlap_amount,
-            equalize_gender=db_research_session.equalize_gender,
-            slider_steps=db_research_session.slider_steps,
+            research_setting_id=db_research_session.research_setting_id,
             created=db_research_session.created,
             trials=trials,
             progress=progress,

@@ -10,6 +10,7 @@ class ResearchSetting(Base):
     __tablename__ = "research_settings"
 
     id = Column(Integer, primary_key=True)
+    name = Column(String(64), nullable=False)
     total_amount = Column(Integer, nullable=False)
     overlap_amount = Column(Integer, nullable=False)
     equalize_gender = Column(Boolean, default=False)

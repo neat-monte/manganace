@@ -16,4 +16,4 @@ class ImageVector(CamelModel):
     """ Properties that are required to apply an emotion vector,
         it is an essential part of the GenerateRequest """
     id: conint(gt=0)
-    multiplier: confloat(ge=0, le=1)
+    multiplier: confloat(ge=-1, le=1)

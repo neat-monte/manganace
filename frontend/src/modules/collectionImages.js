@@ -1,7 +1,10 @@
 import { reactive, readonly } from 'vue'
 import api from '@/services/api'
 import notification from "@/services/notification"
+import useResearchSessions from "./researchSessions";
 import AwaitLock from 'await-lock';
+
+const { incrementProgress } = useResearchSessions();
 
 const loaded = reactive({});
 const hasLoaded = (collectionId) => loaded !== undefined && collectionId in loaded && loaded[collectionId]
@@ -69,11 +72,22 @@ export default function useCollectionImages() {
         }
     }
 
+    const createTrialPickAsync = async (chosenImage) => {
+        try {
+            const imageJson = JSON.stringify(chosenImage);
+            await api.collections.createTrialPick(imageJson);
+            incrementProgress();
+        } catch (e) {
+            notification.error("Failed to save the answer", e.message);
+        }
+    }
+
     return {
         imagesByCollectionId: readonly(imagesByCollectionId),
         loadImagesOfCollectionAsync,
         createCollectionImageAsync,
         updateCollectionImageAsync,
-        deleteCollectionImageAsync
+        deleteCollectionImageAsync,
+        createTrialPickAsync
     }
 }

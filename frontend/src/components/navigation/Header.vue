@@ -3,7 +3,7 @@
     <div class="brand">
       <router-link class="brand-link" to="/">
         <span class="title">Manganace</span>
-        <span class="subtitle">Manipulate GAN Face</span>
+        <span class="subtitle">Manipulate GAN Space</span>
       </router-link>
     </div>
     <nav class="navigation">

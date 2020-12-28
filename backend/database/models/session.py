@@ -25,7 +25,7 @@ class GeneratorSession(Session, Timestamp):
     __tablename__ = "generator_sessions"
 
     id = Column(Integer, ForeignKey('sessions.id'), primary_key=True)
-    name = Column(String(64), nullable=True)
+    name = Column(String(64), nullable=False)
 
     __mapper_args__ = {
         'polymorphic_identity': 'generator',

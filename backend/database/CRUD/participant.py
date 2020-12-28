@@ -9,8 +9,10 @@ from api.schemas import ParticipantCreate
 class CRUDParticipant(CRUDBase[Participant, ParticipantCreate, None]):
     def create_for_session(self, db: Session, participant_in: ParticipantCreate,
                            db_research_session: ResearchSession) -> Participant:
-        participant_in_data = jsonable_encoder(participant_in, by_alias=False)
+        participant_in_data = jsonable_encoder(participant_in, exclude={"consented_on"}, by_alias=False)
+        participant_in_data["consented_on"] = str(participant_in.consented_on)
         db_participant = Participant(**participant_in_data)
+        db_participant.consented_on = participant_in.consented_on
         db_participant.collection = ParticipantCollection()
         db_research_session.participant = db_participant
         return self._add_save(db, db_participant)
