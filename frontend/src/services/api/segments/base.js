@@ -5,11 +5,15 @@ const domain = "http://localhost:8000";
  * @param response
  * @returns {{ok}|*}
  */
-function validate(response) {
+async function validate(response) {
   if (!response.ok) {
-    throw Error(response.statusText)
+    const errorBody = await response.json();
+    if (errorBody.detail) {
+      throw Error(`[${response.status}] ${response.statusText} | ${errorBody.detail} | URL: ${response.url}`);
+    }
+    throw Error(`[${response.status}] ${response.statusText} | URL: ${response.url}`)
   }
-  return response
+  return response;
 }
 
 /**
@@ -18,7 +22,7 @@ function validate(response) {
  * @returns {*}
  */
 function jsonify(response) {
-  return response.json()
+  return response.json();
 }
 
 /**
@@ -26,7 +30,7 @@ function jsonify(response) {
  * @param {*} response 
  */
 function blobify(response) {
-  return response.blob()
+  return response.blob();
 }
 
 /**
@@ -34,8 +38,13 @@ function blobify(response) {
  * @param error
  */
 function dump(error) {
-  console.log('There was a problem: \n', error)
-  throw error;
+  console.error(`There was a problem: \n ${error.message}`);
+  const start = error.message.indexOf('|');
+  const end = error.message.indexOf('|', start + 1);
+  if (start >= 0 && end >= 0) {
+    throw Error(error.message.substring(start + 2, end - 1));
+  }
+  throw Error(error.message.substring(0, start));
 }
 
 function checkUrl(url) {
@@ -54,11 +63,11 @@ function checkUrl(url) {
  * @returns {Promise<postcss.Result|any|undefined>}
  */
 export async function fetchJSON(url, method, data = null) {
-  url = checkUrl(url)
-  return fetch(url, { method: method, body: data })
+  url = checkUrl(url);
+  return await fetch(url, { method: method, body: data })
     .then(validate)
     .then(jsonify)
-    .catch(dump)
+    .catch(dump);
 }
 
 /**
@@ -69,11 +78,11 @@ export async function fetchJSON(url, method, data = null) {
  * @returns {Promise<postcss.Result|any|undefined>}
  */
 export async function fetchBlob(url, method, data = null) {
-  url = checkUrl(url)
-  return fetch(url, { method: method, body: data })
+  url = checkUrl(url);
+  return await fetch(url, { method: method, body: data })
     .then(validate)
     .then(blobify)
-    .catch(dump)
+    .catch(dump);
 }
 
 /**
@@ -94,8 +103,8 @@ export const methods = {
  * @returns {URL}
  */
 export function buildUrlParams(endpoint, params) {
-  const address = `${domain}${endpoint}`
-  const url = new URL(address)
-  Object.keys(params).forEach(key => url.searchParams.append(key, params[key]))
-  return url
+  const address = `${domain}${endpoint}`;
+  const url = new URL(address);
+  Object.keys(params).forEach(key => url.searchParams.append(key, params[key]));
+  return url;
 }

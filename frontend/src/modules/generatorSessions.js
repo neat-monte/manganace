@@ -20,10 +20,8 @@ export default function useGeneratorSessions() {
                 return;
             }
             const sessions = await api.sessions.getAllGenerator();
-            if (sessions) {
-                sessions.forEach(ses => sessionsById[ses.id] = ses);
-                hasLoaded.value = true;
-            }
+            sessions.forEach(ses => sessionsById[ses.id] = ses);
+            hasLoaded.value = true;
         } catch (e) {
             notification.error("Failed to load generator sessions", e.message);
         } finally {
@@ -35,10 +33,8 @@ export default function useGeneratorSessions() {
         try {
             const sessionJson = JSON.stringify(newSession);
             const session = await api.sessions.createGenerator(sessionJson);
-            if (session) {
-                sessionsById[session.id] = session;
-                setCurrentSession(sessionsById[session.id]);
-            }
+            sessionsById[session.id] = session;
+            setCurrentSession(sessionsById[session.id]);
         } catch (e) {
             notification.error("Failed to create the generator session", e.message);
         }

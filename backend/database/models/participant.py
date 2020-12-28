@@ -12,9 +12,9 @@ class Participant(Base, Timestamp):
     consented = Column(Boolean, default=False)
     consented_on = Column(DateTime, nullable=False)
     age = Column(Integer, nullable=False)
-    gender_id = Column(Integer, ForeignKey('genders.id'))
-    session_id = Column(Integer, ForeignKey('research_sessions.id'))
-    collection_id = Column(Integer, ForeignKey('participant_collections.id'))
+    gender_id = Column(Integer, ForeignKey('genders.id'), nullable=False)
+    session_id = Column(Integer, ForeignKey('research_sessions.id'), nullable=False)
+    collection_id = Column(Integer, ForeignKey('participant_collections.id'), nullable=False)
 
     gender = relationship("Gender", back_populates="participants")
     session = relationship("ResearchSession", back_populates="participant")

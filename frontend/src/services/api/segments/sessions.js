@@ -8,8 +8,12 @@ export const getAllResearch = async (settingId) => {
     return await fetchJSON(`${sessionsEndpoint}/research/${settingId}`, methods.GET);
 }
 
-export const createResearch = async (settingId, data) => {
-    return await fetchJSON(`${sessionsEndpoint}/research/${settingId}`, methods.POST, data);
+export const createResearch = async (data) => {
+    return await fetchJSON(`${sessionsEndpoint}/research/setting`, methods.POST, data);
+}
+
+export const destroyResearch = async (sessionId) => {
+    return await fetchJSON(`${sessionsEndpoint}/research/setting/${sessionId}`, methods.DELETE)
 }
 
 /* Generator sessions */

@@ -41,9 +41,7 @@ export default function useCollectionImages() {
         try {
             const imageJson = JSON.stringify(newImage);
             const image = await api.collections.createCImage(imageJson);
-            if (image) {
-                insertImage(image)
-            }
+            insertImage(image);
         } catch (e) {
             notification.error("Failed to save the image", e.message);
         }
@@ -53,9 +51,7 @@ export default function useCollectionImages() {
         try {
             const imageJson = JSON.stringify(updatedImage);
             const image = await api.collections.updateCImage(updatedImage.id, imageJson)
-            if (image) {
-                insertImage(image)
-            }
+            insertImage(image);
         } catch (e) {
             notification.error("Failed to update the image", e.message);
         }
@@ -64,9 +60,7 @@ export default function useCollectionImages() {
     const deleteCollectionImageAsync = async (imageId) => {
         try {
             const image = await api.collections.destroyCImage(imageId);
-            if (image) {
-                delete imagesByCollectionId[image.collectionId][image.id];
-            }
+            delete imagesByCollectionId[image.collectionId][image.id];
         } catch (e) {
             notification.error("Failed to delete the image", e.message);
         }

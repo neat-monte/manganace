@@ -34,13 +34,11 @@ export default function useGenerator() {
                 return;
             }
             const response = await api.generator.initialize();
-            if (response) {
-                response.vectors.forEach(vector => {
-                    vectors[vector.id] = vector;
-                });
-                isInitialized.value = true;
-                notification.success("Generator is ready");
-            }
+            response.vectors.forEach(vector => {
+                vectors[vector.id] = vector;
+            });
+            isInitialized.value = true;
+            notification.success("Generator is ready");
         } catch (e) {
             notification.error("Failed to initialize the generator", e.message);
         } finally {
@@ -60,10 +58,8 @@ export default function useGenerator() {
             request["sessionId"] = currentSession.id;
             const requestJson = JSON.stringify(request);
             const generatedImage = await api.generator.generate(requestJson);
-            if (generatedImage) {
-                insertGeneratedImage(generatedImage);
-                setCurrentImage(generatedImage);
-            }
+            insertGeneratedImage(generatedImage);
+            setCurrentImage(generatedImage);
         } catch (e) {
             notification.error("Failed to generate an image", e.message);
         } finally {

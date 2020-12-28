@@ -51,7 +51,7 @@ export default function useResearchSessions() {
         for (let i = count; i > 0; i--) {
             await usingGeneratorAsync();
             try {
-                const session = await api.sessions.createResearch(newSession.session.researchSettingId, newSessionJson);
+                const session = await api.sessions.createResearch(newSessionJson);
                 insertResearchSession(session);
                 researchGenerateRequest.done += 1;
 
@@ -61,8 +61,20 @@ export default function useResearchSessions() {
                 finishedUsingGenerator();
             }
         }
-
         researchGenerateRequest.inProgress = false;
+    }
+
+    const deleteResearchSessionAsync = async (sessionId) => {
+        await loadLock.acquireAsync();
+        try {
+            const session = await api.sessions.destroyResearch(sessionId);
+            const index = sessionsBySettingId[session.researchSettingId].indexOf(session);
+            sessionsBySettingId[session.researchSettingId].splice(index, 1);
+        } catch (e) {
+            notification.error("Failed to delete research session", e.message);
+        } finally {
+            loadLock.release();
+        }
     }
 
     const setCurrentSession = (settingId, sessionId) => {
@@ -97,6 +109,7 @@ export default function useResearchSessions() {
         updateParticipant,
         incrementProgress,
         researchGenerateRequest: readonly(researchGenerateRequest),
-        createResearchSessionsAsync
+        createResearchSessionsAsync,
+        deleteResearchSessionAsync,
     }
 }

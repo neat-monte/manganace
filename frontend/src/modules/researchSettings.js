@@ -38,9 +38,8 @@ export default function useResearchSettings() {
         try {
             const settingJson = JSON.stringify(newSetting);
             const setting = await api.research.createResearchSetting(settingJson);
-            if (setting) {
-                insertResearchSetting(setting);
-            }
+            insertResearchSetting(setting);
+            setCurrentResearchSetting(setting.id);
         } catch (e) {
             notification.error("Failed to create the research setting", e.message);
         }
@@ -49,9 +48,7 @@ export default function useResearchSettings() {
     const deleteResearchSettingAsync = async (settingId) => {
         try {
             const setting = await api.research.destroyResearchSetting(settingId);
-            if (setting) {
-                delete researchSettingsById[setting.id];
-            }
+            delete researchSettingsById[setting.id];
         } catch (e) {
             notification.error("Failed to delete the research setting", e.message)
         }

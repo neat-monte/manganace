@@ -17,10 +17,8 @@ export default function useExtras() {
                 return;
             }
             const genders = await api.extras.getGendersOptions();
-            if (genders) {
-                genders.forEach(gen => gendersById[gen.id] = gen);
-                gendersLoaded.value = true;
-            }
+            genders.forEach(gen => gendersById[gen.id] = gen);
+            gendersLoaded.value = true;
         } catch (e) {
             notification.error("Failed to load genders", e.message);
         } finally {

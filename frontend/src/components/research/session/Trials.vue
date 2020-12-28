@@ -13,7 +13,11 @@
           <strong>{{ trial.emotion }}</strong>
         </h1>
       </div>
-      <ZoomableImage v-if="currentImage" :url="currentImage.url">
+      <ZoomableImage
+        v-if="currentImage"
+        :url="currentImage.url"
+        :showLoading="loading"
+      >
         <template v-slot:controls>
           <Slider
             v-model:value="selection"
@@ -49,7 +53,7 @@
             Exit
           </a-button>
         </router-link>
-        <a-button type="primary" @click="next()">
+        <a-button type="primary" @click="next()" :disabled="loading">
           Next
           <caret-right-outlined />
         </a-button>
@@ -113,6 +117,8 @@ export default {
     const trialImages = ref();
     const currentImage = ref();
 
+    const loading = ref(true);
+
     watchEffect(() => {
       if (trialImages.value) {
         currentImage.value = trialImages.value[selection.value];
@@ -129,6 +135,7 @@ export default {
     });
 
     async function next() {
+      loading.value = true;
       if (trial.value) {
         await saveChoiceAsync();
       }
@@ -137,6 +144,7 @@ export default {
       } else {
         await nextTrialAsync();
       }
+      loading.value = false;
     }
 
     async function saveChoiceAsync() {
@@ -156,6 +164,11 @@ export default {
       trial.value = trials.value[randomTrial];
       trials.value.splice(randomTrial, 1);
       trialImages.value = await getTrialImagesAsync(trial.value);
+      trialImages.value.forEach((im) => {
+        // preload and cache images, otherwise it is useless
+        var i = new Image();
+        i.src = im.url;
+      });
       const randomStart = Math.floor(
         Math.random() * researchSetting.sliderSteps
       );
@@ -171,6 +184,7 @@ export default {
       selection,
       currentImage,
       next,
+      loading,
     };
   },
 

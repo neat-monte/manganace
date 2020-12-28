@@ -26,9 +26,11 @@
       <div class="help">
         <p>Choose the <strong>amount</strong> to generate.</p>
         <p>
-          Set the <strong>batch size</strong> to the appropriate for your GPU
-          memory. It seems that for 8GB of DRAM batch size of 10 was maximum. If
-          the batch number is too high - you will encounter an error.
+          Set the <strong>batch size</strong> to the appropriate number for your
+          GPU memory. It seems that for 8GB of DRAM batch size of 8 was maximum,
+          although up to 10 also worked but with memory shortage warnings. If
+          the batch number is too high - you will encounter a memory shortage
+          error which will not allow to initialize the generator.
         </p>
       </div>
       <a-form class="session-data">
@@ -89,7 +91,7 @@ export default {
     const amount = ref(1);
 
     const newSession = reactive({
-      batchSize: 10,
+      batchSize: 8,
       session: {
         researchSettingId: props.researchSettingId,
       },
