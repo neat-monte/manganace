@@ -1,6 +1,6 @@
 ![Radboud University](frontend/public/radboud.png)
 
-# Manganace - Manipulate GAN Face
+# Manganace - Manipulate GAN Space
 
 The project is made by Mantas Makelis for bachelor's thesis of Artificial Intelligence at Radboud University.
 The key idea of the project was to establish a base project with User Interface (UI) to allow a user to explore the latent space of the Generative Adversarial Network (GAN).
