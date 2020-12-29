@@ -28,7 +28,7 @@
 <script>
 import { ref, reactive } from "vue";
 import { PlusOutlined } from "@ant-design/icons-vue";
-import useSessions from "@/modules/sessions";
+import useGeneratorSessions from "@/modules/generatorSessions";
 
 export default {
   name: "GeneratorSessionCreate",
@@ -46,7 +46,7 @@ export default {
       visible.value = true;
     }
 
-    const { createGeneratorSessionAsync } = useSessions();
+    const { createGeneratorSessionAsync } = useGeneratorSessions();
     const newSession = reactive({
       name: null,
     });

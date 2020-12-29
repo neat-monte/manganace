@@ -24,7 +24,7 @@ def generate(request: GenerateRequest, db: Session = Depends(get_db)) -> Any:
     """ Generates an image according to the provided request model """
     if not services.generator.is_initialized():
         raise HTTPException(status_code=412, detail="The generator is not initialized")
-    session = CRUD.session_g.get(db, request.session_id)
+    session = CRUD.generator_session.get(db, request.session_id)
     if not session:
         raise HTTPException(status_code=404, detail="Session not found")
     return services.generator.generate_image(db, request)

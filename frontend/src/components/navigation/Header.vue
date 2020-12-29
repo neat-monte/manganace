@@ -3,7 +3,7 @@
     <div class="brand">
       <router-link class="brand-link" to="/">
         <span class="title">Manganace</span>
-        <span class="subtitle">Manipulate GAN Face</span>
+        <span class="subtitle">Manipulate GAN Space</span>
       </router-link>
     </div>
     <nav class="navigation">
@@ -110,11 +110,12 @@ export default {
 
         &::after {
           content: " ";
-          height: 4px;
+          height: 2px;
           width: 100%;
-          background: $primary-dark;
+          background: $primary-dark-80;
           position: absolute;
-          bottom: -10px;
+          bottom: -4px;
+          border-radius: 1px;
           visibility: hidden;
           transform: scaleX(0);
           transition: all 0.3s ease-in-out 0s;
@@ -136,7 +137,8 @@ export default {
       }
 
       &:hover,
-      &:focus {
+      &:focus,
+      &.router-link-active {
         .link::after {
           visibility: visible;
           transform: scaleX(1);

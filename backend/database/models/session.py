@@ -13,7 +13,7 @@ class Session(Base):
     id = Column(Integer, primary_key=True)
     type = Column(String(50))
 
-    images = relationship("Image", back_populates="session")
+    images = relationship("Image", back_populates="session", cascade="all, delete")
 
     __mapper_args__ = {
         'polymorphic_identity': 'basic',
@@ -22,10 +22,10 @@ class Session(Base):
 
 
 class GeneratorSession(Session, Timestamp):
-    __tablename__ = "sessions_g"
+    __tablename__ = "generator_sessions"
 
     id = Column(Integer, ForeignKey('sessions.id'), primary_key=True)
-    name = Column(String(64), nullable=True)
+    name = Column(String(64), nullable=False)
 
     __mapper_args__ = {
         'polymorphic_identity': 'generator',
@@ -33,15 +33,13 @@ class GeneratorSession(Session, Timestamp):
 
 
 class ResearchSession(Session):
-    __tablename__ = "sessions_r"
+    __tablename__ = "research_sessions"
 
     id = Column(Integer, ForeignKey('sessions.id'), primary_key=True)
-    total_amount = Column(Integer, nullable=False)
-    overlap_amount = Column(Integer, nullable=False)
-    equalize_gender = Column(Boolean, default=False)
-    slider_steps = Column(Integer, default=21)
+    research_setting_id = Column(Integer, ForeignKey('research_settings.id'), nullable=False)
     created = Column(DateTime, nullable=False, default=datetime.utcnow)
 
+    research_setting = relationship("ResearchSetting", back_populates="research_sessions")
     participant = relationship("Participant", uselist=False, back_populates="session")
 
     __mapper_args__ = {

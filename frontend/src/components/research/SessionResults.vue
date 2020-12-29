@@ -14,8 +14,7 @@
       title="Chosen multipliers for each vector of a single participant"
     />
     <ImagesList
-      v-if="images"
-      :images="images"
+      :images="imagesByCollectionId[session.participant.collectionId] ?? []"
       :allowUpdate="true"
       :allowDownload="true"
     />
@@ -33,8 +32,8 @@ import { InfoCircleOutlined } from "@ant-design/icons-vue";
 import Boxplot from "@/components/shared/infographics/Boxplot";
 import ImagesList from "@/components/shared/image/ImagesList";
 
-import useImages from "@/modules/images";
-import useResearch from "@/modules/research";
+import useCollectionImages from "@/modules/collectionImages";
+import useResearchData from "@/modules/researchData";
 
 export default {
   name: "SessionResults",
@@ -45,25 +44,27 @@ export default {
 
   async setup(props) {
     const visible = ref();
-    const { imagesByCollectionId, loadImagesOfCollectionAsync } = useImages();
-    const { getSessionResultsDataAsync } = useResearch();
+    const {
+      imagesByCollectionId,
+      loadImagesOfCollectionAsync,
+    } = useCollectionImages();
 
-    const images = ref([]);
-    const data = await getSessionResultsDataAsync(props.session.id);
+    const { getSessionResultsDataAsync } = useResearchData();
+    const data = await getSessionResultsDataAsync(
+      props.session.researchSettingId,
+      props.session.id
+    );
 
     async function showModal() {
       visible.value = !visible.value;
       await loadImagesOfCollectionAsync(props.session.participant.collectionId);
-      images.value = Object.values(
-        imagesByCollectionId[props.session.participant.collectionId]
-      );
     }
 
     return {
+      imagesByCollectionId,
       data,
       showModal,
       visible,
-      images,
     };
   },
 

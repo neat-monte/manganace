@@ -1,23 +1,26 @@
 from database.models import *
-
-from .c_image import CRUDCImage
-from .collection_p import CRUDParticipantCollection
-from .collection_u import CRUDUserCollection
+from .collection_image import CRUDCollectionImage
+from .generator_session import CRUDGeneratorSession
 from .image import CRUDImage
 from .participant import CRUDParticipant
-from .session_g import CRUDSessionG
-from .session_r import CRUDSessionR
+from .participant_collection import CRUDParticipantCollection
+from .research_session import CRUDResearchSession
+from .research_setting import CRUDResearchSetting
 from .tag import CRUDTag
+from .trial_pick import CRUDTrialPick
+from .user_collection import CRUDUserCollection
 from .vector import CRUDVector
 
 # Alphabetical order
 
-c_image = CRUDCImage(CImage)
-collection_u = CRUDUserCollection(UserCollection)
-collection_p = CRUDParticipantCollection(ParticipantCollection)
+collection_image = CRUDCollectionImage(CollectionImage)
+generator_session = CRUDGeneratorSession(GeneratorSession)
 image = CRUDImage(Image)
 participant = CRUDParticipant(Participant)
-session_g = CRUDSessionG(GeneratorSession)
-session_r = CRUDSessionR(ResearchSession)
+participant_collection = CRUDParticipantCollection(ParticipantCollection)
+research_session = CRUDResearchSession(ResearchSession)
+research_setting = CRUDResearchSetting(ResearchSetting)
 tag = CRUDTag(Tag)
+trial_pick = CRUDTrialPick(TrialPick)
+user_collection = CRUDUserCollection(UserCollection)
 vector = CRUDVector(Vector)

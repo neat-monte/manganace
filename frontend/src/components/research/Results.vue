@@ -17,25 +17,43 @@
 
 <script>
 import download from "downloadjs";
+import moment from "moment";
 
 import { ExportOutlined } from "@ant-design/icons-vue";
 import Boxplot from "@/components/shared/infographics/Boxplot";
 import Empty from "@/components/shared/display/Empty";
 
-import useResearch from "@/modules/research";
+import useResearchData from "@/modules/researchData";
+import { reactive, watchEffect } from "vue";
 
 export default {
   name: "Results",
 
-  async setup() {
-    const { getExportCsvAsync, getResultsDataAsync } = useResearch();
+  props: {
+    researchSettingId: {
+      type: Number,
+      required: true,
+    },
+  },
+
+  async setup(props) {
+    const { getExportCsvAsync, getResultsDataAsync } = useResearchData();
 
     async function downloadExportCsv() {
-      const exportCsv = await getExportCsvAsync();
-      download(exportCsv, `export.csv`);
+      const exportCsv = await getExportCsvAsync(props.researchSettingId);
+      download(
+        exportCsv,
+        `export ${moment().format("DD-MM-YYYY HH-mm-ss")}.csv`
+      );
     }
 
-    const data = await getResultsDataAsync();
+    const data = reactive([]);
+
+    watchEffect(async () => {
+      data.length = 0;
+      const results = await getResultsDataAsync(props.researchSettingId);
+      results.forEach((r) => data.push(r));
+    });
 
     return {
       data,

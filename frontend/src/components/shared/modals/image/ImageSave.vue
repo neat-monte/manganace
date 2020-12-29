@@ -54,7 +54,7 @@ import { SaveOutlined } from "@ant-design/icons-vue";
 
 import CollectionSelect from "@/components/shared/controls/CollectionSelect";
 import TagSelect from "@/components/shared/controls/TagSelect";
-import useImages from "@/modules/images";
+import useCollectionImages from "@/modules/collectionImages";
 import useGenerator from "@/modules/generator";
 
 export default {
@@ -75,7 +75,7 @@ export default {
       visible.value = true;
     }
 
-    const { createCollectionImageAsync } = useImages();
+    const { createCollectionImageAsync } = useCollectionImages();
     const newImage = reactive({
       description: null,
       collectionId: null,

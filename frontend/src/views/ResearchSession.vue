@@ -1,17 +1,13 @@
 <template>
   <div id="research-session" class="content">
     <div class="session-wrapper">
-      <Suspense v-if="!currentSession.participant">
-        <template #default>
-          <ParticipantForm />
-        </template>
-        <template #fallback>
-          <Loading />
-        </template>
-      </Suspense>
+      <Participation
+        v-if="!currentSession.participant"
+        :session="currentSession"
+      />
       <Suspense v-else>
         <template #default>
-          <Trials />
+          <Trials :session="currentSession" />
         </template>
         <template #fallback>
           <Loading />
@@ -24,18 +20,18 @@
 <script>
 import { useRouter } from "vue-router";
 
-import ParticipantForm from "@/components/research/session/ParticipantForm";
+import Participation from "@/components/research/session/Participation";
 import Trials from "@/components/research/session/Trials";
 import Loading from "@/components/shared/display/Loading";
 
-import useResearch from "@/modules/research";
+import useResearchSessions from "@/modules/researchSessions";
 
 export default {
   name: "ResearchSession",
 
   setup() {
     const router = useRouter();
-    const { currentSession } = useResearch();
+    const { currentSession } = useResearchSessions();
 
     if (!currentSession.id) {
       router.push({
@@ -49,7 +45,7 @@ export default {
   },
 
   components: {
-    ParticipantForm,
+    Participation,
     Trials,
     Loading,
   },

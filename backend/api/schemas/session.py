@@ -46,24 +46,18 @@ class GeneratorSession(GeneratorSessionInDb):
 
 class ResearchSessionCreate(CamelModel):
     """ Properties that are required for the research session initialization """
-    total_amount: conint(gt=0)
-    overlap_amount: conint(ge=0)
-    slider_steps: Optional[conint(ge=2)] = 21
-    equalize_gender: bool
+    research_setting_id: conint(gt=0)
 
-    @validator("overlap_amount")
-    def validate_overlap(cls, value, values):
-        if value > values["total_amount"]:
-            raise ValueError("Overlapping amount cannot be larger than total")
-        return value
+
+class ResearchSessionCreateOrder(CamelModel):
+    batch_size: conint(gt=0)
+    session: ResearchSessionCreate
 
 
 class ResearchSessionInDb(SessionInDb):
     """ Properties that are stored in the database """
-    total_amount: conint(gt=0)
-    overlap_amount: conint(ge=0)
-    equalize_gender: bool
-    slider_steps: conint(ge=2)
+    id: conint(gt=0)
+    research_setting_id: conint(gt=0)
     created: datetime
 
 

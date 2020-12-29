@@ -10,8 +10,8 @@ const loadLock = new AwaitLock();
 const collectionsById = reactive({});
 
 const insertCollection = (collection) => {
-    collection.created = moment(collection.created).format("YYYY-MM-DD HH:mm");
-    collection.updated = collection.updated !== null ? moment(collection.updated).format("YYYY-MM-DD HH:mm") : null;
+    collection.created = moment(collection.created).format("DD-MM-YYYY HH:mm");
+    collection.updated = collection.updated !== null ? moment(collection.updated).format("DD-MM-YYYY HH:mm") : null;
     collectionsById[collection.id] = collection;
 }
 
@@ -37,9 +37,7 @@ export default function useCollections() {
         try {
             const collectionJson = JSON.stringify(newCollection);
             const collection = await api.collections.createUser(collectionJson);
-            if (collection) {
-                insertCollection(collection);
-            }
+            insertCollection(collection);
         } catch (e) {
             notification.error("Failed to create the collection", e.message);
         }
@@ -49,9 +47,7 @@ export default function useCollections() {
         try {
             const collectionJson = JSON.stringify(updatedCollection);
             const collection = await api.collections.updateUser(updatedCollection.id, collectionJson);
-            if (collection) {
-                insertCollection(collection);
-            }
+            insertCollection(collection);
         } catch (e) {
             notification.error("Failed to update the collection", e.message);
         }
@@ -60,9 +56,7 @@ export default function useCollections() {
     const deleteCollectionAsync = async (collectionId) => {
         try {
             const collection = await api.collections.destroyUser(collectionId);
-            if (collection) {
-                delete collectionsById[collection.id];
-            }
+            delete collectionsById[collection.id];
         } catch (e) {
             notification.error("Failed to delete the collection", e.message)
         }

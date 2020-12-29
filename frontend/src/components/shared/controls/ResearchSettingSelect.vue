@@ -1,7 +1,7 @@
 <template>
-  <div class="session-select">
+  <div class="research-setting-select">
     <a-select
-      :value="currentSession.id"
+      :value="currentResearchSetting.id"
       show-search
       :placeholder="placeholder"
       option-filter-prop="children"
@@ -9,49 +9,51 @@
       @change="handleChange"
     >
       <a-select-option
-        v-for="[id, session] of Object.entries(sessionsById)"
-        :key="session.name"
+        v-for="[id, setting] of Object.entries(researchSettingsById)"
+        :key="setting.name"
         :value="Number(id)"
       >
-        {{ session.name }}
+        {{ setting.name }}
       </a-select-option>
     </a-select>
   </div>
 </template>
 
 <script>
-import useSessions from "@/modules/sessions";
-import useGenerator from "@/modules/generator";
+import useResearchSettings from "@/modules/researchSettings";
 
 export default {
-  name: "GeneratorSessionSelect",
+  name: "ResearchSettingSelect",
 
   props: {
     placeholder: {
       type: String,
-      default: "Select a session",
+      default: "Select a research setting",
     },
   },
 
-  emits: ["session-id-set"],
+  emits: ["setting-id-set"],
 
   async setup(_, context) {
-    const { loadGeneratorSessionsAsync, sessionsById } = useSessions();
-    const { currentSession } = useGenerator();
+    const {
+      loadResearchSettingsAsync,
+      researchSettingsById,
+      currentResearchSetting,
+    } = useResearchSettings();
 
     function filterOption(input, option) {
       return option.props.key.toLowerCase().includes(input);
     }
 
     function handleChange(value) {
-      context.emit("session-id-set", value);
+      context.emit("setting-id-set", value);
     }
 
-    await loadGeneratorSessionsAsync();
+    await loadResearchSettingsAsync();
 
     return {
-      currentSession,
-      sessionsById,
+      currentResearchSetting,
+      researchSettingsById,
       filterOption,
       handleChange,
     };
@@ -60,7 +62,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.session-select {
+.research-setting-select {
   display: flex;
   width: 100%;
 

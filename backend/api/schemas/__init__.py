@@ -1,12 +1,12 @@
 # Alphabetical order
 
-from .c_image import *
 from .collection import *
-from .education import *
+from .collection_image import *
 from .gender import *
 from .generator import *
 from .image import *
 from .participant import *
+from .research_setting import *
 from .result import *
 from .session import *
 from .tag import *

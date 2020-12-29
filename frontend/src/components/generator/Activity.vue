@@ -17,13 +17,13 @@
           </a-tooltip>
           <img
             v-if="index <= preloadCount"
-            @click="swapImage(index)"
+            @click="swapImage(sessionId, index)"
             :src="image.url"
             class="swiper-lazy"
           />
           <img
             v-else
-            @click="swapImage(index)"
+            @click="swapImage(sessionId, index)"
             :data-src="image.url"
             class="swiper-lazy"
           />
@@ -48,38 +48,40 @@ import "swiper/components/navigation/navigation.scss";
 SwiperCore.use([Navigation, Lazy]);
 
 import useGenerator from "@/modules/generator";
-import useActivity from "@/modules/activity";
+import useGeneratorSessionImages from "@/modules/generatorSessionImages";
 
 export default {
   name: "Activity",
 
   props: {
+    sessionId: {
+      type: Number,
+      required: true,
+    },
     preloadCount: {
       type: Number,
-      default: 6,
+      default: 8,
     },
   },
 
-  async setup() {
-    const { currentSession, swapImage } = useGenerator();
+  async setup(props) {
+    const { swapImage } = useGenerator();
     const {
       imagesBySessionId,
       loadImagesOfSessionAsync,
       tryDeleteImageAsync,
-    } = useActivity();
+    } = useGeneratorSessionImages();
 
     const generatedImages = ref([]);
 
     watchEffect(() => {
-      if (currentSession.id) {
-        generatedImages.value = imagesBySessionId[currentSession.id];
-      }
+      generatedImages.value = imagesBySessionId[props.sessionId];
     });
 
-    await loadImagesOfSessionAsync(currentSession.id);
+    await loadImagesOfSessionAsync(props.sessionId);
 
     async function destroyImage(image) {
-      await tryDeleteImageAsync(currentSession.id, image);
+      await tryDeleteImageAsync(props.sessionId, image);
     }
 
     return {

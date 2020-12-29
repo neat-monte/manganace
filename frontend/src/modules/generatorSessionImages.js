@@ -16,7 +16,7 @@ const insertImage = (image) => {
     imagesBySessionId[image.sessionId].unshift(image);
 }
 
-export default function useActivity() {
+export default function useGeneratorSessionImages() {
 
     const loadImagesOfSessionAsync = async (sessionId) => {
         await activityLock.acquireAsync();
@@ -49,18 +49,13 @@ export default function useActivity() {
     const tryDeleteImageAsync = async (sessionId, image) => {
         await activityLock.acquireAsync();
         try {
-            await api.images.destroyImage(image.id);
+            await api.sessions.destroyImage(image.id);
             const index = imagesBySessionId[sessionId].indexOf(image);
             if (index > -1) {
                 imagesBySessionId[sessionId].splice(index, 1);
             }
         } catch (e) {
-            if (e.message === "Forbidden") {
-                notification.warning("Cannot delete image",
-                    "At least one collection is dependent on the image");
-            } else {
-                notification.error("Failed to delete image", e.message)
-            }
+            notification.error("Failed to delete image", e.message)
         }
         finally {
             activityLock.release();

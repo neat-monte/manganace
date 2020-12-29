@@ -19,16 +19,27 @@
     </div>
 
     <div v-else class="session-selected">
-      <div class="header">
+      <div class="controls">
         <span class="title">{{ currentSession.name }}</span>
-        <a-button type="primary" @click="nullifySession" class="change-session">
-          Change session
-          <swap-outlined />
-        </a-button>
+        <div class="floating">
+          <div>
+            <GeneratorSessionDelete :generatorSessionId="currentSession.id" />
+          </div>
+          <div>
+            <a-button
+              type="primary"
+              @click="nullifySession"
+              class="change-session"
+            >
+              Change session
+              <swap-outlined />
+            </a-button>
+          </div>
+        </div>
       </div>
       <Suspense>
         <template #default>
-          <Activity />
+          <Activity :sessionId="currentSession.id" />
         </template>
         <template #fallback>
           <Loading id="activity" />
@@ -41,19 +52,24 @@
 <script>
 import { SwapOutlined } from "@ant-design/icons-vue";
 import Activity from "@/components/generator/Activity";
-import GeneratorSessionSelect from "@/components/shared/modals/session/GeneratorSessionSelect";
+import GeneratorSessionSelect from "@/components/shared/controls/GeneratorSessionSelect";
 import GeneratorSessionCreate from "@/components/shared/modals/session/GeneratorSessionCreate";
+import GeneratorSessionDelete from "@/components/shared/modals/session/GeneratorSessionDelete";
 import Loading from "@/components/shared/display/Loading";
 
+import useGeneratorSessions from "@/modules/generatorSessions";
 import useGenerator from "@/modules/generator";
-import useSessions from "@/modules/sessions";
 
 export default {
   name: "Sessions",
 
   async setup() {
-    const { sessionsById } = useSessions();
-    const { setCurrentSession, currentSession } = useGenerator();
+    const {
+      sessionsById,
+      currentSession,
+      setCurrentSession,
+    } = useGeneratorSessions();
+    const { nullifyImage } = useGenerator();
 
     function setSession(sessionId) {
       setCurrentSession(sessionsById[sessionId]);
@@ -61,6 +77,7 @@ export default {
 
     function nullifySession() {
       setCurrentSession(null);
+      nullifyImage();
     }
 
     return {
@@ -74,6 +91,7 @@ export default {
     Loading,
     GeneratorSessionSelect,
     GeneratorSessionCreate,
+    GeneratorSessionDelete,
     Activity,
     SwapOutlined,
   },
@@ -108,17 +126,21 @@ export default {
   .session-selected {
     padding: 0 20px;
 
-    .header {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      margin-bottom: 20px;
+    .controls {
       position: relative;
-      padding-right: 150px;
+      margin-bottom: 5px;
 
-      .change-session {
-        position: absolute;
-        right: 0;
+      & > * {
+        flex: 1;
+      }
+
+      .floating {
+        display: flex;
+        justify-content: flex-end;
+
+        & > *:not(:last-child) {
+          margin-right: 5px;
+        }
       }
     }
   }
@@ -128,6 +150,20 @@ export default {
   #sessions {
     .session-selected {
       padding: 0;
+    }
+  }
+}
+
+@include sm-desktop {
+  #sessions {
+    .session-selected {
+      .controls {
+        .floating {
+          position: absolute;
+          top: 2px;
+          right: 0;
+        }
+      }
     }
   }
 }

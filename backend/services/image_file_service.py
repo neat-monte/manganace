@@ -11,6 +11,9 @@ class ImageFileService:
     ROOT = Path.cwd()
     SESSION_IMAGES = 'static/session_images'
 
+    def get_folder_path(self, session_id):
+        return self.ROOT / self.SESSION_IMAGES / str(session_id)
+
     def get_path(self, filename: str, session_id: int) -> Path:
         return self.ROOT / self.SESSION_IMAGES / str(session_id) / filename
 

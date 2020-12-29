@@ -24,7 +24,7 @@
 <script>
 import { ref } from "vue";
 import { DeleteOutlined } from "@ant-design/icons-vue";
-import useImages from "@/modules/images";
+import useCollectionImages from "@/modules/collectionImages";
 
 export default {
   name: "ImageDelete",
@@ -43,7 +43,8 @@ export default {
       visible.value = true;
     }
 
-    const { deleteCollectionImageAsync } = useImages();
+    const { deleteCollectionImageAsync } = useCollectionImages();
+
     async function handleDelete() {
       visible.value = false;
       await deleteCollectionImageAsync(props.imageId);

@@ -24,7 +24,7 @@
         :allowDownload="allowDownload"
       />
     </div>
-    <Empty v-if="images.length == 0" />
+    <Empty v-if="images.length === 0" />
   </div>
 </template>
 
@@ -70,11 +70,8 @@ export default {
 
     function filterImagesByTags() {
       if (filterTags.value.length > 0) {
-        internalImages.value = Object.assign(
-          {},
-          Object.values(internalImages.value).filter((image) =>
-            includesAll(image.tagsIds, filterTags.value)
-          )
+        internalImages.value = internalImages.value.filter((image) =>
+          includesAll(image.tagsIds, filterTags.value)
         );
       } else if (props.images) {
         internalImages.value = props.images;

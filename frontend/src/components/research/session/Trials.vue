@@ -2,8 +2,8 @@
   <div id="trials">
     <div class="progress">
       <a-progress
-        :percent="(currentSession.progress / currentSession.trials) * 100"
-        :format="() => `${currentSession.progress} / ${currentSession.trials}`"
+        :percent="(session.progress / session.trials) * 100"
+        :format="() => `${session.progress} / ${session.trials}`"
       />
     </div>
     <div v-if="!completed" class="trial">
@@ -13,12 +13,16 @@
           <strong>{{ trial.emotion }}</strong>
         </h1>
       </div>
-      <ZoomableImage v-if="currentImage" :url="currentImage.url">
+      <ZoomableImage
+        v-if="currentImage"
+        :url="currentImage.url"
+        :showLoading="loading"
+      >
         <template v-slot:controls>
           <Slider
             v-model:value="selection"
             :min="0"
-            :max="currentSession.sliderSteps - 1"
+            :max="researchSetting.sliderSteps - 1"
             :step="1"
             :showSliderTooltip="false"
           />
@@ -28,6 +32,12 @@
 
     <div v-else class="thank-you-message">
       <h1>Thank you for your participation!</h1>
+      <p>
+        The purpose of this study is to find the scalar value for emotion
+        vectors of the StyleGAN FFHQ model such that it makes any face look
+        natural for a certain emotion. Additionally, the data can be used to
+        investigate the human perception of emotion.
+      </p>
       <p>
         Should you want more information on the research project, please feel
         free to contact the student at
@@ -43,7 +53,7 @@
             Exit
           </a-button>
         </router-link>
-        <a-button type="primary" @click="next()">
+        <a-button type="primary" @click="next()" :disabled="loading">
           Next
           <caret-right-outlined />
         </a-button>
@@ -72,20 +82,29 @@ import {
 import ZoomableImage from "@/components/shared/image/ZoomableImage";
 import Slider from "@/components/shared/controls/Slider";
 
-import useResearch from "@/modules/research";
+import useResearchSettings from "@/modules/researchSettings";
+import useResearchTrials from "@/modules/researchTrials";
+import useCollectionImages from "@/modules/collectionImages";
 import useTags from "@/modules/tags";
 
 export default {
   name: "Trials",
 
-  async setup() {
-    const {
-      currentSession,
-      getTrialsMetaInfoAsync,
-      saveChosenTrialImageAsync,
-      getTrialImagesAsync,
-    } = useResearch();
+  props: {
+    session: {
+      type: Object,
+      required: true,
+    },
+  },
+
+  async setup(props) {
+    const { researchSettingsById } = useResearchSettings();
+    const { getTrialsMetaInfoAsync, getTrialImagesAsync } = useResearchTrials();
+    const { createTrialPickAsync } = useCollectionImages();
     const { researchTagsById, loadResearchTagsAsync } = useTags();
+
+    const researchSetting =
+      researchSettingsById[props.session.researchSettingId];
 
     const completed = ref(false);
 
@@ -93,9 +112,12 @@ export default {
 
     const trial = ref();
     const selection = ref();
+    const initialMultiplier = ref();
 
     const trialImages = ref();
     const currentImage = ref();
+
+    const loading = ref(true);
 
     watchEffect(() => {
       if (trialImages.value) {
@@ -103,7 +125,7 @@ export default {
       }
     });
 
-    trials.value = await getTrialsMetaInfoAsync();
+    trials.value = await getTrialsMetaInfoAsync(props.session.id);
     await next();
 
     await loadResearchTagsAsync();
@@ -113,6 +135,7 @@ export default {
     });
 
     async function next() {
+      loading.value = true;
       if (trial.value) {
         await saveChoiceAsync();
       }
@@ -121,16 +144,19 @@ export default {
       } else {
         await nextTrialAsync();
       }
+      loading.value = false;
     }
 
     async function saveChoiceAsync() {
       const chosenImage = {
         imageId: currentImage.value.id,
         description: `Participant found this naturally ${trial.value.emotion}`,
-        collectionId: currentSession.participant.collectionId,
+        collectionId: props.session.participant.collectionId,
         tagsIds: [tagsByEmotion[trial.value.emotion]],
+        trialNumber: props.session.progress + 1,
+        initialMultiplier: initialMultiplier.value,
       };
-      await saveChosenTrialImageAsync(chosenImage);
+      await createTrialPickAsync(chosenImage);
     }
 
     async function nextTrialAsync() {
@@ -138,17 +164,27 @@ export default {
       trial.value = trials.value[randomTrial];
       trials.value.splice(randomTrial, 1);
       trialImages.value = await getTrialImagesAsync(trial.value);
-      selection.value = Math.floor(Math.random() * currentSession.sliderSteps);
+      trialImages.value.forEach((im) => {
+        // preload and cache images, otherwise it is useless
+        var i = new Image();
+        i.src = im.url;
+      });
+      const randomStart = Math.floor(
+        Math.random() * researchSetting.sliderSteps
+      );
+      initialMultiplier.value = trialImages.value[randomStart].vectorMultiplier;
+      selection.value = randomStart;
     }
 
     return {
-      currentSession,
+      researchSetting,
       completed,
       trials,
       trial,
       selection,
       currentImage,
       next,
+      loading,
     };
   },
 
@@ -185,6 +221,10 @@ export default {
     justify-content: center;
     display: flex;
     flex-direction: column;
+
+    p {
+      text-align: justify;
+    }
   }
 
   .trial-controls {

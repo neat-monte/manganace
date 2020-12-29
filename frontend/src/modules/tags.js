@@ -21,10 +21,8 @@ export default function useTags() {
                 return;
             }
             const tags = await api.tags.getAll();
-            if (tags) {
-                tags.forEach(tag => tagsById[tag.id] = tag);
-                hasLoaded.value = true;
-            }
+            tags.forEach(tag => tagsById[tag.id] = tag);
+            hasLoaded.value = true;
         } catch (e) {
             notification.error("Failed to load tags", e.message);
         } finally {
@@ -39,10 +37,8 @@ export default function useTags() {
                 return;
             }
             const tags = await api.tags.getResearchTags();
-            if (tags) {
-                tags.forEach(tags => researchTagsById[tags.id] = tags);
-                researchTagsLoaded.value = true;
-            }
+            tags.forEach(tags => researchTagsById[tags.id] = tags);
+            researchTagsLoaded.value = true;
         } catch (e) {
             notification.error("Failed to load tags for research", e.message);
         } finally {
@@ -54,9 +50,7 @@ export default function useTags() {
         try {
             const tagJson = JSON.stringify(newTag);
             const tag = await api.tags.create(tagJson);
-            if (tag) {
-                tagsById[tag.id] = tag;
-            }
+            tagsById[tag.id] = tag;
         } catch (e) {
             notification.error("Failed to create the tag", e.message);
         }
@@ -66,9 +60,7 @@ export default function useTags() {
         try {
             const tagJson = JSON.stringify(updatedTag);
             const tag = await api.tags.update(updatedTag.id, tagJson);
-            if (tag) {
-                tagsById[tag.id] = tag;
-            }
+            tagsById[tag.id] = tag;
         } catch (e) {
             notification.error("Failed to update the tag", e.message);
         }
@@ -77,9 +69,7 @@ export default function useTags() {
     const deleteTagAsync = async (tagId) => {
         try {
             const tag = await api.tags.destroy(tagId);
-            if (tag) {
-                delete tagsById[tag.id];
-            }
+            delete tagsById[tag.id];
         } catch (e) {
             notification.error("Failed to delete the tag", e.message);
         }

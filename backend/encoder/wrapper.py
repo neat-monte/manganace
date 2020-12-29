@@ -14,7 +14,6 @@ PICKLED_EMOTIONS_VECTORS = BASE_DIR / 'emotion_directions_in_latent_space.pkl'
 
 
 class GeneratorWrapper:
-    multiplier_scale = 0.1
     batch_size, random_noise, tf_session, Gs, generator, emotion_vectors, vectors \
         = None, None, None, None, None, None, None
 
@@ -28,6 +27,9 @@ class GeneratorWrapper:
         self.__start_generator(batch_size, random_noise)
 
     def restart_generator(self, batch_size: int, random_noise: bool):
+        self.batch_size = batch_size
+        self.random_noise = random_noise
+        # Close and reinitialize the tensorflow session
         self.tf_session.close()
         dnnlib.tflib.init_tf()
         self.tf_session = tf.get_default_session()
@@ -71,10 +73,9 @@ class GeneratorWrapper:
         latent_state = latent_state.reshape((latent_state.shape[0], 18 * 512))
         for (v_id, v_multiplier) in vectors:
             (v_effect, v_weight) = self.vectors[v_id]
-            multiplier = v_multiplier * self.multiplier_scale
             emotion_vector = self.emotion_vectors[f'neutral->{v_effect}']
             weighted_emotion_vector = emotion_vector * v_weight
-            scaled_emotion_vector = weighted_emotion_vector * multiplier
+            scaled_emotion_vector = weighted_emotion_vector * v_multiplier
             latent_state += scaled_emotion_vector
         return latent_state.reshape((latent_state.shape[0], 18, 512))
 

@@ -4,27 +4,32 @@
       <div class="label">{{ label }}</div>
     </a-tooltip>
     <div v-if="!tooltip && label" class="label">{{ label }}</div>
+    <div v-if="enableReset" class="reload">
+      <ReloadOutlined @click="onValueChange(0)" />
+    </div>
     <a-slider
-      :value="internalValue"
+      :value="value"
       :min="min"
       :max="max"
       :step="step"
       :tooltipVisible="showSliderTooltip"
+      :disabled="disabled"
       @change="onValueChange"
     />
     <a-input-number
       v-if="enableInput"
-      :value="internalValue"
+      :value="value"
       :min="min"
       :max="max"
       :step="step"
+      :disabled="disabled"
       @change="onValueChange"
     />
   </div>
 </template>
 
 <script>
-import { ref, watchEffect } from "vue";
+import { ReloadOutlined } from "@ant-design/icons-vue";
 
 export default {
   name: "Slider",
@@ -34,25 +39,21 @@ export default {
       type: Number,
       default: 0,
     },
-    showSliderTooltip: {
-      type: Boolean,
-      default: undefined,
-    },
-    label: {
-      type: String,
-      default: null,
-    },
-    tooltip: {
-      type: String,
-      default: null,
-    },
     enableInput: {
+      type: Boolean,
+      default: false,
+    },
+    enableReset: {
+      type: Boolean,
+      default: false,
+    },
+    showSliderTooltip: {
       type: Boolean,
       default: false,
     },
     min: {
       type: Number,
-      default: 0,
+      default: -1,
     },
     max: {
       type: Number,
@@ -62,24 +63,29 @@ export default {
       type: Number,
       default: 0.01,
     },
+    label: {
+      type: String,
+      default: null,
+    },
+    tooltip: {
+      type: String,
+      default: null,
+    },
+    disabled: {
+      type: Boolean,
+      default: false,
+    },
   },
 
-  emits: ["update:value", "change"],
-
   setup(props, context) {
-    const internalValue = ref();
-
-    watchEffect(() => {
-      internalValue.value = props.value;
-    });
-
     function onValueChange(newValue) {
-      const onlyFloat = /^\d+(\.\d+)?$/;
+      if (props.disabled) {
+        return;
+      }
+      const onlyFloat = /^[-+]?\d+(\.\d+)?$/;
       if (!isNaN(newValue) && onlyFloat.test(newValue)) {
         const num = Number(newValue);
         if (props.min <= num && num <= props.max) {
-          internalValue.value = num;
-          context.emit("change", num);
           context.emit("update:value", num);
         }
       }
@@ -87,8 +93,11 @@ export default {
 
     return {
       onValueChange,
-      internalValue,
     };
+  },
+
+  components: {
+    ReloadOutlined,
   },
 };
 </script>
@@ -116,6 +125,11 @@ export default {
 
   .ant-input-number {
     margin-left: 5px;
+  }
+
+  .reload {
+    color: $primary;
+    margin-right: 5px;
   }
 }
 </style>
