@@ -78,8 +78,12 @@
       </a-form-item>
     </a-form>
     <div class="controls">
-      <a-button @click="reset" :disabled="isGenerating">
-        Reset
+      <a-button @click="resetToDefaults" :disabled="isGenerating">
+        Reset to defaults
+        <clear-outlined />
+      </a-button>
+      <a-button @click="resetSliders" :disabled="isGenerating">
+        Reset all sliders
         <reload-outlined />
       </a-button>
       <a-button
@@ -101,6 +105,7 @@ import {
   SyncOutlined,
   ReloadOutlined,
   QuestionOutlined,
+  ClearOutlined,
 } from "@ant-design/icons-vue";
 import useGenerator from "@/modules/generator";
 import Slider from "@/components/shared/controls/Slider";
@@ -117,8 +122,8 @@ export default {
       currentImage,
     } = useGenerator();
 
-    const globalMultiplier = ref(0.1);
-    const prevGlobalMultiplier = ref(0.1);
+    const globalMultiplier = ref(0.2);
+    const prevGlobalMultiplier = ref(0.2);
 
     const sliderOpt = reactive({
       min: -1,
@@ -134,21 +139,22 @@ export default {
       seed: "",
       vectors: [],
     });
+
+    const lastMappedImageId = ref();
+
     watchEffect(() => {
-      /** When image from activity is selected,
-       *  map its values to controls
-       */
-      if (currentImage.id) {
-        reset();
+      if (currentImage.id && lastMappedImageId.value !== currentImage.id) {
+        resetSliders();
+
         const copy = JSON.parse(JSON.stringify(currentImage));
+        lastMappedImageId.value = copy.id;
 
         generateRequest.seed = copy.seed;
         generateRequest.vectors = copy.vectors;
 
-        currentImage.vectors.forEach((v) => {
-          const vectorValue = (
-            v.multiplier / globalMultiplier.value
-          ).toPrecision(5);
+        copy.vectors.forEach((v) => {
+          let vectorValue = v.multiplier / globalMultiplier.value;
+          vectorValue = vectorValue.toPrecision(5);
 
           if (vectorValue > sliderOpt.max) {
             sliderOpt.max = vectorValue;
@@ -156,7 +162,7 @@ export default {
             sliderOpt.min = vectorValue;
           }
 
-          vectorValues[v.id] = vectorValue;
+          vectorValues[v.id] = Number(vectorValue);
         });
       }
     });
@@ -208,10 +214,17 @@ export default {
       }
     }
 
-    function reset() {
-      generateRequest.seed = "";
+    function resetSliders() {
       generateRequest.vectors = [];
       Object.keys(vectorValues).forEach((k) => (vectorValues[k] = 0));
+    }
+
+    function resetToDefaults() {
+      globalMultiplier.value = 0.2;
+      sliderOpt.min = -1;
+      sliderOpt.max = 1;
+      generateRequest.seed = "";
+      resetSliders();
     }
 
     async function generate() {
@@ -221,7 +234,8 @@ export default {
     await initGeneratorAsync();
 
     return {
-      reset,
+      resetToDefaults,
+      resetSliders,
       generate,
       globalMultiplier,
       generateRequest,
@@ -243,6 +257,7 @@ export default {
     SyncOutlined,
     ReloadOutlined,
     QuestionOutlined,
+    ClearOutlined,
   },
 };
 </script>

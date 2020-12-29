@@ -14,9 +14,9 @@ const imagesByCollectionId = reactive({});
 
 const insertImage = (image) => {
     if (imagesByCollectionId[image.collectionId] === undefined) {
-        imagesByCollectionId[image.collectionId] = {};
+        imagesByCollectionId[image.collectionId] = [];
     }
-    imagesByCollectionId[image.collectionId][image.id] = image
+    imagesByCollectionId[image.collectionId].push(image);
 }
 
 export default function useCollectionImages() {
@@ -28,6 +28,7 @@ export default function useCollectionImages() {
                 return;
             }
             const images = await api.collections.getImages(collectionId);
+            imagesByCollectionId[collectionId] = [];
             images.forEach(image => insertImage(image));
             hasLoaded[collectionId] = true;
         } catch (e) {
@@ -38,9 +39,10 @@ export default function useCollectionImages() {
     }
 
     const createCollectionImageAsync = async (newImage) => {
+        console.log("test");
         try {
             const imageJson = JSON.stringify(newImage);
-            const image = await api.collections.createCImage(imageJson);
+            const image = await api.collections.createImage(imageJson);
             insertImage(image);
         } catch (e) {
             notification.error("Failed to save the image", e.message);
@@ -50,7 +52,7 @@ export default function useCollectionImages() {
     const updateCollectionImageAsync = async (updatedImage) => {
         try {
             const imageJson = JSON.stringify(updatedImage);
-            const image = await api.collections.updateCImage(updatedImage.id, imageJson)
+            const image = await api.collections.updateImage(updatedImage.id, imageJson)
             insertImage(image);
         } catch (e) {
             notification.error("Failed to update the image", e.message);
@@ -59,8 +61,9 @@ export default function useCollectionImages() {
 
     const deleteCollectionImageAsync = async (imageId) => {
         try {
-            const image = await api.collections.destroyCImage(imageId);
-            delete imagesByCollectionId[image.collectionId][image.id];
+            const image = await api.collections.destroyImage(imageId);
+            const index = imagesByCollectionId[image.collectionId].indexOf(image);
+            imagesByCollectionId[image.collectionId].splice(index, 1);
         } catch (e) {
             notification.error("Failed to delete the image", e.message);
         }

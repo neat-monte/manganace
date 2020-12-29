@@ -51,7 +51,7 @@ export default {
     async function showModal() {
       visible.value = !visible.value;
       await loadImagesOfCollectionAsync(props.collectionId);
-      images.value = Object.values(imagesByCollectionId[props.collectionId]);
+      images.value = imagesByCollectionId[props.collectionId];
     }
 
     return {

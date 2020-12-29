@@ -60,9 +60,8 @@ export default {
     async function showModal() {
       visible.value = !visible.value;
       await loadImagesOfCollectionAsync(props.session.participant.collectionId);
-      images.value = Object.values(
-        imagesByCollectionId[props.session.participant.collectionId]
-      );
+      images.value =
+        imagesByCollectionId[props.session.participant.collectionId];
     }
 
     return {
