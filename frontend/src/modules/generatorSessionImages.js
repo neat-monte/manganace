@@ -55,12 +55,7 @@ export default function useGeneratorSessionImages() {
                 imagesBySessionId[sessionId].splice(index, 1);
             }
         } catch (e) {
-            if (e.message === "Forbidden") {
-                notification.warning("Cannot delete image",
-                    "At least one collection is dependent on the image");
-            } else {
-                notification.error("Failed to delete image", e.message)
-            }
+            notification.error("Failed to delete image", e.message)
         }
         finally {
             activityLock.release();

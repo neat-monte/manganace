@@ -14,8 +14,7 @@
       title="Chosen multipliers for each vector of a single participant"
     />
     <ImagesList
-      v-if="images"
-      :images="images"
+      :images="imagesByCollectionId[session.participant.collectionId] ?? []"
       :allowUpdate="true"
       :allowDownload="true"
     />
@@ -49,9 +48,8 @@ export default {
       imagesByCollectionId,
       loadImagesOfCollectionAsync,
     } = useCollectionImages();
-    const { getSessionResultsDataAsync } = useResearchData();
 
-    const images = ref([]);
+    const { getSessionResultsDataAsync } = useResearchData();
     const data = await getSessionResultsDataAsync(
       props.session.researchSettingId,
       props.session.id
@@ -60,15 +58,13 @@ export default {
     async function showModal() {
       visible.value = !visible.value;
       await loadImagesOfCollectionAsync(props.session.participant.collectionId);
-      images.value =
-        imagesByCollectionId[props.session.participant.collectionId];
     }
 
     return {
+      imagesByCollectionId,
       data,
       showModal,
       visible,
-      images,
     };
   },
 

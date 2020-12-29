@@ -6,11 +6,11 @@
 
   <a-modal
     v-model:visible="visible"
-    :title="`${collection.name} (${images.length})`"
+    :title="`${collection.name} (${imagesByCollectionId[collectionId]?.length})`"
     :width="800"
   >
     <ImagesList
-      :images="images"
+      :images="imagesByCollectionId[collectionId] ?? []"
       :allowDelete="true"
       :allowUpdate="true"
       :allowDownload="true"
@@ -43,21 +43,19 @@ export default {
       imagesByCollectionId,
       loadImagesOfCollectionAsync,
     } = useCollectionImages();
-    const { collectionsById } = useCollections();
 
-    const images = ref([]);
+    const { collectionsById } = useCollections();
     const collection = collectionsById[props.collectionId];
 
     async function showModal() {
       visible.value = !visible.value;
       await loadImagesOfCollectionAsync(props.collectionId);
-      images.value = imagesByCollectionId[props.collectionId];
     }
 
     return {
       showModal,
       visible,
-      images,
+      imagesByCollectionId,
       collection,
     };
   },

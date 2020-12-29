@@ -44,7 +44,6 @@ export default function useCollectionImages() {
     }
 
     const createCollectionImageAsync = async (newImage) => {
-        console.log("test");
         try {
             const imageJson = JSON.stringify(newImage);
             const image = await api.collections.createImage(imageJson);
@@ -67,8 +66,11 @@ export default function useCollectionImages() {
     const deleteCollectionImageAsync = async (imageId) => {
         try {
             const image = await api.collections.destroyImage(imageId);
-            const index = imagesByCollectionId[image.collectionId].indexOf(image);
-            imagesByCollectionId[image.collectionId].splice(index, 1);
+            const obj = imagesByCollectionId[image.collectionId].filter(i => i.id == imageId)[0]
+            const index = imagesByCollectionId[image.collectionId].indexOf(obj);
+            if (index > -1) {
+                imagesByCollectionId[image.collectionId].splice(index, 1);
+            }
         } catch (e) {
             notification.error("Failed to delete the image", e.message);
         }
