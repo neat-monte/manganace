@@ -18,4 +18,4 @@ class Participant(Base, Timestamp):
 
     gender = relationship("Gender", back_populates="participants")
     session = relationship("ResearchSession", back_populates="participant")
-    collection = relationship("ParticipantCollection", back_populates="participant")
+    collection = relationship("ParticipantCollection", back_populates="participant", cascade="all, delete")

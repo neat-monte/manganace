@@ -24,7 +24,7 @@ class UserCollection(Collection, Timestamp):
     name = Column(String(64), nullable=False)
     description = Column(Text)
 
-    collection_images = relationship("CImage", back_populates="collection")
+    collection_images = relationship("CImage", back_populates="collection", cascade="all, delete")
 
     __mapper_args__ = {
         'polymorphic_identity': 'user',
@@ -37,7 +37,7 @@ class ParticipantCollection(Collection, Timestamp):
     id = Column(Integer, ForeignKey('collections.id'), primary_key=True)
 
     participant = relationship("Participant", back_populates="collection")
-    trial_picks = relationship("TrialPick", back_populates="collection")
+    trial_picks = relationship("TrialPick", back_populates="collection", cascade="all, delete")
 
     __mapper_args__ = {
         'polymorphic_identity': 'participant',

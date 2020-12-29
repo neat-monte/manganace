@@ -19,3 +19,12 @@ def assign_participant(participant_in: ParticipantCreate, db: Session = Depends(
     if db_research_session.participant:
         raise HTTPException(status_code=400, detail="Session already contains a participant")
     return CRUD.participant.create_for_session(db, participant_in, db_research_session)
+
+
+@router.delete('/participants/{id_}', response_model=Participant)
+def delete_participant(id_: int, db: Session = Depends(get_db)) -> Any:
+    """  Delete a participant with all the data that was gathered. """
+    db_participant = CRUD.participant.get(db, id_)
+    if not db_participant:
+        raise HTTPException(status_code=404, detail="Participant not found")
+    return CRUD.participant.delete(db, id_)

@@ -1,36 +1,40 @@
 <template>
   <a-button v-if="buttonText" type="danger" @click="showModal()">
     {{ buttonText }}
-    <delete-outlined />
+    <user-delete-outlined />
   </a-button>
 
-  <a-tooltip v-else placement="top" title="Delete image">
+  <a-tooltip v-else placement="top" title="Delete participant">
     <a-button type="danger" @click="showModal()">
       <template v-slot:icon>
-        <delete-outlined />
+        <user-delete-outlined />
       </template>
     </a-button>
   </a-tooltip>
 
   <a-modal
     v-model:visible="visible"
-    title="Confirm image delete"
+    title="Confirm participant delete"
     @ok="handleDelete()"
   >
-    <p>The image will be removed. <strong>It will be unrecoverable.</strong></p>
+    <p>
+      The participant and all the data will be removed.
+      <strong>It will be unrecoverable.</strong>
+    </p>
   </a-modal>
 </template>
 
 <script>
 import { ref } from "vue";
-import { DeleteOutlined } from "@ant-design/icons-vue";
-import useCollectionImages from "@/modules/collectionImages";
+import { UserDeleteOutlined } from "@ant-design/icons-vue";
+import useResearchParticipant from "@/modules/researchParticipant";
 
 export default {
-  name: "ImageDelete",
+  name: "ParticipantDelete",
 
   props: {
-    imageId: Number,
+    researchSettingId: Number,
+    participantId: Number,
     buttonText: {
       type: String,
       default: null,
@@ -43,11 +47,14 @@ export default {
       visible.value = true;
     }
 
-    const { deleteCollectionImageAsync } = useCollectionImages();
+    const { deleteParticipantAsync } = useResearchParticipant();
 
     async function handleDelete() {
       visible.value = false;
-      await deleteCollectionImageAsync(props.imageId);
+      await deleteParticipantAsync(
+        props.researchSettingId,
+        props.participantId
+      );
     }
 
     return {
@@ -57,6 +64,6 @@ export default {
     };
   },
 
-  components: { DeleteOutlined },
+  components: { UserDeleteOutlined },
 };
 </script>

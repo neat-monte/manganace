@@ -4,7 +4,7 @@
     <Consent
       v-else-if="step === 2"
       v-model:consent="participant.consented"
-      @change="consentChanged"
+      @change="participant.consentedOn = moment().toISOString()"
     />
     <Suspense v-else>
       <template #default>
@@ -116,19 +116,12 @@ export default {
       step.value--;
     }
 
-    function consentChanged() {
-      participant.consentedOn = participant.consented
-        ? moment().format("YYYY-MM-DD HH:mm:ss.SSS")
-        : null;
-    }
-
     return {
       participant,
       isValid,
       step,
       next,
       prev,
-      consentChanged,
       moment,
     };
   },

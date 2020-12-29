@@ -33,6 +33,9 @@ export default function useResearchSessions() {
                 return;
             }
             const sessions = await api.sessions.getAllResearch(settingId);
+            if (!sessionsBySettingId[settingId]) {
+                sessionsBySettingId[settingId] = [];
+            }
             sessions.forEach(session => insertResearchSession(session));
             hasLoaded[settingId] = true;
         } catch (e) {
@@ -92,6 +95,15 @@ export default function useResearchSessions() {
         }
     }
 
+    const removeParticipant = (settingId, participant) => {
+        const session = sessionsBySettingId[settingId].filter(s => s.id === participant.sessionId)[0];
+        session.participant = null;
+        if (currentSession.id === session.id) {
+            currentSession.participant = null;
+        }
+        session.progress = 0;
+    }
+
     const incrementProgress = () => {
         if (!currentSession) {
             return;
@@ -102,14 +114,16 @@ export default function useResearchSessions() {
 
     return {
         sessionsBySettingId: readonly(sessionsBySettingId),
+        sessionsLoadStatus: readonly(hasLoaded),
         currentSession: readonly(currentSession),
+        researchGenerateRequest: readonly(researchGenerateRequest),
         loadResearchSessionsAsync,
+        createResearchSessionsAsync,
+        deleteResearchSessionAsync,
         setCurrentSession,
         insertResearchSession,
         updateParticipant,
+        removeParticipant,
         incrementProgress,
-        researchGenerateRequest: readonly(researchGenerateRequest),
-        createResearchSessionsAsync,
-        deleteResearchSessionAsync,
     }
 }

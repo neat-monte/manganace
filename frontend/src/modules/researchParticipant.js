@@ -3,7 +3,7 @@ import notification from "@/services/notification"
 import useResearchSessions from "./researchSessions";
 import AwaitLock from 'await-lock';
 
-const { sessionsBySettingId, updateParticipant } = useResearchSessions();
+const { sessionsBySettingId, updateParticipant, removeParticipant } = useResearchSessions();
 
 const generalLock = new AwaitLock();
 
@@ -28,7 +28,20 @@ export default function useResearchParticipant() {
         }
     }
 
+    const deleteParticipantAsync = async (researchSettingId, participantId) => {
+        await generalLock.acquireAsync();
+        try {
+            const participant = await api.research.destroyParticipant(participantId);
+            removeParticipant(researchSettingId, participant);
+        } catch (e) {
+            notification.error("Failed to delete the participant", e.message);
+        } finally {
+            generalLock.release();
+        }
+    }
+
     return {
         assignParticipantAsync,
+        deleteParticipantAsync,
     }
 }

@@ -17,7 +17,10 @@
     title="Confirm research setting delete"
     @ok="handleDelete()"
   >
-    <p>Remove the research setting</p>
+    <p>
+      Remove the research setting. This action is available because the setting
+      contains no sessions.
+    </p>
   </a-modal>
 </template>
 

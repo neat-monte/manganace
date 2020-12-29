@@ -24,6 +24,12 @@
       <p v-else>No participant yet</p>
     </div>
     <div class="card-controls">
+      <ParticipantDelete
+        v-if="session.participant"
+        :researchSettingId="session.researchSettingId"
+        :participantId="session.participant.id"
+      />
+      <ResearchSessionDelete v-else :researchSessionId="session.id" />
       <Suspense>
         <template #default>
           <SessionResults :session="session" />
@@ -46,6 +52,8 @@ import { useRouter } from "vue-router";
 
 import { CaretRightOutlined } from "@ant-design/icons-vue";
 import SessionResults from "@/components/research/SessionResults";
+import ParticipantDelete from "@/components/shared/modals/participant/ParticipantDelete";
+import ResearchSessionDelete from "@/components/shared/modals/session/ResearchSessionDelete";
 
 import useResearchSessions from "@/modules/researchSessions";
 import useExtras from "@/modules/extras";
@@ -77,6 +85,8 @@ export default {
 
   components: {
     SessionResults,
+    ParticipantDelete,
+    ResearchSessionDelete,
     CaretRightOutlined,
   },
 };
@@ -115,6 +125,12 @@ export default {
     justify-content: space-evenly;
     align-items: center;
     width: 100%;
+
+    .additional-controls {
+      position: absolute;
+      left: 10px;
+      color: $primary;
+    }
   }
 
   &:hover {

@@ -21,19 +21,24 @@
     <div v-else class="setting-selected">
       <div class="controls">
         <div class="title">Research setting</div>
-        <div class="actions">
-          <Suspense>
-            <template #default>
-              <ResearchSettingSelect
-                @setting-id-set="setCurrentResearchSetting"
-              />
-            </template>
-            <template #fallback>
-              <Loading />
-            </template>
-          </Suspense>
-          <ResearchSettingCreate />
+        <div class="floating">
+          <div v-if="sessionAmount === 0">
+            <ResearchSettingDelete
+              :researchSettingId="currentResearchSetting.id"
+            />
+          </div>
+          <div><ResearchSettingCreate /></div>
         </div>
+        <Suspense>
+          <template #default>
+            <ResearchSettingSelect
+              @setting-id-set="setCurrentResearchSetting"
+            />
+          </template>
+          <template #fallback>
+            <Loading />
+          </template>
+        </Suspense>
       </div>
       <div class="current-setting">
         <a-descriptions
@@ -66,11 +71,15 @@
 </template>
 
 <script>
+import { ref, watchEffect } from "vue";
+
 import ResearchSettingCreate from "@/components/shared/modals/researchSetting/ResearchSettingCreate";
+import ResearchSettingDelete from "@/components/shared/modals/researchSetting/ResearchSettingDelete";
 import ResearchSettingSelect from "@/components/shared/controls/ResearchSettingSelect";
 import Loading from "@/components/shared/display/Loading";
 
 import useResearchSettings from "@/modules/researchSettings";
+import useResearchSessions from "@/modules/researchSessions";
 
 export default {
   name: "ResearchSettings",
@@ -80,15 +89,28 @@ export default {
       currentResearchSetting,
       setCurrentResearchSetting,
     } = useResearchSettings();
+    const { sessionsBySettingId, sessionsLoadStatus } = useResearchSessions();
+
+    const sessionAmount = ref();
+
+    watchEffect(() => {
+      if (sessionsLoadStatus[currentResearchSetting.id]) {
+        sessionAmount.value =
+          sessionsBySettingId[currentResearchSetting.id].length;
+      }
+    });
 
     return {
       currentResearchSetting,
       setCurrentResearchSetting,
+      sessionsBySettingId,
+      sessionAmount,
     };
   },
 
   components: {
     ResearchSettingCreate,
+    ResearchSettingDelete,
     ResearchSettingSelect,
     Loading,
   },
@@ -121,22 +143,26 @@ export default {
 
   .setting-selected {
     .controls {
+      position: relative;
       flex: 100%;
       display: flex;
       flex-wrap: wrap;
       margin-bottom: 10px;
 
       .title {
-        flex: 100%;
+        margin-bottom: 5px;
+        margin-left: 40px;
       }
 
-      .actions {
-        flex: 100%;
+      .floating {
+        position: absolute;
         display: flex;
-      }
+        top: 2px;
+        right: 0;
 
-      .research-setting-select {
-        margin-right: 10px;
+        & > *:not(:last-child) {
+          margin-right: 5px;
+        }
       }
     }
 
@@ -149,6 +175,15 @@ export default {
 @include tablet {
   #research-settings {
     padding: 20px 0;
+
+    .setting-selected {
+      .controls {
+        .title {
+          margin-left: 0;
+          flex: 100%;
+        }
+      }
+    }
   }
 }
 

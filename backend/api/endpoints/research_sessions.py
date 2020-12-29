@@ -35,6 +35,7 @@ def create_research_session(research_session_order: ResearchSessionCreateOrder, 
 @router.delete('/research/setting/{research_session_id}', response_model=ResearchSession)
 def delete_research_session(research_session_id: int, background_tasks: BackgroundTasks,
                             db: Session = Depends(get_db)) -> Any:
+    """ Delete research session with all the images that belongs to it. The session must not contain a participant. """
     db_research_session = CRUD.research_session.get(db, research_session_id)
     if not db_research_session:
         raise HTTPException(status_code=404, detail="Research session not found")

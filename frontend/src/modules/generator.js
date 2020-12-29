@@ -72,9 +72,8 @@ export default function useGenerator() {
         if (session && session.id && session.name) {
             currentSession.id = session.id;
             currentSession.name = session.name;
-        } else if (session == null) {
-            currentSession.id = undefined;
-            currentSession.name = undefined;
+        } else if (session === null) {
+            Object.keys(currentSession).forEach(k => currentSession[k] = undefined);
         }
     }
 

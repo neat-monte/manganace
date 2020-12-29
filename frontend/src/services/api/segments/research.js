@@ -32,6 +32,10 @@ export const assignParticipant = async (data) => {
     return await fetchJSON(`${researchEndpoint}/participants`, methods.POST, data);
 }
 
+export const destroyParticipant = async (participantId) => {
+    return await fetchJSON(`${researchEndpoint}/participants/${participantId}`, methods.DELETE);
+}
+
 /* Research settings */
 
 export const getResearchSettings = async () => {

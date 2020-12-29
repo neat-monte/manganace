@@ -10,7 +10,7 @@ class Image(Base):
     id = Column(Integer, primary_key=True)
     seed = Column(Integer, nullable=False)
     filename = Column(String(51), nullable=False)
-    session_id = Column(Integer, ForeignKey('sessions.id'))
+    session_id = Column(Integer, ForeignKey('sessions.id'), nullable=False)
 
     session = relationship("Session", back_populates="images")
     vectors = relationship("ImageVector", back_populates="image", cascade="all, delete")

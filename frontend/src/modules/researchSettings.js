@@ -48,6 +48,9 @@ export default function useResearchSettings() {
     const deleteResearchSettingAsync = async (settingId) => {
         try {
             const setting = await api.research.destroyResearchSetting(settingId);
+            if (currentResearchSetting.id === settingId) {
+                Object.keys(currentResearchSetting).forEach(k => currentResearchSetting[k] = undefined);
+            }
             delete researchSettingsById[setting.id];
         } catch (e) {
             notification.error("Failed to delete the research setting", e.message)

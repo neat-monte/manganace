@@ -24,7 +24,7 @@
         :allowDownload="allowDownload"
       />
     </div>
-    <Empty v-if="images.length == 0" />
+    <Empty v-if="images.length === 0" />
   </div>
 </template>
 

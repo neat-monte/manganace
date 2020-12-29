@@ -4,7 +4,7 @@
     <delete-outlined />
   </a-button>
 
-  <a-tooltip v-else placement="top" title="Delete image">
+  <a-tooltip v-else placement="top" title="Delete research session">
     <a-button type="danger" @click="showModal()">
       <template v-slot:icon>
         <delete-outlined />
@@ -14,23 +14,26 @@
 
   <a-modal
     v-model:visible="visible"
-    title="Confirm image delete"
+    title="Confirm research session delete"
     @ok="handleDelete()"
   >
-    <p>The image will be removed. <strong>It will be unrecoverable.</strong></p>
+    <p>
+      The research session and all the generated images will be removed.
+      <strong>It will be unrecoverable.</strong>
+    </p>
   </a-modal>
 </template>
 
 <script>
 import { ref } from "vue";
 import { DeleteOutlined } from "@ant-design/icons-vue";
-import useCollectionImages from "@/modules/collectionImages";
+import useResearchSessions from "@/modules/researchSessions";
 
 export default {
-  name: "ImageDelete",
+  name: "ResearchSessionDelete",
 
   props: {
-    imageId: Number,
+    researchSessionId: Number,
     buttonText: {
       type: String,
       default: null,
@@ -43,11 +46,11 @@ export default {
       visible.value = true;
     }
 
-    const { deleteCollectionImageAsync } = useCollectionImages();
+    const { deleteResearchSessionAsync } = useResearchSessions();
 
     async function handleDelete() {
       visible.value = false;
-      await deleteCollectionImageAsync(props.imageId);
+      await deleteResearchSessionAsync(props.researchSessionId);
     }
 
     return {
