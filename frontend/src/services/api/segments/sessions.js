@@ -26,6 +26,10 @@ export const createGenerator = async (data) => {
     return await fetchJSON(`${sessionsEndpoint}/generator`, methods.POST, data);
 }
 
+export const destroyGenerator = async (sessionId) => {
+    return await fetchJSON(`${sessionsEndpoint}/generator/${sessionId}`, methods.DELETE)
+}
+
 /* Images (any session) */
 
 export const getImages = async (sessionId) => {

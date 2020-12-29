@@ -13,7 +13,7 @@ class Session(Base):
     id = Column(Integer, primary_key=True)
     type = Column(String(50))
 
-    images = relationship("Image", back_populates="session")
+    images = relationship("Image", back_populates="session", cascade="all, delete")
 
     __mapper_args__ = {
         'polymorphic_identity': 'basic',

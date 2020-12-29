@@ -12,8 +12,6 @@ const initializeLock = new AwaitLock();
 const isGenerating = ref(false);
 const generateLock = new AwaitLock();
 
-const currentSession = reactive({});
-
 const vectors = reactive({});
 const currentImage = reactive({});
 
@@ -50,12 +48,6 @@ export default function useGenerator() {
         await generateLock.acquireAsync();
         try {
             isGenerating.value = true;
-            if (!currentSession.id) {
-                notification.warning("Select a session first",
-                    "A session is required to generate images");
-                return;
-            }
-            request["sessionId"] = currentSession.id;
             const requestJson = JSON.stringify(request);
             const generatedImage = await api.generator.generate(requestJson);
             insertGeneratedImage(generatedImage);
@@ -68,17 +60,12 @@ export default function useGenerator() {
         }
     }
 
-    const setCurrentSession = (session) => {
-        if (session && session.id && session.name) {
-            currentSession.id = session.id;
-            currentSession.name = session.name;
-        } else if (session === null) {
-            Object.keys(currentSession).forEach(k => currentSession[k] = undefined);
-        }
+    const swapImage = (sessionId, imageIndex) => {
+        setCurrentImage(imagesBySessionId[sessionId][imageIndex])
     }
 
-    const swapImage = (index) => {
-        setCurrentImage(imagesBySessionId[currentSession.id][index])
+    const nullifyImage = () => {
+        Object.keys(currentImage).forEach((k) => currentImage[k] = undefined);
     }
 
     const usingGeneratorAsync = async () => {
@@ -93,13 +80,12 @@ export default function useGenerator() {
 
     return {
         currentImage: readonly(currentImage),
-        currentSession: readonly(currentSession),
         isGenerating: readonly(isGenerating),
         vectors: readonly(vectors),
         initGeneratorAsync,
         generateAsync,
-        setCurrentSession,
         swapImage,
+        nullifyImage,
         usingGeneratorAsync,
         finishedUsingGenerator,
     }

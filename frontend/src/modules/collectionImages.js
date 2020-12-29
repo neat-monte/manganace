@@ -16,7 +16,12 @@ const insertImage = (image) => {
     if (imagesByCollectionId[image.collectionId] === undefined) {
         imagesByCollectionId[image.collectionId] = [];
     }
-    imagesByCollectionId[image.collectionId].push(image);
+    const prevImage = imagesByCollectionId[image.collectionId].filter(i => i.id === image.id)[0];
+    if (prevImage) {
+        Object.assign(prevImage, image)
+    } else {
+        imagesByCollectionId[image.collectionId].push(image);
+    }
 }
 
 export default function useCollectionImages() {

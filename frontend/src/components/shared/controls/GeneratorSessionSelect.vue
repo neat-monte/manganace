@@ -21,7 +21,6 @@
 
 <script>
 import useGeneratorSessions from "@/modules/generatorSessions";
-import useGenerator from "@/modules/generator";
 
 export default {
   name: "GeneratorSessionSelect",
@@ -36,8 +35,11 @@ export default {
   emits: ["session-id-set"],
 
   async setup(_, context) {
-    const { loadGeneratorSessionsAsync, sessionsById } = useGeneratorSessions();
-    const { currentSession } = useGenerator();
+    const {
+      loadGeneratorSessionsAsync,
+      sessionsById,
+      currentSession,
+    } = useGeneratorSessions();
 
     function filterOption(input, option) {
       return option.props.key.toLowerCase().includes(input);

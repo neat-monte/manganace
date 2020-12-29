@@ -113,7 +113,14 @@ import Slider from "@/components/shared/controls/Slider";
 export default {
   name: "Controls",
 
-  async setup() {
+  props: {
+    sessionId: {
+      type: Number,
+      required: true,
+    },
+  },
+
+  async setup(props) {
     const {
       isGenerating,
       initGeneratorAsync,
@@ -138,6 +145,7 @@ export default {
     const generateRequest = reactive({
       seed: "",
       vectors: [],
+      sessionId: props.sessionId,
     });
 
     const lastMappedImageId = ref();
