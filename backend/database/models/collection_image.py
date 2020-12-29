@@ -6,7 +6,7 @@ from sqlalchemy.orm import relationship
 from database import Base
 
 
-class CImage(Base):
+class CollectionImage(Base):
     __tablename__ = "collection_images"
 
     id = Column(Integer, primary_key=True)
@@ -25,7 +25,7 @@ class CImage(Base):
     }
 
 
-class TrialPick(CImage):
+class TrialPick(CollectionImage):
     __tablename__ = "trial_picks"
 
     id = Column(Integer, ForeignKey('collection_images.id'), primary_key=True)

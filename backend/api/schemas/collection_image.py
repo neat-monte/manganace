@@ -7,7 +7,7 @@ from pydantic import HttpUrl, conint, confloat
 from .vector import ImageVector
 
 
-class CImageCreate(CamelModel):
+class CollectionImageCreate(CamelModel):
     """ Properties that are available/required for the creation """
     collection_id: conint(gt=0)
     image_id: conint(gt=0)
@@ -15,13 +15,13 @@ class CImageCreate(CamelModel):
     tags_ids: Optional[List[int]]
 
 
-class CImageUpdate(CamelModel):
+class CollectionImageUpdate(CamelModel):
     """ Properties that are available/required for an update """
     description: Optional[str]
     tags_ids: Optional[List[int]]
 
 
-class CImage(CamelModel):
+class CollectionImage(CamelModel):
     """ Properties that are returned via the API """
     id: conint(gt=0)
     collection_id: conint(gt=0)
@@ -34,13 +34,13 @@ class CImage(CamelModel):
     vectors: List[ImageVector]
 
 
-class TrialPickCreate(CImageCreate):
+class TrialPickCreate(CollectionImageCreate):
     """ Properties that are available/required for the creation """
     trial_number: conint(gt=0)
     initial_multiplier: confloat(ge=0)
 
 
-class TrialPick(CImage):
+class TrialPick(CollectionImage):
     """ Properties that are returned via the API """
     trial_number: conint(gt=0)
     initial_multiplier: confloat(ge=0)

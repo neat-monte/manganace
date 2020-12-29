@@ -30,7 +30,7 @@ class ResearchService:
                 .join(m.Participant).join(m.ParticipantCollection)
         else:
             query = query.join(m.Participant).join(m.ParticipantCollection)
-        query = query.join(m.CImage).join(m.Image).join(m.ImageVector).join(m.Vector)
+        query = query.join(m.CollectionImage).join(m.Image).join(m.ImageVector).join(m.Vector)
 
         effect_value_pairs = query.all()
         points_by_effect = {}

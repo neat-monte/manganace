@@ -6,13 +6,13 @@ from sqlalchemy.orm import Session
 import database.models as m
 import services
 from api.dependencies import get_db
-from api.schemas import CImage, CImageCreate, CImageUpdate, TrialPickCreate, TrialPick
+from api.schemas import CollectionImage, CollectionImageCreate, CollectionImageUpdate, TrialPickCreate, TrialPick
 from database.models import Collection
 
 router = APIRouter()
 
 
-@router.get('/{collection_id}/images', response_model=List[CImage])
+@router.get('/{collection_id}/images', response_model=List[CollectionImage])
 def get_collection_images(collection_id, db: Session = Depends(get_db)) -> Any:
     """ Get all images of a any collection by id """
     collection = db.query(m.Collection).get(collection_id)
@@ -21,8 +21,8 @@ def get_collection_images(collection_id, db: Session = Depends(get_db)) -> Any:
     return services.collection_image.get_all_of_collection(db, collection_id)
 
 
-@router.post('/images', response_model=CImage)
-def create_collection_image(collection_image_in: CImageCreate, db: Session = Depends(get_db)) -> Any:
+@router.post('/images', response_model=CollectionImage)
+def create_collection_image(collection_image_in: CollectionImageCreate, db: Session = Depends(get_db)) -> Any:
     """ Create a new collection image """
     image = services.image.get(db, collection_image_in.image_id)
     if not image:
@@ -47,8 +47,8 @@ def create_trial_pick(trial_pick_in: TrialPickCreate, db: Session = Depends(get_
     return services.trial_pick.create(db, trial_pick_in)
 
 
-@router.put('/images/{id_}', response_model=CImage)
-def update_collection_image(id_: int, image_in: CImageUpdate, db: Session = Depends(get_db)) -> Any:
+@router.put('/images/{id_}', response_model=CollectionImage)
+def update_collection_image(id_: int, image_in: CollectionImageUpdate, db: Session = Depends(get_db)) -> Any:
     """ Modify an existing collection image """
     collection_image = services.collection_image.update(db, id_, image_in)
     if not collection_image:
@@ -56,7 +56,7 @@ def update_collection_image(id_: int, image_in: CImageUpdate, db: Session = Depe
     return collection_image
 
 
-@router.delete("/images/{id_}", response_model=CImage)
+@router.delete("/images/{id_}", response_model=CollectionImage)
 def delete_collection_image(id_: int, db: Session = Depends(get_db)) -> Any:
     """ Delete a collection image """
     collection_image = services.collection_image.delete(db, id_)

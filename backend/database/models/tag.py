@@ -11,4 +11,4 @@ class Tag(Base):
     name = Column(String(32), nullable=False)
     for_research = Column(Boolean, default=False)
 
-    collection_images = relationship("CImage", secondary='collection_image_tag', back_populates="tags")
+    collection_images = relationship("CollectionImage", secondary='collection_image_tag', back_populates="tags")

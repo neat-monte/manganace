@@ -13,7 +13,7 @@ from .vector import CRUDVector
 
 # Alphabetical order
 
-collection_image = CRUDCollectionImage(CImage)
+collection_image = CRUDCollectionImage(CollectionImage)
 generator_session = CRUDGeneratorSession(GeneratorSession)
 image = CRUDImage(Image)
 participant = CRUDParticipant(Participant)

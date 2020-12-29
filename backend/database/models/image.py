@@ -14,4 +14,4 @@ class Image(Base):
 
     session = relationship("Session", back_populates="images")
     vectors = relationship("ImageVector", back_populates="image", cascade="all, delete")
-    collection_images = relationship("CImage", back_populates="image")
+    collection_images = relationship("CollectionImage", back_populates="image")
