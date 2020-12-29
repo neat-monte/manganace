@@ -14,5 +14,5 @@ class GeneratorInitializedResponse(CamelModel):
 class GenerateRequest(CamelModel):
     """ Properties that are expected to generate an image """
     session_id: conint(gt=0)
-    seed: conint(ge=0, lt=4294967296)  # maximum seed number is 2^31 - 1 (because starts from 0)
+    seed: conint(ge=0, le=2147483647)  # maximum seed number is 2^31 - 1 (because starts from 0)
     vectors: Optional[List[ImageVector]]

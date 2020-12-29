@@ -3,15 +3,18 @@
     <div class="header">
       <span class="title">Controls</span>
     </div>
-    <a-form layout="horizontal" class="request-form">
+    <a-form class="request-form" layout="horizontal">
       <a-form-item>
-        <div class="seed-multiplier">
-          <div class="seed-input">
+        <div class="inline">
+          <div class="item">
             <a-tooltip
-              title="Enter a seed between 0 and 4294967296 (2³¹ - 1) inclusive"
+              title="Enter a seed between 0 and 2147483647 (2³¹ - 1) inclusive"
             >
               <div class="label">Seed</div>
             </a-tooltip>
+            <div class="random-seed">
+              <question-outlined @click="randomSeed" />
+            </div>
             <a-input
               :value="generateRequest.seed"
               @change="seedOnChange"
@@ -20,9 +23,9 @@
               placeholder="Enter a seed of your choice"
             />
           </div>
-          <div class="global-multiplier">
+          <div class="item end-item">
             <a-tooltip
-              title="Scales all selected feature vector values by this amount"
+              title="Scales all selected feature vector values by this amount. You can see this as a radius limit in the latent space."
             >
               <div class="label">Global multiplier</div>
             </a-tooltip>
@@ -30,6 +33,7 @@
               :value="globalMultiplier"
               :min="0.001"
               :step="0.001"
+              :disabled="isGenerating"
               @change="onGlobalMultiplierChange"
             />
           </div>
@@ -37,18 +41,49 @@
       </a-form-item>
       <a-form-item v-for="vector in vectors" :key="vector.id">
         <Slider
+          v-model:value="vectorValues[vector.id]"
+          @update:value="vectorOnChange(vector.id, $event)"
+          :min="sliderOpt.min"
+          :max="sliderOpt.max"
+          :enableReset="true"
+          :enableInput="true"
           :label="vector.name"
           :tooltip="`Make the face look ${vector.effect}`"
-          :enableInput="true"
-          :min="vector.min"
-          :max="vector.max"
-          @update:value="vectorOnChange(vector.id, $event)"
+          :disabled="isGenerating"
         />
+      </a-form-item>
+      <a-form-item>
+        <div class="inline inline-center">
+          <div class="item">
+            <a-tooltip title="Minimum value of a slider">
+              <div class="label">Slider min</div>
+            </a-tooltip>
+            <a-input-number
+              v-model:value="sliderOpt.min"
+              :step="0.1"
+              :disabled="isGenerating"
+            />
+          </div>
+          <div class="item">
+            <a-input-number
+              v-model:value="sliderOpt.max"
+              :step="0.1"
+              :disabled="isGenerating"
+            />
+            <a-tooltip title="Maximum value of a slider">
+              <div class="label">Slider max</div>
+            </a-tooltip>
+          </div>
+        </div>
       </a-form-item>
     </a-form>
     <div class="controls">
+      <a-button @click="reset" :disabled="isGenerating">
+        Reset
+        <reload-outlined />
+      </a-button>
       <a-button
-        @click="generateAsync(generateRequest)"
+        @click="generate"
         :disabled="isGenerating || !generateRequest.seed"
         type="primary"
       >
@@ -60,9 +95,13 @@
 </template>
 
 <script>
-import { ref, reactive } from "vue";
+import { ref, reactive, watchEffect } from "vue";
 
-import { SyncOutlined } from "@ant-design/icons-vue";
+import {
+  SyncOutlined,
+  ReloadOutlined,
+  QuestionOutlined,
+} from "@ant-design/icons-vue";
 import useGenerator from "@/modules/generator";
 import Slider from "@/components/shared/controls/Slider";
 
@@ -80,15 +119,34 @@ export default {
     const globalMultiplier = ref(0.1);
     const prevGlobalMultiplier = ref(0.1);
 
+    const sliderOpt = reactive({
+      min: -1,
+      max: 1,
+    });
+
+    const vectorValues = reactive({});
+    watchEffect(() => {
+      Object.values(vectors).forEach((v) => (vectorValues[v.id] = 0));
+    });
+
     const generateRequest = reactive({
       seed: "",
       vectors: [],
     });
 
+    function randomSeed() {
+      const min = 0; // inclusive
+      const max = 2 ** 31; // exclusive
+      generateRequest.seed = Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
     function seedOnChange(e) {
       const { value } = e.target;
       const onlyInt = /^([1-9]\d*|0)$/;
-      if ((!isNaN(value) && onlyInt.test(value)) || value === "") {
+      if (
+        (!isNaN(value) && onlyInt.test(value) && value < 2 ** 31) ||
+        value === ""
+      ) {
         generateRequest.seed = value;
       }
     }
@@ -108,36 +166,55 @@ export default {
     function vectorOnChange(id, value) {
       const vector = generateRequest.vectors.filter((e) => e.id === id)[0];
 
-      if (vector && value > 0) {
+      if (vector && value == 0) {
+        const index = generateRequest.vectors.indexOf(vector);
+        generateRequest.vectors.splice(index, 1);
+      } else if (vector) {
         vector.multiplier = globalMultiplier.value * value;
-      } else if (!vector && value > 0) {
+      } else if (!vector) {
         generateRequest.vectors.push({
           id: id,
           multiplier: globalMultiplier.value * value,
         });
-      } else if (vector && value <= 0) {
-        const index = generateRequest.vectors.indexOf(vector);
-        generateRequest.vectors.splice(index, 1);
       }
+    }
+
+    function reset() {
+      generateRequest.seed = "";
+      generateRequest.vectors = [];
+      Object.keys(vectorValues).forEach((k) => (vectorValues[k] = 0));
+      sliderOpt.min = -1;
+      sliderOpt.max = 1;
+    }
+
+    async function generate() {
+      await generateAsync(generateRequest);
     }
 
     await initGeneratorAsync();
 
     return {
+      reset,
+      generate,
       globalMultiplier,
       generateRequest,
       vectors,
+      vectorValues,
       isGenerating,
       generateAsync,
       seedOnChange,
       vectorOnChange,
       onGlobalMultiplierChange,
+      sliderOpt,
+      randomSeed,
     };
   },
 
   components: {
     Slider,
     SyncOutlined,
+    ReloadOutlined,
+    QuestionOutlined,
   },
 };
 </script>
@@ -148,23 +225,42 @@ export default {
   display: flex;
   flex-direction: column;
 
+  .header {
+    margin-bottom: 20px;
+  }
+
   .request-form {
     flex: 1;
 
-    .seed-multiplier {
+    .inline {
       display: flex;
       justify-content: space-between;
 
-      .seed-input,
-      .global-multiplier {
+      .item {
         flex: 1;
         display: flex;
         align-items: center;
       }
 
-      .global-multiplier {
+      .end-item {
         justify-content: flex-end;
       }
+
+      &.inline-center {
+        .item:first-child {
+          justify-content: flex-end;
+        }
+
+        .item:last-child {
+          justify-content: flex-start;
+          text-align: end;
+        }
+      }
+    }
+
+    .random-seed {
+      color: $primary;
+      margin-right: 5px;
     }
 
     .label {
