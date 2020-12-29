@@ -71,7 +71,7 @@ class GeneratorService:
         setting = session.research_setting
         seeds = seeds_service.get_seeds(setting.total_amount, setting.overlap_amount, setting.equalize_gender)
         vector_ids = vector_service.get_ids(db)
-        multipliers = list(np.round(np.linspace(0, 1, setting.slider_steps) * setting.global_multiplier, 3))
+        multipliers = list(np.round(np.linspace(0, 1, setting.slider_steps) * setting.global_multiplier, 5))
         max_ten_seeds_batches = np.array_split(seeds, math.ceil(len(seeds) / 10))
         for seeds_batch in max_ten_seeds_batches:
             base_ls = self.generator.get_latent_states(seeds_batch)

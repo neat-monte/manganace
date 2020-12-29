@@ -114,6 +114,7 @@ export default {
       initGeneratorAsync,
       generateAsync,
       vectors,
+      currentImage,
     } = useGenerator();
 
     const globalMultiplier = ref(0.1);
@@ -132,6 +133,32 @@ export default {
     const generateRequest = reactive({
       seed: "",
       vectors: [],
+    });
+    watchEffect(() => {
+      /** When image from activity is selected,
+       *  map its values to controls
+       */
+      if (currentImage.id) {
+        reset();
+        const copy = JSON.parse(JSON.stringify(currentImage));
+
+        generateRequest.seed = copy.seed;
+        generateRequest.vectors = copy.vectors;
+
+        currentImage.vectors.forEach((v) => {
+          const vectorValue = (
+            v.multiplier / globalMultiplier.value
+          ).toPrecision(5);
+
+          if (vectorValue > sliderOpt.max) {
+            sliderOpt.max = vectorValue;
+          } else if (vectorValue < sliderOpt.min) {
+            sliderOpt.min = vectorValue;
+          }
+
+          vectorValues[v.id] = vectorValue;
+        });
+      }
     });
 
     function randomSeed() {
@@ -157,8 +184,10 @@ export default {
       }
       globalMultiplier.value = value;
       generateRequest.vectors.forEach((vector) => {
-        vector.multiplier =
-          (vector.multiplier / prevGlobalMultiplier.value) * value;
+        vector.multiplier = (
+          (vector.multiplier / prevGlobalMultiplier.value) *
+          value
+        ).toPrecision(5);
       });
       prevGlobalMultiplier.value = value;
     }
@@ -170,11 +199,11 @@ export default {
         const index = generateRequest.vectors.indexOf(vector);
         generateRequest.vectors.splice(index, 1);
       } else if (vector) {
-        vector.multiplier = globalMultiplier.value * value;
+        vector.multiplier = (globalMultiplier.value * value).toPrecision(5);
       } else if (!vector) {
         generateRequest.vectors.push({
           id: id,
-          multiplier: globalMultiplier.value * value,
+          multiplier: (globalMultiplier.value * value).toPrecision(5),
         });
       }
     }
@@ -183,8 +212,6 @@ export default {
       generateRequest.seed = "";
       generateRequest.vectors = [];
       Object.keys(vectorValues).forEach((k) => (vectorValues[k] = 0));
-      sliderOpt.min = -1;
-      sliderOpt.max = 1;
     }
 
     async function generate() {
@@ -207,6 +234,7 @@ export default {
       onGlobalMultiplierChange,
       sliderOpt,
       randomSeed,
+      currentImage,
     };
   },
 
