@@ -14,6 +14,7 @@
       title="Chosen multipliers for each vector of a single participant"
     />
     <ImagesList
+      v-if="session.participant"
       :images="imagesByCollectionId[session.participant.collectionId] ?? []"
       :allowUpdate="true"
       :allowDownload="true"

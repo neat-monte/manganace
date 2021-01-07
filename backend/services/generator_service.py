@@ -67,13 +67,14 @@ class GeneratorService:
     def create_research_trials(self, db: Session, session: ResearchSession, batch_size: int = 10) -> None:
         """ Generate a whole research session, save images, and register them in the database.
             Method generates [len(seeds) * len(vectors) * slider_steps/len(multipliers)] amount of images"""
-        self.__assert_initialization(db, batch_size)
+        # Restarting the tensorflow session helps with memory overloads, hence this next line:
+        self.restart(batch_size) if self.is_initialized() else self.initialize(db, batch_size)
         setting = session.research_setting
         seeds = seeds_service.get_seeds(setting.total_amount, setting.overlap_amount, setting.equalize_gender)
         vector_ids = vector_service.get_ids(db)
         multipliers = list(np.round(np.linspace(0, 1, setting.slider_steps) * setting.global_multiplier, 5))
-        max_ten_seeds_batches = np.array_split(seeds, math.ceil(len(seeds) / 10))
-        for seeds_batch in max_ten_seeds_batches:
+        seeds_batches = np.array_split(seeds, math.ceil(len(seeds) / batch_size))
+        for seeds_batch in seeds_batches:
             base_ls = self.generator.get_latent_states(seeds_batch)
             latent_states = self.__apply_vectors(base_ls, vector_ids, multipliers)
             images = self.__generate_batches(latent_states)

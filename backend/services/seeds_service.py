@@ -1,4 +1,4 @@
-import random
+from random import randint, sample
 from pathlib import Path
 from typing import List
 
@@ -13,8 +13,8 @@ class SeedsService:
             male_amount = int(amount / 2)
             male_overlap = int(overlap / 2)
         else:
-            male_amount = random.randint(0, amount)
-            male_overlap = random.randint(0, overlap)
+            male_amount = randint(0, amount)
+            male_overlap = randint(0, overlap)
         male = self.pick_seeds(male_amount, male_overlap, self.GOOD_SEEDS_MALE)
         female = self.pick_seeds(amount - male_amount, overlap - male_overlap, self.GOOD_SEEDS_FEMALE)
         return male + female
@@ -24,5 +24,5 @@ class SeedsService:
         with open(filename, "r") as file:
             all_seeds = list(map(int, file.read().split(",")))
             seeds = all_seeds[:overlap]
-            seeds += random.choices(all_seeds[overlap:], k=amount - overlap)
+            seeds += sample(all_seeds[overlap:], k=amount - overlap)
             return seeds
