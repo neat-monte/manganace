@@ -20,13 +20,16 @@ def get_research_sessions(research_setting_id: int, db: Session = Depends(get_db
 
 # noinspection PyBroadException
 @router.post('/research/setting', response_model=ResearchSession)
-def create_research_session(research_session_order: ResearchSessionCreateOrder, db: Session = Depends(get_db)) -> Any:
+def create_research_session(research_session_order: ResearchSessionCreateOrder,
+                            background_tasks: BackgroundTasks, db: Session = Depends(get_db)) -> Any:
     """ Create a new research session by pre-generating all images with all emotion vectors \n
         NOTE: this might take a long time! """
     db_research_session = CRUD.research_session.create(db, research_session_order.session)
     try:
         services.generator.create_research_trials(db, db_research_session, research_session_order.batch_size)
     except Exception:
+        filepath = services.image_file.get_folder_path(db_research_session.id)
+        background_tasks.add_task(delete_folder, filepath=filepath)
         CRUD.research_session.delete(db, db_research_session.id)
         raise HTTPException(status_code=500, detail="Generation failed, session creation reversed")
     return services.research.get_session_schema(db, db_research_session)
