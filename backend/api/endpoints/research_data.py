@@ -19,8 +19,8 @@ def get_data(research_setting_id: int, db: Session = Depends(get_db)) -> Any:
 
 
 @router.get('/{research_setting_id}/data/export')
-def export_data_csv(background_tasks: BackgroundTasks, db: Session = Depends(get_db)) -> Any:
-    filepath = services.research.export_results_data(db)
+def export_data_csv(research_setting_id: int, background_tasks: BackgroundTasks, db: Session = Depends(get_db)) -> Any:
+    filepath = services.research.export_results_data(db, research_setting_id)
     background_tasks.add_task(delete_file, filepath=filepath)
     return FileResponse(filepath)
 

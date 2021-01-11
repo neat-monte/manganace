@@ -6,6 +6,7 @@ from database.models import Participant, ResearchSession, ParticipantCollection
 from api.schemas import ParticipantCreate
 
 
+# noinspection PyMethodMayBeStatic
 class CRUDParticipant(CRUDBase[Participant, ParticipantCreate, None]):
     def create_for_session(self, db: Session, participant_in: ParticipantCreate,
                            db_research_session: ResearchSession) -> Participant:
@@ -16,3 +17,9 @@ class CRUDParticipant(CRUDBase[Participant, ParticipantCreate, None]):
         db_participant.collection = ParticipantCollection()
         db_research_session.participant = db_participant
         return self._add_save(db, db_participant)
+
+    def get_all_of_research_setting(self, db: Session, research_setting_id):
+        return db.query(Participant) \
+            .join(ResearchSession) \
+            .filter(ResearchSession.research_setting_id == research_setting_id) \
+            .all()

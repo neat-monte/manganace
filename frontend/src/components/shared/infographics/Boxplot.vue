@@ -34,6 +34,8 @@ export default {
           jitter: 0.1,
           whiskerwidth: 0.5,
           fillcolor: "cls",
+          boxmean: "sd",
+          notched: true,
           marker: {
             size: 2,
           },
