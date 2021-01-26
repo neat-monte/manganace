@@ -33,7 +33,7 @@
           The pool of images is sorted, therefore, if
           <strong>overlap</strong> is set, then that amount of seeds will be
           picked in a sequential order guaranteeing the overlap in sessions with
-          exact options
+          exact options.
         </p>
         <p>
           <strong>Slider ticks</strong> determine how many images each trial

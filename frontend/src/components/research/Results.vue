@@ -9,7 +9,7 @@
     <Boxplot
       v-if="data.length > 0"
       :data="data"
-      title="Chosen multipliers for each vector of all the participants"
+      title="Scalar choices of all participants plotted per emotion vector"
     />
     <Empty v-else />
   </div>

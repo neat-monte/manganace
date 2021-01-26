@@ -5,7 +5,7 @@
       You are invited to participate in a research project which is being
       conducted by a bachelor's student at Radboud University. The procedure
       involves looking at human face images and moving a slider, which will take
-      <i>approximately</i> <strong>30 minutes</strong>. Your participation in
+      <i>approximately</i> <strong>60 minutes</strong>. Your participation in
       this research study is voluntary and you may withdraw at any time.
       <strong>The data collected will be made fully anonymous.</strong>
     </p>

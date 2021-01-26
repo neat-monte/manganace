@@ -11,7 +11,7 @@
   <a-modal v-model:visible="visible" title="Session results" :width="800">
     <Boxplot
       :data="data"
-      title="Chosen multipliers for each vector of a single participant"
+      title="Scalar choices of a participant plotted per emotion vector"
     />
     <ImagesList
       v-if="session.participant"
