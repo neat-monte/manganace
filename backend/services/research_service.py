@@ -4,6 +4,7 @@ from time import strftime
 from typing import List
 
 import pandas as pd
+import numpy as np
 from sqlalchemy.orm import Session
 
 from database import models as m, CRUD
@@ -40,26 +41,27 @@ class ResearchService:
                 points_by_effect[effect] = []
             points_by_effect[effect].append(value)
 
-        return [self.construct_vector_data(effect, points) for (effect, points) in points_by_effect.items()]
+        data_by_effect = [self.construct_vector_data(effect, points) for (effect, points) in points_by_effect.items()]
+        return sorted(data_by_effect, key=lambda x: x.effect)
 
-    def export_results_data(self, db: Session):
-        participants = CRUD.participant.get_all(db)
-        results_data = {'age': [], 'gender': [], 'total_images': [], 'overlap': [], 'equalize_gender': [],
-                        'slider_steps': [], 'emotion': [], 'trial_number': [], 'initial_multiplier': [],
-                        'chosen_multiplier': [], 'answer_moment': []}
+    def export_results_data(self, db: Session, research_setting_id: int):
+        setting = CRUD.research_setting.get(db, research_setting_id)
+        participants = CRUD.participant.get_all_of_research_setting(db, research_setting_id)
+        results_data = {'name': setting.name, 'total_images': setting.total_amount, 'overlap': setting.overlap_amount,
+                        'equalize_gender': setting.equalize_gender, 'slider_steps': setting.slider_steps,
+                        'global_multiplier': setting.global_multiplier, 'participants': []}
         for participant in participants:
+            participant_data = {'age': participant.age, 'gender': participant.gender.name,
+                                'start_time': participant.collection.created.strftime("%Y-%m-%d, %H:%M:%S"),
+                                'trials': []}
             for trial_pick in participant.collection.trial_picks:
-                results_data['age'].append(participant.age)
-                results_data['gender'].append(participant.gender.name)
-                results_data['total_images'].append(participant.session.total_amount)
-                results_data['overlap'].append(participant.session.overlap_amount)
-                results_data['equalize_gender'].append(participant.session.equalize_gender)
-                results_data['slider_steps'].append(participant.session.slider_steps)
-                results_data['emotion'].append(trial_pick.image.vectors[0].vector.effect)
-                results_data['trial_number'].append(trial_pick.trial_number)
-                results_data['initial_multiplier'].append(trial_pick.initial_multiplier)
-                results_data['chosen_multiplier'].append(trial_pick.image.vectors[0].multiplier)
-                results_data['answer_moment'].append(trial_pick.created)
+                participant_data['trials'].append(
+                    {'trial_number': trial_pick.trial_number,
+                     'emotion': trial_pick.image.vectors[0].vector.effect,
+                     'initial_multiplier': trial_pick.initial_multiplier,
+                     'chosen_multiplier': trial_pick.image.vectors[0].multiplier,
+                     'choice_time': trial_pick.created.strftime("%Y-%m-%d, %H:%M:%S")})
+            results_data['participants'].append(participant_data)
         df = pd.DataFrame(results_data)
         file_path = self.EXPORTS / f'export_{strftime("%Y-%m-%d-%H-%M-%S")}.csv'
         df.to_csv(file_path)

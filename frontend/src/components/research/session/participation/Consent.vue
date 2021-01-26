@@ -39,10 +39,7 @@
     </p>
     <h3>Payment</h3>
     <p>
-      Students of Radboud University can be awarded with credit points. For 1
-      hour of participation 1 credit point will be granted. Credit point
-      allocation occurs via the SONA system. Other potential subjects
-      participating in this study won’t receive a reimbursement.
+      Subjects participating in this study won’t receive a reimbursement.
     </p>
     <h3>Use and preservation of your data</h3>
     <p>

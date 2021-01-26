@@ -31,9 +31,12 @@ export default {
           y: props.data[i].points,
           name: props.data[i].effect,
           boxpoints: "all",
-          jitter: 0.1,
+          jitter: 1,
+          pointpos: -2,
           whiskerwidth: 0.5,
           fillcolor: "cls",
+          boxmean: "sd",
+          notched: true,
           marker: {
             size: 2,
           },
@@ -46,24 +49,25 @@ export default {
 
       var layout = {
         title: props.title,
+        boxgap: 0.31,
         yaxis: {
           autorange: true,
           showgrid: true,
           zeroline: true,
-          dtick: 2,
-          gridcolor: "rgb(255, 255, 255)",
+          dtick: 0.02,
+          gridcolor: "rgba(0, 0, 0, 0.1)",
           gridwidth: 1,
-          zerolinecolor: "rgb(255, 255, 255)",
+          zerolinecolor: "rgba(0, 0, 0, 0.4)",
           zerolinewidth: 2,
         },
         margin: {
           l: 40,
-          r: 30,
-          b: 80,
-          t: 100,
+          r: 0,
+          b: 40,
+          t: 40,
         },
-        paper_bgcolor: "rgb(243, 243, 243)",
-        plot_bgcolor: "rgb(243, 243, 243)",
+        paper_bgcolor: "rgb(242, 242, 242)",
+        plot_bgcolor: "rgb(242, 242, 242)",
         showlegend: false,
       };
       return {

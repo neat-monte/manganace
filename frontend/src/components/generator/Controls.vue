@@ -286,6 +286,7 @@ export default {
     .inline {
       display: flex;
       justify-content: space-between;
+      flex-direction: column;
 
       .item {
         flex: 1;
@@ -335,7 +336,17 @@ export default {
 
 @include sm-desktop {
   #controls {
-    padding: 0 0 20px 20px;
+    padding: 0;
+  }
+}
+
+@include lg-desktop {
+  #controls {
+    .request-form {
+      .inline {
+        flex-direction: row;
+      }
+    }
   }
 }
 </style>

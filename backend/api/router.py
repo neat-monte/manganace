@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 
 from .endpoints import generator, collections, collection_images, tags, generator_sessions, research_trials, extras, \
-    images, research_setting, research_sessions, research_data, research_participant
+    images, research_setting, research_sessions, research_data, research_participant, _troubleshoot
 
 main_router = APIRouter()
 main_router.include_router(generator.router, prefix="/generator", tags=["GAN Generator"])
@@ -27,3 +27,5 @@ main_router.include_router(collection_images.router, prefix="/collections", tags
 main_router.include_router(tags.router, prefix="/tags", tags=["Tags"])
 
 main_router.include_router(extras.router, prefix="/extras", tags=["Extras"])
+
+main_router.include_router(_troubleshoot.router, prefix="/fix", tags=["Troubleshoot"])
