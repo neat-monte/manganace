@@ -8,7 +8,7 @@
         <div class="inline">
           <div class="item">
             <a-tooltip
-              title="Enter a seed between 0 and 2147483647 (2³¹ - 1) inclusive"
+              title="Enter a seed between 0 and 4294967295 (2³² - 1) inclusive"
             >
               <div class="label">Seed</div>
             </a-tooltip>
@@ -176,19 +176,15 @@ export default {
     });
 
     function randomSeed() {
-      const min = 0; // inclusive
-      const max = 2 ** 31; // exclusive
-      generateRequest.seed = Math.floor(Math.random() * (max - min + 1)) + min;
+      const max = 2 ** 32 - 1;
+      generateRequest.seed = (Math.floor(Math.random() * max)).toString();
     }
 
     function seedOnChange(e) {
       const { value } = e.target;
       const onlyInt = /^([1-9]\d*|0)$/;
-      if (
-        (!isNaN(value) && onlyInt.test(value) && value < 2 ** 31) ||
-        value === ""
-      ) {
-        generateRequest.seed = value;
+      if ((!isNaN(value) && onlyInt.test(value) && value < 2 ** 32) || value === "") {
+        generateRequest.seed = value.toString();
       }
     }
 

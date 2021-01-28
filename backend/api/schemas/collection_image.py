@@ -27,7 +27,7 @@ class CollectionImage(CamelModel):
     collection_id: conint(gt=0)
     image_id: conint(gt=0)
     session_id: conint(gt=0)
-    seed: conint(ge=0, le=2147483647)
+    seed: conint(ge=0, le=4294967295)
     description: Optional[str]
     tags_ids: List[int]
     url: HttpUrl
